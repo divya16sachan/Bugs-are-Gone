@@ -15,14 +15,14 @@ const passwordSchema = z
 export const loginSchema = z.object({
   email: z.string().min(1, "Email is required").email("Enter a valid email"),
   password: z.string().min(1, "Password is required"),
-  remember: z.boolean().default(false),
+  remember: z.boolean(),
 });
 
 export const registerSchema = z
   .object({
     name: z.string().min(2, "Enter your name"),
     email: z.string().min(1, "Email is required").email("Enter a valid email"),
-    role: z.enum(["customer", "seller"]).default("customer"),
+    role: z.enum(["customer", "seller"]),
     password: passwordSchema,
     confirmPassword: z.string().min(1, "Confirm your password"),
   })
