@@ -1,37 +1,42 @@
 "use client";
 
 import { useState } from "react";
+import { Product } from "../../_components/types";
 import { ArrowDown01Icon, ArrowUp01Icon } from "./icons";
 
-const details = [
-  {
-    title: "Description",
-    content:
-      "SilkSkin Serum is a lightweight daily skincare formula designed to hydrate, refresh, and support healthy-looking skin.",
-  },
-  {
-    title: "Key Benefits",
-    content:
-      "Provides lightweight hydration, helps refresh the skin, and fits easily into a simple daily skincare routine.",
-  },
-  {
-    title: "How to Use",
-    content:
-      "Apply a small amount to clean skin and gently massage until absorbed. Use as part of your regular skincare routine.",
-  },
-  {
-    title: "Additional Information",
-    content:
-      "Suitable for daily use. Store in a cool, dry place and keep the product away from direct sunlight.",
-  },
-];
+interface ProductDetailsProps {
+  product: Product;
+}
 
-export default function ProductDetails() {
+export default function ProductDetails({ product }: ProductDetailsProps) {
   const [openIndex, setOpenIndex] = useState(0);
 
   const toggleDetails = (index: number) => {
     setOpenIndex((current) => (current === index ? -1 : index));
   };
+
+  const details = [
+    {
+      title: "Description",
+      content:
+        product.description ||
+        `${product.title} is a premium botanical formula designed to deliver exceptional results and support healthy, radiant beauty.`,
+    },
+    {
+      title: "Key Benefits & Skin Types",
+      content: `Tailored for ${product.skinTypes.join(", ")} skin. Delivers active nourishment, long-lasting moisture balance, and promotes a naturally revitalized complexion.`,
+    },
+    {
+      title: "How to Use",
+      content:
+        "Apply a small amount to clean, dry skin. Gently massage in upward circular motions until fully absorbed. Suitable for daily morning and evening use.",
+    },
+    {
+      title: "Additional Information",
+      content:
+        "Formulated with pure organic botanicals. 100% cruelty-free, vegan-friendly, and dermatologist tested. Store in a cool, dry place away from direct sunlight.",
+    },
+  ];
 
   return (
     <section className="border-t border-stone-200 pt-8">
@@ -47,7 +52,7 @@ export default function ProductDetails() {
               <button
                 type="button"
                 onClick={() => toggleDetails(index)}
-                className="flex w-full items-center justify-between py-5 text-left"
+                className="flex w-full items-center justify-between py-5 text-left cursor-pointer"
                 aria-expanded={isOpen}
               >
                 <span className="text-sm font-semibold text-stone-900 sm:text-base">

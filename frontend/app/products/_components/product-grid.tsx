@@ -59,7 +59,13 @@ export function ProductGrid() {
       <div className={cn("grid grid-cols-1 lg:grid-cols-4 gap-8")}>
         {/* Left Column: Filter Sidebar (Desktop) */}
         <div className={cn("hidden lg:block lg:col-span-1")}>
-          <FilterSidebar filters={filters} onFilterChange={setFilters} />
+          <div
+            className={cn(
+              "sticky top-20 h-[calc(100vh-5rem)] overflow-y-auto pr-4 pb-8 [scrollbar-width:thin] [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-border hover:[&::-webkit-scrollbar-thumb]:bg-muted-foreground/40"
+            )}
+          >
+            <FilterSidebar filters={filters} onFilterChange={setFilters} />
+          </div>
         </div>
 
         {/* Right Column: Catalog Content */}
