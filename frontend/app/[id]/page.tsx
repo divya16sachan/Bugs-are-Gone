@@ -13,12 +13,12 @@ import ProductReviews from "./_components/product-reviews";
 import RelatedProducts from "./_components/related-products";
 
 interface PageProps {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ id: string }>;
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { slug } = await params;
-  const product = MOCK_PRODUCTS.find((p) => p.slug === slug || p.id === slug);
+  const { id } = await params;
+  const product = MOCK_PRODUCTS.find((p) => p.id === id);
 
   if (!product) {
     return {
@@ -33,8 +33,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function ProductDetailPage({ params }: PageProps) {
-  const { slug } = await params;
-  const product = MOCK_PRODUCTS.find((p) => p.slug === slug || p.id === slug);
+  const { id } = await params;
+  const product = MOCK_PRODUCTS.find((p) => p.id === id);
 
   if (!product) {
     notFound();

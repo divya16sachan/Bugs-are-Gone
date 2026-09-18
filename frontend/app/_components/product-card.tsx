@@ -117,7 +117,7 @@ export function ProductCard({
 
         {/* Image */}
         <Link
-          href={`/${product.slug}`}
+          href={`/${product.id}`}
           className={cn("block w-full h-full relative")}
         >
           <Image
@@ -155,7 +155,7 @@ export function ProductCard({
 
         {/* Product Title */}
         <Link
-          href={`/${product.slug}`}
+          href={`/${product.id}`}
           className={cn(
             "font-medium text-sm sm:text-base text-foreground line-clamp-1 hover:text-emerald-800 transition-colors",
           )}
