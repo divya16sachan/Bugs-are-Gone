@@ -1,41 +1,23 @@
+import Link from "next/link";
+import Image from "next/image";
+import { Product } from "../../_components/types";
+import { MOCK_PRODUCTS } from "../../_components/mock-products";
 import { FavouriteIcon } from "./icons";
 
-const relatedProducts = [
-  {
-    id: 1,
-    name: "Hydra Glow Cream",
-    category: "Moisturizer",
-    price: "$36.00",
-    image:
-      "https://images.unsplash.com/photo-1556229010-6c3f2c9ca5f8",
-  },
-  {
-    id: 2,
-    name: "Pure Glow Cleanser",
-    category: "Cleanser",
-    price: "$28.00",
-    image:
-      "https://images.unsplash.com/photo-1556228578-8c89e6adf883",
-  },
-  {
-    id: 3,
-    name: "Daily Face Mist",
-    category: "Face Care",
-    price: "$24.00",
-    image:
-      "https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b",
-  },
-  {
-    id: 4,
-    name: "Vitamin Glow Oil",
-    category: "Face Oil",
-    price: "$42.00",
-    image:
-      "https://images.unsplash.com/photo-1612817288484-6f916006741a",
-  },
-];
+interface RelatedProductsProps {
+  currentProduct: Product;
+}
 
-export default function RelatedProducts() {
+export default function RelatedProducts({ currentProduct }: RelatedProductsProps) {
+  // Find products in the same category first, or others if needed
+  const sameCategory = MOCK_PRODUCTS.filter(
+    (p) => p.id !== currentProduct.id && p.category === currentProduct.category
+  );
+  const otherProducts = MOCK_PRODUCTS.filter(
+    (p) => p.id !== currentProduct.id && p.category !== currentProduct.category
+  );
+  const related = [...sameCategory, ...otherProducts].slice(0, 4);
+
   return (
     <section className="border-t border-stone-200 pt-10">
       <div className="mb-6">
@@ -47,19 +29,23 @@ export default function RelatedProducts() {
       </div>
 
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {relatedProducts.map((product) => (
-          <article key={product.id} className="group">
+        {related.map((product) => (
+          <article key={product.id} className="group relative">
             <div className="relative aspect-square overflow-hidden rounded-2xl bg-stone-100">
-              <img
-                src={`${product.image}?auto=format&fit=crop&w=600&q=85`}
-                alt={product.name}
-                className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-              />
+              <Link href={`/products/${product.slug}`} className="block h-full w-full">
+                <Image
+                  src={product.imageUrl}
+                  alt={product.title}
+                  fill
+                  sizes="(max-width: 640px) 50vw, 25vw"
+                  className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                />
+              </Link>
 
               <button
                 type="button"
-                className="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 shadow-sm transition hover:scale-105"
-                aria-label={`Add ${product.name} to wishlist`}
+                className="absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 shadow-sm transition hover:scale-105 cursor-pointer"
+                aria-label={`Add ${product.title} to wishlist`}
               >
                 <FavouriteIcon size={18} />
               </button>
@@ -68,13 +54,25 @@ export default function RelatedProducts() {
             <div className="pt-3">
               <p className="text-xs text-stone-500">{product.category}</p>
 
-              <h3 className="mt-1 text-sm font-semibold text-stone-900">
-                {product.name}
+              <h3 className="mt-1 text-sm font-semibold text-stone-900 line-clamp-1">
+                <Link
+                  href={`/products/${product.slug}`}
+                  className="hover:text-emerald-800 transition-colors"
+                >
+                  {product.title}
+                </Link>
               </h3>
 
-              <p className="mt-1 text-sm font-medium text-emerald-900">
-                {product.price}
-              </p>
+              <div className="mt-1 flex items-baseline gap-2">
+                <p className="text-sm font-medium text-emerald-900">
+                  ${product.price.toFixed(2)}
+                </p>
+                {product.originalPrice && (
+                  <p className="text-xs text-stone-400 line-through">
+                    ${product.originalPrice.toFixed(2)}
+                  </p>
+                )}
+              </div>
             </div>
           </article>
         ))}

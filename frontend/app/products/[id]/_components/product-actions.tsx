@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useParams } from "next/navigation";
-
+import { Product } from "../../_components/types";
 import {
   FavouriteIcon,
   MinusSignIcon,
@@ -10,10 +9,11 @@ import {
   ShoppingCart01Icon,
 } from "./icons";
 
-export default function ProductActions() {
-  const params = useParams();
-  const productId = String(params.id);
+interface ProductActionsProps {
+  product: Product;
+}
 
+export default function ProductActions({ product }: ProductActionsProps) {
   const [quantity, setQuantity] = useState(1);
   const [liked, setLiked] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
@@ -31,14 +31,17 @@ export default function ProductActions() {
     const cart = JSON.parse(localStorage.getItem("cart") || "[]");
 
     const existingItem = cart.find(
-      (item: { productId: string }) => item.productId === productId
+      (item: { productId: string }) => item.productId === product.id
     );
 
     if (existingItem) {
       existingItem.quantity += quantity;
     } else {
       cart.push({
-        productId,
+        productId: product.id,
+        title: product.title,
+        price: product.price,
+        imageUrl: product.imageUrl,
         quantity,
       });
     }
@@ -75,7 +78,7 @@ export default function ProductActions() {
           <button
             type="button"
             onClick={decreaseQuantity}
-            className="flex h-11 w-11 items-center justify-center text-stone-700 transition hover:bg-stone-100 active:scale-95"
+            className="flex h-11 w-11 items-center justify-center text-stone-700 transition hover:bg-stone-100 active:scale-95 cursor-pointer"
             aria-label="Decrease quantity"
           >
             <MinusSignIcon size={20} />
@@ -88,7 +91,7 @@ export default function ProductActions() {
           <button
             type="button"
             onClick={increaseQuantity}
-            className="flex h-11 w-11 items-center justify-center text-stone-700 transition hover:bg-stone-100 active:scale-95"
+            className="flex h-11 w-11 items-center justify-center text-stone-700 transition hover:bg-stone-100 active:scale-95 cursor-pointer"
             aria-label="Increase quantity"
           >
             <PlusSignIcon size={20} />
@@ -98,16 +101,17 @@ export default function ProductActions() {
         <button
           type="button"
           onClick={addToCart}
-          className="flex items-center justify-center gap-2 rounded-full bg-emerald-900 px-6 py-3 text-sm font-semibold text-white transition hover:bg-emerald-800 active:scale-95"
+          disabled={!product.inStock}
+          className="flex items-center justify-center gap-2 rounded-full bg-emerald-900 px-6 py-3 text-sm font-semibold text-white transition hover:bg-emerald-800 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
         >
           <ShoppingCart01Icon size={19} />
-          {addedToCart ? "Added ✓" : "Add to Cart"}
+          {addedToCart ? "Added ✓" : product.inStock ? "Add to Cart" : "Out of Stock"}
         </button>
 
         <button
           type="button"
           onClick={toggleWishlist}
-          className={`flex h-11 w-11 items-center justify-center rounded-full border transition active:scale-95 ${
+          className={`flex h-11 w-11 items-center justify-center rounded-full border transition active:scale-95 cursor-pointer ${
             liked
               ? "border-emerald-800 bg-emerald-50 text-emerald-800"
               : "border-stone-200 bg-white text-stone-700 hover:border-emerald-700"
@@ -124,7 +128,8 @@ export default function ProductActions() {
       <button
         type="button"
         onClick={buyNow}
-        className="w-full rounded-full bg-amber-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-amber-700 active:scale-95 sm:w-fit"
+        disabled={!product.inStock}
+        className="w-full rounded-full bg-amber-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-amber-700 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer sm:w-fit"
       >
         Buy Now
       </button>

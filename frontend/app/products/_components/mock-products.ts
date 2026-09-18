@@ -32,7 +32,7 @@ export const MOCK_PRODUCTS: Product[] = [
     originalPrice: 60.0,
     discountPercent: 20,
     imageUrl:
-      "https://images.unsplash.com/photo-1608248597359-009d1e57c6b7?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1707539160277-e39464517645?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     inStock: true,
     isBestSeller: true,
     isNewArrival: false,
@@ -165,7 +165,7 @@ export const MOCK_PRODUCTS: Product[] = [
     originalPrice: 20.0,
     discountPercent: 50,
     imageUrl:
-      "https://images.unsplash.com/photo-1607006314644-884071ecfa50?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1635867264346-ed6a8d912ecf?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     inStock: true,
     isBestSeller: true,
     isNewArrival: false,

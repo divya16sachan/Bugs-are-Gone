@@ -1,32 +1,36 @@
 "use client";
 
+import { Product } from "../../_components/types";
 import { StarIcon } from "./icons";
 
-const reviews = [
-  {
-    name: "Aarav Sharma",
-    rating: 5,
-    date: "2 weeks ago",
-    comment:
-      "Really lightweight and comfortable. My skin feels hydrated without feeling oily.",
-  },
-  {
-    name: "Meera Kapoor",
-    rating: 4,
-    date: "1 month ago",
-    comment:
-      "Good product and the texture is very nice. The packaging also feels premium.",
-  },
-  {
-    name: "Riya Malhotra",
-    rating: 5,
-    date: "2 months ago",
-    comment:
-      "I have been using it regularly and really like how smooth my skin feels.",
-  },
-];
+interface ProductReviewsProps {
+  product: Product;
+}
 
-export default function ProductReviews() {
+export default function ProductReviews({ product }: ProductReviewsProps) {
+  const reviews = [
+    {
+      name: "Aarav Sharma",
+      rating: 5,
+      date: "2 weeks ago",
+      comment: `Really loved the ${product.title}! The texture is wonderful and it delivered results right away.`,
+    },
+    {
+      name: "Meera Kapoor",
+      rating: Math.max(4, Math.floor(product.rating)),
+      date: "1 month ago",
+      comment:
+        "Good product and high quality formulation. The packaging feels very luxurious and botanical.",
+    },
+    {
+      name: "Riya Malhotra",
+      rating: 5,
+      date: "2 months ago",
+      comment:
+        "I have been using this regularly in my routine and notice a remarkable improvement. Highly recommended!",
+    },
+  ];
+
   return (
     <section className="border-t border-stone-200 pt-10">
       <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
@@ -40,10 +44,10 @@ export default function ProductReviews() {
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-1">
             <StarIcon size={20} className="fill-amber-400 text-amber-400" />
-            <span className="text-xl font-semibold text-stone-900">4.8</span>
+            <span className="text-xl font-semibold text-stone-900">{product.rating.toFixed(1)}</span>
           </div>
 
-          <span className="text-sm text-stone-500">245 reviews</span>
+          <span className="text-sm text-stone-500">({product.reviewCount} reviews)</span>
         </div>
       </div>
 
@@ -77,7 +81,7 @@ export default function ProductReviews() {
 
       <button
         type="button"
-        className="mt-4 rounded-full border border-stone-300 px-5 py-2.5 text-sm font-medium text-stone-900 transition hover:border-emerald-800 hover:text-emerald-900"
+        className="mt-4 rounded-full border border-stone-300 px-5 py-2.5 text-sm font-medium text-stone-900 transition hover:border-emerald-800 hover:text-emerald-900 cursor-pointer"
       >
         Write a Review
       </button>
