@@ -108,18 +108,21 @@ export function ProductGrid() {
           {/* Loading Skeleton */}
           {isLoading && (
             <div className={cn("grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6")}>
-              {Array.from({ length: 6 }).map((_, index) => (
+              {Array.from({ length: 9 }).map((_, index) => (
                 <div
                   key={index}
                   className={cn(
-                    "rounded-2xl border border-border/50 bg-card p-4 space-y-4 animate-pulse"
+                    "rounded-2xl border border-border/60 bg-card overflow-hidden flex flex-col"
                   )}
                 >
-                  <div className={cn("aspect-square w-full rounded-xl bg-muted")} />
-                  <div className={cn("space-y-2")}>
-                    <div className={cn("h-3 w-1/3 bg-muted rounded")} />
-                    <div className={cn("h-4 w-3/4 bg-muted rounded")} />
-                    <div className={cn("h-4 w-1/4 bg-muted rounded")} />
+                  <div className={cn("aspect-square w-full bg-muted animate-pulse")} />
+                  <div className={cn("p-4 space-y-3 flex-1 flex flex-col justify-between")}>
+                    <div className={cn("flex items-center justify-between")}>
+                      <div className={cn("h-3 w-16 bg-muted rounded animate-pulse")} />
+                      <div className={cn("h-3 w-10 bg-muted rounded animate-pulse")} />
+                    </div>
+                    <div className={cn("h-4 w-4/5 bg-muted rounded animate-pulse")} />
+                    <div className={cn("h-4 w-1/3 bg-muted rounded animate-pulse pt-1")} />
                   </div>
                 </div>
               ))}
@@ -176,8 +179,12 @@ export function ProductGrid() {
           {/* Product Cards Grid */}
           {!isLoading && !isError && data && data.products.length > 0 && (
             <div className={cn("grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6")}>
-              {data.products.map((product) => (
-                <ProductCard key={product.id} product={product} />
+              {data.products.map((product, index) => (
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  priority={index < 2}
+                />
               ))}
             </div>
           )}
@@ -191,25 +198,28 @@ export function ProductGrid() {
               )}
             >
               {/* Prev Page */}
-              <button
+              <Button
                 type="button"
+                variant="outline"
+                size="icon"
                 onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
                 disabled={currentPage === 1}
+                tooltip="Previous page"
                 aria-label="Previous page"
                 className={cn(
-                  "size-9 rounded-full border border-border flex items-center justify-center transition-colors text-foreground",
-                  currentPage === 1
-                    ? "opacity-40 cursor-not-allowed"
-                    : "hover:bg-muted cursor-pointer"
+                  "size-9 rounded-full border border-border",
+                  currentPage === 1 && "opacity-40 cursor-not-allowed"
                 )}
               >
                 <HugeiconsIcon icon={ArrowLeft01Icon} className={cn("size-4")} />
-              </button>
+              </Button>
 
               {/* Page 1 */}
               <button
                 type="button"
                 onClick={() => handlePageChange(1)}
+                aria-label="Page 1"
+                aria-current={currentPage === 1 ? "page" : undefined}
                 className={cn(
                   "size-9 rounded-full text-sm font-medium transition-colors flex items-center justify-center cursor-pointer",
                   currentPage === 1
@@ -225,6 +235,8 @@ export function ProductGrid() {
                 <button
                   type="button"
                   onClick={() => handlePageChange(2)}
+                  aria-label="Page 2"
+                  aria-current={currentPage === 2 ? "page" : undefined}
                   className={cn(
                     "size-9 rounded-full text-sm font-medium transition-colors flex items-center justify-center cursor-pointer",
                     currentPage === 2
@@ -241,6 +253,8 @@ export function ProductGrid() {
                 <button
                   type="button"
                   onClick={() => handlePageChange(3)}
+                  aria-label="Page 3"
+                  aria-current={currentPage === 3 ? "page" : undefined}
                   className={cn(
                     "size-9 rounded-full text-sm font-medium transition-colors flex items-center justify-center cursor-pointer",
                     currentPage === 3
@@ -257,11 +271,13 @@ export function ProductGrid() {
                 <span className={cn("px-2 text-sm text-muted-foreground")}>...</span>
               )}
 
-              {/* Last Page (e.g. 10) */}
+              {/* Last Page */}
               {totalPages > 3 && (
                 <button
                   type="button"
                   onClick={() => handlePageChange(totalPages)}
+                  aria-label={`Page ${totalPages}`}
+                  aria-current={currentPage === totalPages ? "page" : undefined}
                   className={cn(
                     "size-9 rounded-full text-sm font-medium transition-colors flex items-center justify-center cursor-pointer",
                     currentPage === totalPages
@@ -274,20 +290,21 @@ export function ProductGrid() {
               )}
 
               {/* Next Page */}
-              <button
+              <Button
                 type="button"
+                variant="outline"
+                size="icon"
                 onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
                 disabled={currentPage === totalPages}
+                tooltip="Next page"
                 aria-label="Next page"
                 className={cn(
-                  "size-9 rounded-full border border-border flex items-center justify-center transition-colors text-foreground",
-                  currentPage === totalPages
-                    ? "opacity-40 cursor-not-allowed"
-                    : "hover:bg-muted cursor-pointer"
+                  "size-9 rounded-full border border-border",
+                  currentPage === totalPages && "opacity-40 cursor-not-allowed"
                 )}
               >
                 <HugeiconsIcon icon={ArrowRight01Icon} className={cn("size-4")} />
-              </button>
+              </Button>
             </nav>
           )}
         </div>

@@ -8,6 +8,8 @@ import { FeaturesBanner } from "./_components/features-banner";
 import { ShopFooter } from "./_components/shop-footer";
 import { QueryProvider } from "./_components/query-provider";
 
+import { CatalogSkeleton } from "./_components/catalog-skeleton";
+
 export const metadata: Metadata = {
   title: "Shop Beauty & Skincare Products | Beauty Shop",
   description:
@@ -29,7 +31,7 @@ export default function HomePage() {
       {/* Main Catalog View with TanStack Query Provider and Suspense boundary for useSearchParams */}
       <main className="flex-1">
         <QueryProvider>
-          <Suspense fallback={<div className="max-w-7xl mx-auto px-4 py-16 text-center text-muted-foreground">Loading products...</div>}>
+          <Suspense fallback={<CatalogSkeleton />}>
             <ProductGrid />
           </Suspense>
         </QueryProvider>

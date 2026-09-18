@@ -49,7 +49,7 @@ export function ShopFooter() {
 
         {/* Col 2: Quick Links */}
         <div className={cn("space-y-3")}>
-          <h4 className={cn("text-sm font-semibold text-white")}>Shop Categories</h4>
+          <h3 className={cn("text-sm font-semibold text-white")}>Shop Categories</h3>
           <ul className={cn("space-y-2 text-xs text-emerald-200/80")}>
             <li>
               <Link href="/?category=Skin+Care" className={cn("hover:text-white transition-colors")}>
@@ -76,7 +76,7 @@ export function ShopFooter() {
 
         {/* Col 3: Customer Support */}
         <div className={cn("space-y-3")}>
-          <h4 className={cn("text-sm font-semibold text-white")}>Customer Care</h4>
+          <h3 className={cn("text-sm font-semibold text-white")}>Customer Care</h3>
           <ul className={cn("space-y-2 text-xs text-emerald-200/80")}>
             <li>
               <a href="#" className={cn("hover:text-white transition-colors")}>
@@ -103,7 +103,7 @@ export function ShopFooter() {
 
         {/* Col 4: Newsletter */}
         <div className={cn("space-y-3 md:col-span-1")}>
-          <h4 className={cn("text-sm font-semibold text-white")}>Stay in the Glow</h4>
+          <h3 className={cn("text-sm font-semibold text-white")}>Stay in the Glow</h3>
           <p className={cn("text-xs text-emerald-200/80")}>
             Subscribe for 20% off your first purchase and exclusive botanical tips.
           </p>
