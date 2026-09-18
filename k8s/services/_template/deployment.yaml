@@ -1,0 +1,46 @@
+# TODO: Phase 3 — Kubernetes Deployment Template
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: SERVICE_NAME-deployment
+  labels:
+    app: SERVICE_NAME
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: SERVICE_NAME
+  template:
+    metadata:
+      labels:
+        app: SERVICE_NAME
+    spec:
+      containers:
+        - name: SERVICE_NAME
+          image: DOCKERHUB_USER/ecom-SERVICE_NAME:TAG
+          ports:
+            - containerPort: SERVICE_PORT
+          envFrom:
+            - configMapRef:
+                name: SERVICE_NAME-config
+            - secretRef:
+                name: SERVICE_NAME-secret
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: SERVICE_PORT
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: SERVICE_PORT
+            initialDelaySeconds: 5
+            periodSeconds: 5

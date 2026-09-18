@@ -1,0 +1,16 @@
+# TODO: Phase 3 — Kubernetes Service Template
+apiVersion: v1
+kind: Service
+metadata:
+  name: SERVICE_NAME-service
+  labels:
+    app: SERVICE_NAME
+spec:
+  type: ClusterIP
+  ports:
+    - port: SERVICE_PORT
+      targetPort: SERVICE_PORT
+      protocol: TCP
+      name: http
+  selector:
+    app: SERVICE_NAME
