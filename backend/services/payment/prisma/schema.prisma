@@ -1,0 +1,21 @@
+// Payment Service Prisma Schema — finalized in Phase 1
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Payment {
+  id                   String   @id @default(uuid())
+  orderId              String   @unique
+  userId               String
+  amount               Float
+  status               String   @default("SUCCESS")
+  transactionReference String?
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+}

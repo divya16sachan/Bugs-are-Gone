@@ -1,0 +1,312 @@
+.
+./.env.example
+./.git
+./.github
+./.github/workflows
+./.github/workflows/ci.yml
+./.gitignore
+./backend
+./backend/CONTRACTS.md
+    services
+        catalog
+        catalog/.env.example
+        catalog/chaos
+        catalog/chaos/inject.ts
+        catalog/dist
+        catalog/Dockerfile
+        catalog/package.json
+        catalog/src
+        catalog/src/app.ts
+        catalog/src/config.ts
+        catalog/src/controllers
+        catalog/src/controllers/index.ts
+        catalog/src/events
+        catalog/src/events/consumer.ts
+        catalog/src/events/publisher.ts
+        catalog/src/health
+        catalog/src/health/health.ts
+        catalog/src/index.ts
+        catalog/src/middleware
+        catalog/src/middleware/errorHandler.ts
+        catalog/src/middleware/metrics.middleware.ts
+        catalog/src/mocks
+        catalog/src/mocks/index.ts
+        catalog/src/models
+        catalog/src/models/schema.prisma
+        catalog/src/resilience
+        catalog/src/resilience/circuitBreaker.ts
+        catalog/src/resilience/retry.ts
+        catalog/src/resilience/timeout.ts
+        catalog/src/routes
+        catalog/src/routes/index.ts
+        catalog/src/services
+        catalog/src/services/index.ts
+        catalog/tests
+        catalog/tests/health.test.ts
+        catalog/tsconfig.json
+        order
+        order/.env.example
+        order/chaos
+        order/chaos/inject.ts
+        order/dist
+        order/Dockerfile
+        order/package.json
+        order/src
+        order/src/app.ts
+        order/src/config.ts
+        order/src/controllers
+        order/src/controllers/index.ts
+        order/src/events
+        order/src/events/consumer.ts
+        order/src/events/publisher.ts
+        order/src/health
+        order/src/health/health.ts
+        order/src/index.ts
+        order/src/middleware
+        order/src/middleware/errorHandler.ts
+        order/src/middleware/metrics.middleware.ts
+        order/src/mocks
+        order/src/mocks/index.ts
+        order/src/models
+        order/src/models/schema.prisma
+        order/src/resilience
+        order/src/resilience/circuitBreaker.ts
+        order/src/resilience/retry.ts
+        order/src/resilience/timeout.ts
+        order/src/routes
+        order/src/routes/index.ts
+        order/src/services
+        order/src/services/index.ts
+        order/tests
+        order/tests/health.test.ts
+        order/tsconfig.json
+        payment
+        payment/.env.example
+        payment/chaos
+        payment/chaos/inject.ts
+        payment/dist
+        payment/Dockerfile
+        payment/package.json
+        payment/src
+        payment/src/app.ts
+        payment/src/config.ts
+        payment/src/controllers
+        payment/src/controllers/index.ts
+        payment/src/events
+        payment/src/events/consumer.ts
+        payment/src/events/publisher.ts
+        payment/src/health
+        payment/src/health/health.ts
+        payment/src/index.ts
+        payment/src/middleware
+        payment/src/middleware/errorHandler.ts
+        payment/src/middleware/metrics.middleware.ts
+        payment/src/mocks
+        payment/src/mocks/index.ts
+        payment/src/models
+        payment/src/models/schema.prisma
+        payment/src/resilience
+        payment/src/resilience/circuitBreaker.ts
+        payment/src/resilience/retry.ts
+        payment/src/resilience/timeout.ts
+        payment/src/routes
+        payment/src/routes/index.ts
+        payment/src/services
+        payment/src/services/index.ts
+        payment/tests
+        payment/tests/health.test.ts
+        payment/tsconfig.json
+        user
+        user/.env.example
+        user/chaos
+        user/chaos/inject.ts
+        user/dist
+        user/Dockerfile
+        user/package.json
+        user/src
+        user/src/app.ts
+        user/src/config.ts
+        user/src/controllers
+        user/src/controllers/index.ts
+        user/src/events
+        user/src/events/consumer.ts
+        user/src/events/publisher.ts
+        user/src/health
+        user/src/health/health.ts
+        user/src/index.ts
+        user/src/middleware
+        user/src/middleware/errorHandler.ts
+        user/src/middleware/metrics.middleware.ts
+        user/src/mocks
+        user/src/mocks/index.ts
+        user/src/models
+        user/src/models/schema.prisma
+        user/src/resilience
+        user/src/resilience/circuitBreaker.ts
+        user/src/resilience/retry.ts
+        user/src/resilience/timeout.ts
+        user/src/routes
+        user/src/routes/index.ts
+        user/src/services
+        user/src/services/index.ts
+        user/tests
+        user/tests/health.test.ts
+        user/tsconfig.json
+    shared
+    shared/dist
+    shared/package.json
+    shared/src
+    shared/src/index.js
+    shared/src/index.ts
+    shared/src/logger
+    shared/src/logger/index.js
+    shared/src/logger/index.ts
+    shared/src/metrics
+    shared/src/metrics/index.js
+    shared/src/metrics/index.ts
+    shared/src/types
+    shared/src/types/index.js
+    shared/src/types/index.ts
+    shared/tsconfig.json
+./docker-compose.yml
+./docs
+./docs/runbooks
+./docs/runbooks/.gitkeep
+./folder-structure.txt
+./frontend
+    .gitignore
+    .next
+    AGENTS.md
+    app
+        (auth)
+        (auth)/forgot-password
+        (auth)/forgot-password/_components
+        (auth)/forgot-password/_components/forgot-password-form.tsx
+        (auth)/forgot-password/page.tsx
+        (auth)/layout.tsx
+        (auth)/login
+        (auth)/login/_components
+        (auth)/login/_components/login-form.tsx
+        (auth)/login/page.tsx
+        (auth)/register
+        (auth)/register/_components
+        (auth)/register/_components/register-form.tsx
+        (auth)/register/page.tsx
+        [slug]
+        [slug]/_components
+        [slug]/_components/back-button.tsx
+        [slug]/_components/icons.tsx
+        [slug]/_components/product-actions.tsx
+        [slug]/_components/product-details.tsx
+        [slug]/_components/product-gallery.tsx
+        [slug]/_components/product-info.tsx
+        [slug]/_components/product-reviews.tsx
+        [slug]/_components/related-products.tsx
+        [slug]/page.tsx
+        _components
+        _components/active-filters.tsx
+        _components/catalog-skeleton.tsx
+        _components/empty-product-state.tsx
+        _components/features-banner.tsx
+        _components/filter-sidebar.tsx
+        _components/filter-url-sync.ts
+        _components/mobile-filter-drawer.tsx
+        _components/mock-products.ts
+        _components/product-card.tsx
+        _components/product-grid.tsx
+        _components/product-toolbar.tsx
+        _components/query-keys.ts
+        _components/query-provider.tsx
+        _components/shop-announcement.tsx
+        _components/shop-footer.tsx
+        _components/shop-hero.tsx
+        _components/shop-navbar.tsx
+        _components/types.ts
+        _components/use-products.ts
+        favicon.ico
+        globals.css
+        layout.tsx
+        page.tsx
+    CLAUDE.md
+    components
+    components.json
+    components/providers
+    components/providers/query-provider.tsx
+    components/shared
+    components/shared/password-input.tsx
+    components/shared/social-auth-buttons.tsx
+    components/tooltip-wrapper.tsx
+    components/ui
+    components/ui/badge.tsx
+    components/ui/button.tsx
+    components/ui/card.tsx
+    components/ui/checkbox.tsx
+    components/ui/dropdown-menu.tsx
+    components/ui/form.tsx
+    components/ui/input.tsx
+    components/ui/label.tsx
+    components/ui/radio-group.tsx
+    components/ui/select.tsx
+    components/ui/separator.tsx
+    components/ui/sheet.tsx
+    components/ui/slider.tsx
+    components/ui/sonner.tsx
+    components/ui/table.tsx
+    components/ui/toast.tsx
+    components/ui/tooltip.tsx
+    eslint.config.mjs
+    features
+    features/auth
+    features/auth/api.ts
+    features/auth/hooks.ts
+    features/auth/mocks.ts
+    features/auth/query-keys.ts
+    features/auth/schemas.ts
+    lib
+    lib/api-client.ts
+    lib/utils.ts
+    next.config.ts
+    next-env.d.ts
+    node_modules
+    package.json
+    package-lock.json
+    postcss.config.mjs
+    public
+    public/file.svg
+    public/globe.svg
+    public/next.svg
+    public/vercel.svg
+    public/window.svg
+    README.md
+    tsconfig.json
+./k8s
+./k8s/base
+./k8s/base/.gitkeep
+./k8s/services
+./k8s/services/_template
+./k8s/services/_template/deployment.yaml
+./k8s/services/_template/hpa.yaml
+./k8s/services/_template/service.yaml
+./monitoring
+./monitoring/alertmanager
+./monitoring/alertmanager/alertmanager.yml
+./monitoring/grafana
+./monitoring/grafana/dashboards
+./monitoring/grafana/dashboards/.gitkeep
+./monitoring/grafana/provisioning
+./monitoring/grafana/provisioning/datasources
+./monitoring/grafana/provisioning/datasources/datasource.yml
+./monitoring/prometheus
+./monitoring/prometheus/prometheus.yml
+./monitoring/rules
+./monitoring/rules/.gitkeep
+./node_modules
+./package.json
+./package-lock.json
+./PHASE_0_AGENT_PLAN.md
+./README.md
+./scripts
+./scripts/chaos.js
+./scripts/init-databases.sql
+./scripts/load_test.js
+./scripts/smoke_test.js

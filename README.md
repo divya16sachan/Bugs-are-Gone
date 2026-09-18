@@ -1,8 +1,69 @@
-# Scalable E-Commerce System — Full Workflow (Step 0 → Step 4)
+# Scalable E-Commerce SRE System
 
-**Current position: Step 0.** Every step below is written so that the step being executed *now* doesn't need to be redone when a later step arrives. Each step lists what it must leave in place for the steps after it.
+A distributed microservices architecture designed to demonstrate **observability (RED metrics & Prometheus), self-healing (circuit breakers, retries, DLQ), and auto-scaling (Kubernetes HPA & KEDA)**.
 
 ---
+
+## 🚀 Quickstart: How to Run
+
+### 1. Prerequisites
+- **Node.js**: v20+ (LTS)
+- **Docker & Docker Compose**: v24+
+
+### 2. Setup & Installation
+```bash
+# Clone the repository
+git clone <repo-url>
+cd Bugs-are-Gone
+
+# Install all workspace dependencies
+npm install
+
+# Build shared libraries
+npm --workspace=@ecom/shared run build
+```
+
+### 3. Start Infrastructure Containers
+```bash
+docker compose up -d
+```
+This launches:
+- **PostgreSQL 15** (`localhost:5432` — initialized with `user_db`, `catalog_db`, `order_db`, `payment_db`)
+- **Redis 7** (`localhost:6379`)
+- **RabbitMQ 3 Management** (AMQP `5672`, UI `http://localhost:15672`, Metrics `http://localhost:15692`)
+- **Prometheus** (`http://localhost:9090`)
+- **Grafana** (`http://localhost:3000` — admin/admin)
+- **Alertmanager** (`http://localhost:9093`)
+
+### 4. Start Microservices
+Run each service in separate terminals (or concurrently):
+```bash
+# User Service (Port 3001)
+npm run dev:user
+
+# Catalog Service (Port 3002)
+npm run dev:catalog
+
+# Order Service (Port 3003)
+npm run dev:order
+
+# Payment Service (Port 3004)
+npm run dev:payment
+```
+
+### 5. Verify Health & Metrics
+```bash
+# Run automated smoke test
+npm run smoke-test
+```
+Or check individually in your browser/curl:
+- User Service: `http://localhost:3001/health` & `http://localhost:3001/metrics`
+- Catalog Service: `http://localhost:3002/health` & `http://localhost:3002/metrics`
+- Order Service: `http://localhost:3003/health` & `http://localhost:3003/metrics`
+- Payment Service: `http://localhost:3004/health` & `http://localhost:3004/metrics`
+
+---
+
 
 ## 0. Tech Stack Decision (locking this in before Step 0)
 
@@ -57,16 +118,23 @@ This also matches how real production event-driven systems are usually built, so
 
 ```
 ecom-sre/
-├── CONTRACTS.md
 ├── README.md
 ├── docker-compose.yml
 ├── .env.example
+├── .gitignore
+├── package.json
 │
-├── services/
-│   ├── user/
-│   ├── catalog/
-│   ├── order/
-│   └── payment/
+├── backend/
+│   ├── CONTRACTS.md
+│   ├── services/
+│   │   ├── user/
+│   │   ├── catalog/
+│   │   ├── order/
+│   │   └── payment/
+│   └── shared/
+│       ├── metrics/
+│       ├── logger/
+│       └── types/
 │
 ├── monitoring/
 │   ├── prometheus/prometheus.yml
@@ -85,12 +153,7 @@ ecom-sre/
 │   ├── chaos.js
 │   └── smoke_test.js
 │
-├── shared/
-│   ├── metrics/                # RED metrics middleware (prom-client wrapper)
-│   ├── logger/
-│   └── types/
-│
-├── .github/workflows/  (or jenkins/)
+├── .github/workflows/
 │
 └── docs/
     └── runbooks/

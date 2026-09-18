@@ -1,0 +1,26 @@
+{
+  "name": "ecom-sre-platform",
+  "version": "1.0.0",
+  "description": "Distributed E-Commerce Microservices Platform demonstrating SRE Observability, Self-Healing, and Auto-Scaling",
+  "private": true,
+  "workspaces": [
+    "backend/shared",
+    "backend/services/*"
+  ],
+  "scripts": {
+    "dev:user": "npm --workspace=user-service run dev",
+    "dev:catalog": "npm --workspace=catalog-service run dev",
+    "dev:order": "npm --workspace=order-service run dev",
+    "dev:payment": "npm --workspace=payment-service run dev",
+    "build": "npm run --workspaces --if-present build",
+    "typecheck": "npm run --workspaces --if-present typecheck",
+    "test": "npm run --workspaces --if-present test",
+    "smoke-test": "node scripts/smoke_test.js",
+    "infra:up": "docker compose up -d",
+    "infra:down": "docker compose down",
+    "infra:logs": "docker compose logs -f"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  }
+}
