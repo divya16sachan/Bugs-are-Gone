@@ -17,6 +17,7 @@ import { Product } from "./types";
 interface ProductCardProps {
   product: Product;
   className?: string;
+  priority?: boolean;
   onQuickView?: (product: Product) => void;
   onAddToCart?: (product: Product) => void;
 }
@@ -24,6 +25,7 @@ interface ProductCardProps {
 export function ProductCard({
   product,
   className,
+  priority = false,
   onQuickView,
   onAddToCart,
 }: ProductCardProps) {
@@ -122,6 +124,7 @@ export function ProductCard({
             src={product.imageUrl}
             alt={product.title}
             fill
+            priority={priority}
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             className={cn(
               "object-cover object-center transition-transform duration-500 group-hover:scale-105",

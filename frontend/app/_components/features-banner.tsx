@@ -42,9 +42,9 @@ export function FeaturesBanner() {
                 <HugeiconsIcon icon={feature.icon} className={cn("size-6")} />
               </div>
               <div className={cn("flex flex-col")}>
-                <h4 className={cn("text-base font-semibold text-foreground")}>
+                <h3 className={cn("text-base font-semibold text-foreground")}>
                   {feature.title}
-                </h4>
+                </h3>
                 <p className={cn("text-xs text-muted-foreground")}>
                   {feature.description}
                 </p>
