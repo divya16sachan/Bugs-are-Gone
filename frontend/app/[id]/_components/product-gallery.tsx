@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, ViewTransition } from "react";
 import Image from "next/image";
 import { Product } from "../../_components/types";
 import { Button } from "@/components/ui/button";
@@ -39,14 +39,20 @@ export default function ProductGallery({ product }: ProductGalleryProps) {
   return (
     <div className="space-y-4">
       <div className="relative aspect-square overflow-hidden rounded-3xl bg-stone-100">
-        <Image
-          src={productImages[activeImage]}
-          alt={product.title}
-          fill
-          priority
-          sizes="(max-width: 1024px) 100vw, 50vw"
-          className="h-full w-full object-cover"
-        />
+        <ViewTransition
+          name={`product-image-${product.id}`}
+          share="morph"
+          default="none"
+        >
+          <Image
+            src={productImages[activeImage]}
+            alt={product.title}
+            fill
+            priority
+            sizes="(max-width: 1024px) 100vw, 50vw"
+            className="h-full w-full object-cover"
+          />
+        </ViewTransition>
 
         {productImages.length > 1 && (
           <>

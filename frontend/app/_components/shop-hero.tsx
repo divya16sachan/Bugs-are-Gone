@@ -1,7 +1,21 @@
+"use client";
+
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { useMemo } from "react";
 import { cn } from "@/lib/utils";
+import { parseFiltersFromSearchParams } from "./filter-url-sync";
+import { useProducts } from "./use-products";
 
 export function ShopHero() {
+  const searchParams = useSearchParams();
+  const filters = useMemo(
+    () => parseFiltersFromSearchParams(searchParams),
+    [searchParams]
+  );
+  const { data } = useProducts(filters);
+  const isMock = data?.isMock === true;
+
   return (
     <section
       className={cn(
@@ -55,8 +69,13 @@ export function ShopHero() {
       </div>
 
       <div className={cn("max-w-7xl mx-auto px-4 flex flex-col items-center justify-center text-center")}>
-        <h1 className={cn("text-3xl sm:text-4xl font-serif font-bold tracking-tight text-foreground mb-2")}>
-          Shop
+        <h1 className={cn("text-3xl sm:text-4xl font-serif font-bold tracking-tight text-foreground mb-2 flex items-center justify-center gap-2.5 flex-wrap")}>
+          <span>Shop</span>
+          {isMock && (
+            <span className="text-sm sm:text-base font-sans font-medium text-amber-700 dark:text-amber-300 bg-amber-100 dark:bg-amber-950/80 px-2.5 py-0.5 rounded-full border border-amber-300 dark:border-amber-800 shadow-sm animate-in fade-in duration-300">
+              (Mock Data)
+            </span>
+          )}
         </h1>
         <nav aria-label="Breadcrumb" className={cn("flex items-center gap-2 text-sm text-muted-foreground")}>
           <Link
@@ -66,7 +85,9 @@ export function ShopHero() {
             Home
           </Link>
           <span>/</span>
-          <span className={cn("text-foreground font-medium")}>Shop</span>
+          <span className={cn("text-foreground font-medium")}>
+            Shop{isMock ? " (Mock Data)" : ""}
+          </span>
         </nav>
       </div>
     </section>

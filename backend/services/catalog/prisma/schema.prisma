@@ -1,5 +1,3 @@
-// Catalog Service Prisma Schema — finalized in Phase 1
-
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -7,15 +5,30 @@ datasource db {
 
 generator client {
   provider = "prisma-client-js"
+  output   = "../src/generated/client"
 }
 
 model Product {
-  id          String   @id @default(uuid())
-  name        String
-  description String
-  price       Float
-  stock       Int
-  category    String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id              String   @id @default(uuid())
+  title           String
+  description     String
+  category        String
+  skinTypes       String[]
+  rating          Float    @default(5.0)
+  reviewCount     Int      @default(0)
+  price           Float
+  originalPrice   Float?
+  discountPercent Float?
+  imageUrl        String
+  stock           Int      @default(0)
+  isBestSeller    Boolean  @default(false)
+  isNewArrival    Boolean  @default(false)
+  isOnSale        Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([category])
+  @@index([isBestSeller])
+  @@index([isNewArrival])
+  @@index([isOnSale])
 }
