@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Product } from "../../_components/types";
+import { Button } from "@/components/ui/button";
 import {
   FavouriteIcon,
   MinusSignIcon,
@@ -75,27 +76,33 @@ export default function ProductActions({ product }: ProductActionsProps) {
     <div className="flex flex-col gap-4">
       <div className="flex flex-wrap items-center gap-3">
         <div className="flex items-center overflow-hidden rounded-full border border-stone-200 bg-white">
-          <button
+          <Button
             type="button"
+            variant="ghost"
+            size="icon"
             onClick={decreaseQuantity}
-            className="flex h-11 w-11 items-center justify-center text-stone-700 transition hover:bg-stone-100 active:scale-95 cursor-pointer"
+            tooltip="Decrease quantity"
             aria-label="Decrease quantity"
+            className="size-11 rounded-none text-stone-700 hover:bg-stone-100 active:scale-95"
           >
             <MinusSignIcon size={20} />
-          </button>
+          </Button>
 
-          <span className="flex h-11 min-w-10 items-center justify-center text-sm font-semibold text-stone-900">
+          <span className="flex h-11 min-w-10 items-center justify-center text-sm font-semibold text-stone-900 select-none">
             {quantity}
           </span>
 
-          <button
+          <Button
             type="button"
+            variant="ghost"
+            size="icon"
             onClick={increaseQuantity}
-            className="flex h-11 w-11 items-center justify-center text-stone-700 transition hover:bg-stone-100 active:scale-95 cursor-pointer"
+            tooltip="Increase quantity"
             aria-label="Increase quantity"
+            className="size-11 rounded-none text-stone-700 hover:bg-stone-100 active:scale-95"
           >
             <PlusSignIcon size={20} />
-          </button>
+          </Button>
         </div>
 
         <button
@@ -108,21 +115,24 @@ export default function ProductActions({ product }: ProductActionsProps) {
           {addedToCart ? "Added ✓" : product.inStock ? "Add to Cart" : "Out of Stock"}
         </button>
 
-        <button
+        <Button
           type="button"
+          variant="outline"
+          size="icon"
           onClick={toggleWishlist}
-          className={`flex h-11 w-11 items-center justify-center rounded-full border transition active:scale-95 cursor-pointer ${
-            liked
-              ? "border-emerald-800 bg-emerald-50 text-emerald-800"
-              : "border-stone-200 bg-white text-stone-700 hover:border-emerald-700"
-          }`}
+          tooltip={liked ? "Remove from wishlist" : "Add to wishlist"}
           aria-label={liked ? "Remove from wishlist" : "Add to wishlist"}
+          className={`size-11 rounded-full transition active:scale-95 ${
+            liked
+              ? "border-emerald-800 bg-emerald-50 text-emerald-800 hover:bg-emerald-100"
+              : "border-stone-200 bg-white text-stone-700 hover:border-emerald-700 hover:bg-stone-50"
+          }`}
         >
           <FavouriteIcon
             size={20}
             className={liked ? "fill-current" : ""}
           />
-        </button>
+        </Button>
       </div>
 
       <button

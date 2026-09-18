@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Product } from "../../_components/types";
+import { Button } from "@/components/ui/button";
 import {
   ArrowLeft01Icon,
   ArrowRight01Icon,
@@ -49,33 +50,42 @@ export default function ProductGallery({ product }: ProductGalleryProps) {
 
         {productImages.length > 1 && (
           <>
-            <button
+            <Button
               type="button"
+              variant="ghost"
+              size="icon"
               onClick={previousImage}
-              className="absolute left-4 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 shadow-md transition hover:scale-105 cursor-pointer"
+              tooltip="Previous image"
               aria-label="Previous image"
+              className="absolute left-4 top-1/2 z-10 size-11 -translate-y-1/2 rounded-full bg-white/90 text-stone-800 shadow-md transition hover:scale-105 hover:bg-white"
             >
               <ArrowLeft01Icon size={22} />
-            </button>
+            </Button>
 
-            <button
+            <Button
               type="button"
+              variant="ghost"
+              size="icon"
               onClick={nextImage}
-              className="absolute right-4 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 shadow-md transition hover:scale-105 cursor-pointer"
+              tooltip="Next image"
               aria-label="Next image"
+              className="absolute right-4 top-1/2 z-10 size-11 -translate-y-1/2 rounded-full bg-white/90 text-stone-800 shadow-md transition hover:scale-105 hover:bg-white"
             >
               <ArrowRight01Icon size={22} />
-            </button>
+            </Button>
           </>
         )}
 
-        <button
+        <Button
           type="button"
-          className="absolute right-4 top-4 z-10 flex h-11 w-11 items-center justify-center rounded-full bg-white/90 shadow-md transition hover:scale-105 cursor-pointer"
+          variant="ghost"
+          size="icon"
+          tooltip="Add to wishlist"
           aria-label="Add to wishlist"
+          className="absolute right-4 top-4 z-10 size-11 rounded-full bg-white/90 text-stone-800 shadow-md transition hover:scale-105 hover:bg-white"
         >
           <FavouriteIcon size={22} />
-        </button>
+        </Button>
       </div>
 
       {productImages.length > 1 && (
