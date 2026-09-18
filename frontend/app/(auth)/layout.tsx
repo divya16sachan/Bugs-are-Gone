@@ -1,7 +1,7 @@
 import Link from "next/link";
+import Image from "next/image";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
-  ShoppingBag03Icon,
   DeliveryTruck01Icon,
   SecurityLockIcon,
   Tag01Icon,
@@ -24,14 +24,20 @@ export default function AuthLayout({
     <div className="grid min-h-screen lg:grid-cols-2">
       {/* Brand panel — hidden on mobile */}
       <aside className="relative hidden flex-col justify-between overflow-hidden bg-gradient-to-br from-primary to-primary/80 p-10 text-primary-foreground lg:flex">
-        <Link href="/" className="flex items-center gap-2 text-lg font-semibold">
-          <HugeiconsIcon icon={ShoppingBag03Icon} size={26} />
-          <span>YourShop</span>
+        <Link href="/" className="flex items-center gap-2.5 text-lg font-semibold">
+          <Image
+            src="/logo.svg"
+            alt="Beauty Shop"
+            width={32}
+            height={32}
+            className="size-8 rounded-full object-cover shrink-0 shadow-sm"
+          />
+          <span className="font-serif tracking-tight">Beauty Shop</span>
         </Link>
 
         <div className="space-y-6">
-          <h1 className="max-w-md text-3xl font-bold leading-tight">
-            Everything you love, delivered to your door.
+          <h1 className="max-w-md text-3xl font-bold leading-tight font-serif">
+            Pure botanical beauty, crafted for your natural glow.
           </h1>
           <ul className="space-y-3">
             {perks.map((p) => (
@@ -46,7 +52,7 @@ export default function AuthLayout({
         </div>
 
         <p className="text-xs text-primary-foreground/70">
-          &copy; {new Date().getFullYear()} YourShop. All rights reserved.
+          &copy; {new Date().getFullYear()} Beauty Shop. All rights reserved.
         </p>
       </aside>
 
@@ -55,10 +61,16 @@ export default function AuthLayout({
         {/* Mobile-only logo */}
         <Link
           href="/"
-          className="mb-8 flex items-center gap-2 text-lg font-semibold lg:hidden"
+          className="mb-8 flex items-center gap-2.5 text-lg font-semibold lg:hidden"
         >
-          <HugeiconsIcon icon={ShoppingBag03Icon} size={24} className="text-primary" />
-          <span>YourShop</span>
+          <Image
+            src="/logo.svg"
+            alt="Beauty Shop"
+            width={32}
+            height={32}
+            className="size-8 rounded-full object-cover shrink-0 shadow-sm"
+          />
+          <span className="font-serif tracking-tight">Beauty Shop</span>
         </Link>
         <div className="w-full max-w-sm">{children}</div>
       </main>

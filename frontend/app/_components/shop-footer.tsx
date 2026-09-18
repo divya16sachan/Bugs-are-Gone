@@ -1,12 +1,12 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
-  Leaf01Icon,
   Facebook01Icon,
   TwitterIcon,
   InstagramIcon,
@@ -20,9 +20,13 @@ export function ShopFooter() {
         {/* Col 1: Brand Info */}
         <div className={cn("space-y-4 md:col-span-1")}>
           <div className={cn("flex items-center gap-2.5")}>
-            <div className={cn("size-8 rounded-full bg-white text-emerald-950 flex items-center justify-center")}>
-              <HugeiconsIcon icon={Leaf01Icon} className={cn("size-5")} />
-            </div>
+            <Image
+              src="/logo.svg"
+              alt="Beauty Shop"
+              width={32}
+              height={32}
+              className="size-8 rounded-full object-cover shrink-0 shadow-sm"
+            />
             <span className={cn("font-serif text-xl font-bold tracking-tight text-white")}>
               Beauty Shop<span className={cn("text-emerald-400")}>.</span>
             </span>

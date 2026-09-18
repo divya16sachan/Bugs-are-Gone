@@ -24,6 +24,13 @@ export const metadata: Metadata = {
   },
   description:
     "Explore our curated collection of luxury botanical serums, moisturizers, makeup, and organic skincare essentials.",
+  icons: {
+    icon: [
+      { url: "/logo.svg", type: "image/svg+xml" },
+    ],
+    shortcut: "/logo.svg",
+    apple: "/logo.svg",
+  },
 };
 
 export default function RootLayout({
@@ -34,6 +41,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        <link rel="icon" href="/logo.svg" type="image/svg+xml" />
         <link rel="preconnect" href="https://images.unsplash.com" />
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
       </head>

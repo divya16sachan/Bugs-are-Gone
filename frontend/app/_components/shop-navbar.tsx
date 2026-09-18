@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,7 +14,6 @@ import { Badge } from "@/components/ui/badge";
 import { useSession, useLogout } from "@/features/auth/hooks";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
-  Leaf01Icon,
   Search01Icon,
   FavouriteIcon,
   ShoppingBag01Icon,
@@ -42,13 +42,14 @@ export function ShopNavbar() {
         {/* Brand Logo & Nav Links */}
         <div className="flex items-center gap-6">
           <Link href="/" className={cn("flex items-center gap-2.5 group")}>
-            <div
-              className={cn(
-                "size-9 rounded-full bg-emerald-950 flex items-center justify-center text-emerald-300 transition-transform group-hover:scale-105"
-              )}
-            >
-              <HugeiconsIcon icon={Leaf01Icon} className={cn("size-5")} />
-            </div>
+            <Image
+              src="/logo.svg"
+              alt="Beauty Shop"
+              width={36}
+              height={36}
+              className="size-9 rounded-full object-cover transition-transform group-hover:scale-105 shadow-sm shrink-0"
+              priority
+            />
             <span className={cn("font-serif text-xl font-bold tracking-tight text-foreground")}>
               Beauty Shop<span className={cn("text-emerald-700")}>.</span>
             </span>
