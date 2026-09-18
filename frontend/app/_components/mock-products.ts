@@ -3,7 +3,6 @@ import { Product } from "./types";
 export const MOCK_PRODUCTS: Product[] = [
   {
     id: "prod-1",
-    slug: "silksculpt-serum",
     title: "SilkSculpt Serum",
     category: "Skin Care",
     skinTypes: ["Combination", "Dry", "Normal"],
@@ -22,7 +21,6 @@ export const MOCK_PRODUCTS: Product[] = [
   },
   {
     id: "prod-2",
-    slug: "silkskin-serum",
     title: "SilkSkin Serum",
     category: "Skin Care",
     skinTypes: ["Sensitive", "Dry", "Normal"],
@@ -41,7 +39,6 @@ export const MOCK_PRODUCTS: Product[] = [
   },
   {
     id: "prod-3",
-    slug: "argan-glow",
     title: "Argan Glow",
     category: "Hair Care",
     skinTypes: ["Normal", "Dry"],
@@ -60,7 +57,6 @@ export const MOCK_PRODUCTS: Product[] = [
   },
   {
     id: "prod-4",
-    slug: "nephrolepis-exaltata",
     title: "Nephrolepis exaltata",
     category: "Body Care",
     skinTypes: ["Sensitive", "Normal", "Dry"],
@@ -79,7 +75,6 @@ export const MOCK_PRODUCTS: Product[] = [
   },
   {
     id: "prod-5",
-    slug: "smooth-foundation",
     title: "Smooth Foundation",
     category: "Makeup",
     skinTypes: ["Combination", "Oily", "Normal"],
@@ -98,7 +93,6 @@ export const MOCK_PRODUCTS: Product[] = [
   },
   {
     id: "prod-6",
-    slug: "smooth-body-cream",
     title: "Smooth Body Cream",
     category: "Body Care",
     skinTypes: ["Dry", "Sensitive", "Normal"],
@@ -117,7 +111,6 @@ export const MOCK_PRODUCTS: Product[] = [
   },
   {
     id: "prod-7",
-    slug: "aquaaura-wellness",
     title: "AquaAura Wellness",
     category: "Body Care",
     skinTypes: ["Combination", "Dry", "Sensitive"],
@@ -136,7 +129,6 @@ export const MOCK_PRODUCTS: Product[] = [
   },
   {
     id: "prod-8",
-    slug: "velvet-rose",
     title: "Velvet Rose",
     category: "Makeup",
     skinTypes: ["Normal", "Sensitive"],
@@ -155,7 +147,6 @@ export const MOCK_PRODUCTS: Product[] = [
   },
   {
     id: "prod-9",
-    slug: "herbal-haven",
     title: "Herbal Haven",
     category: "Body Care",
     skinTypes: ["Oily", "Combination", "Normal"],
@@ -174,7 +165,6 @@ export const MOCK_PRODUCTS: Product[] = [
   },
   {
     id: "prod-10",
-    slug: "essence-body-gel",
     title: "Essence Body Gel",
     category: "Body Care",
     skinTypes: ["Normal", "Sensitive", "Dry"],
@@ -193,7 +183,6 @@ export const MOCK_PRODUCTS: Product[] = [
   },
   {
     id: "prod-11",
-    slug: "hydraluxe-serum",
     title: "HydraLuxe Serum",
     category: "Skin Care",
     skinTypes: ["Dry", "Combination", "Sensitive"],
@@ -212,7 +201,6 @@ export const MOCK_PRODUCTS: Product[] = [
   },
   {
     id: "prod-12",
-    slug: "oceanmist-moisturizer",
     title: "OceanMist Moisturizer",
     category: "Skin Care",
     skinTypes: ["Normal", "Combination", "Oily"],
@@ -231,7 +219,6 @@ export const MOCK_PRODUCTS: Product[] = [
   },
   {
     id: "prod-13",
-    slug: "amber-botanica-parfum",
     title: "Amber Botanica Parfum",
     category: "Fragrances",
     skinTypes: ["Normal"],
@@ -250,7 +237,6 @@ export const MOCK_PRODUCTS: Product[] = [
   },
   {
     id: "prod-14",
-    slug: "botanical-nail-elixir",
     title: "Botanical Nail Elixir",
     category: "Nail Care",
     skinTypes: ["Normal", "Dry"],
@@ -269,7 +255,6 @@ export const MOCK_PRODUCTS: Product[] = [
   },
   {
     id: "prod-15",
-    slug: "glow-complexion-blush",
     title: "Glow Complexion Blush",
     category: "Makeup",
     skinTypes: ["Normal", "Combination"],

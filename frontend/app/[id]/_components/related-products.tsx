@@ -33,7 +33,7 @@ export default function RelatedProducts({ currentProduct }: RelatedProductsProps
         {related.map((product) => (
           <article key={product.id} className="group relative">
             <div className="relative aspect-square overflow-hidden rounded-2xl bg-stone-100">
-              <Link href={`/${product.slug}`} className="block h-full w-full">
+              <Link href={`/${product.id}`} className="block h-full w-full">
                 <Image
                   src={product.imageUrl}
                   alt={product.title}
@@ -60,7 +60,7 @@ export default function RelatedProducts({ currentProduct }: RelatedProductsProps
 
               <h3 className="mt-1 text-sm font-semibold text-stone-900 line-clamp-1">
                 <Link
-                  href={`/${product.slug}`}
+                  href={`/${product.id}`}
                   className="hover:text-emerald-800 transition-colors"
                 >
                   {product.title}
