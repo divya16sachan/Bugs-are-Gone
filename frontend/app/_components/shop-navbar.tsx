@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
   Leaf01Icon,
@@ -30,58 +31,62 @@ export function ShopNavbar() {
         </Link>
 
         {/* Right Actions */}
-        <div className={cn("flex items-center gap-3 sm:gap-4")}>
-          <button
+        <div className={cn("flex items-center gap-1 sm:gap-2")}>
+          <Button
             type="button"
+            variant="ghost"
+            size="icon"
+            tooltip="Search products"
             aria-label="Search products"
-            className={cn(
-              "p-2 text-foreground hover:text-emerald-800 transition-colors rounded-full hover:bg-muted cursor-pointer"
-            )}
+            className={cn("rounded-full text-foreground hover:text-emerald-800 hover:bg-muted")}
           >
             <HugeiconsIcon icon={Search01Icon} className={cn("size-5")} />
-          </button>
+          </Button>
 
-          <button
+          <Button
             type="button"
+            variant="ghost"
+            size="icon"
+            tooltip="Wishlist"
             aria-label="Wishlist"
-            className={cn(
-              "p-2 text-foreground hover:text-emerald-800 transition-colors rounded-full hover:bg-muted relative cursor-pointer"
-            )}
+            className={cn("rounded-full text-foreground hover:text-emerald-800 hover:bg-muted relative")}
           >
             <HugeiconsIcon icon={FavouriteIcon} className={cn("size-5")} />
             <span
               className={cn(
-                "absolute top-1 right-1 size-2 rounded-full bg-emerald-700 ring-2 ring-background"
+                "absolute top-1.5 right-1.5 size-2 rounded-full bg-emerald-700 ring-2 ring-background"
               )}
             />
-          </button>
+          </Button>
 
-          <button
+          <Button
             type="button"
+            variant="ghost"
+            size="icon"
+            tooltip="Shopping Cart"
             aria-label="Shopping Cart"
-            className={cn(
-              "p-2 text-foreground hover:text-emerald-800 transition-colors rounded-full hover:bg-muted relative cursor-pointer"
-            )}
+            className={cn("rounded-full text-foreground hover:text-emerald-800 hover:bg-muted relative")}
           >
             <HugeiconsIcon icon={ShoppingBag01Icon} className={cn("size-5")} />
             <span
               className={cn(
-                "absolute -top-0.5 -right-0.5 size-4 rounded-full bg-emerald-900 text-white text-xs font-semibold flex items-center justify-center leading-none"
+                "absolute 0.5 top-0.5 right-0.5 size-4 rounded-full bg-emerald-900 text-white text-[10px] font-semibold flex items-center justify-center leading-none"
               )}
             >
               3
             </span>
-          </button>
+          </Button>
 
-          <button
+          <Button
             type="button"
+            variant="ghost"
+            size="icon"
+            tooltip="User Account"
             aria-label="User Account"
-            className={cn(
-              "p-2 text-foreground hover:text-emerald-800 transition-colors rounded-full hover:bg-muted cursor-pointer"
-            )}
+            className={cn("rounded-full text-foreground hover:text-emerald-800 hover:bg-muted")}
           >
             <HugeiconsIcon icon={UserIcon} className={cn("size-5")} />
-          </button>
+          </Button>
         </div>
       </div>
     </header>

@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
   FavouriteIcon,
@@ -59,9 +60,12 @@ export function ProductCard({
           )}
         >
           {/* Wishlist Button */}
-          <button
+          <Button
             type="button"
+            variant="ghost"
+            size="icon"
             onClick={() => setIsWishlisted(!isWishlisted)}
+            tooltip={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
             aria-label={
               isWishlisted ? "Remove from wishlist" : "Add to wishlist"
             }
@@ -76,31 +80,37 @@ export function ProductCard({
               icon={FavouriteIcon}
               className={cn("size-4", isWishlisted && "fill-current")}
             />
-          </button>
+          </Button>
 
           {/* Quick View Button */}
-          <button
+          <Button
             type="button"
+            variant="ghost"
+            size="icon"
             onClick={() => onQuickView?.(product)}
+            tooltip="Quick view"
             aria-label="Quick view product"
             className={cn(
               "size-8 rounded-full bg-white/90 dark:bg-zinc-900/90 backdrop-blur-xs flex items-center justify-center text-zinc-700 dark:text-zinc-200 shadow-sm transition-all hover:scale-110 hover:text-emerald-900",
             )}
           >
             <HugeiconsIcon icon={Maximize01Icon} className={cn("size-4")} />
-          </button>
+          </Button>
 
           {/* Add to Cart Button */}
-          <button
+          <Button
             type="button"
+            variant="ghost"
+            size="icon"
             onClick={() => onAddToCart?.(product)}
+            tooltip="Add to cart"
             aria-label="Add to cart"
             className={cn(
               "size-8 rounded-full bg-white/90 dark:bg-zinc-900/90 backdrop-blur-xs flex items-center justify-center text-zinc-700 dark:text-zinc-200 shadow-sm transition-all hover:scale-110 hover:bg-emerald-950 hover:text-white",
             )}
           >
             <HugeiconsIcon icon={ShoppingBag01Icon} className={cn("size-4")} />
-          </button>
+          </Button>
         </div>
 
         {/* Image */}

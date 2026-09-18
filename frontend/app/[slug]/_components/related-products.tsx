@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Product } from "../../_components/types";
 import { MOCK_PRODUCTS } from "../../_components/mock-products";
+import { Button } from "@/components/ui/button";
 import { FavouriteIcon } from "./icons";
 
 interface RelatedProductsProps {
@@ -42,13 +43,16 @@ export default function RelatedProducts({ currentProduct }: RelatedProductsProps
                 />
               </Link>
 
-              <button
+              <Button
                 type="button"
-                className="absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 shadow-sm transition hover:scale-105 cursor-pointer"
+                variant="ghost"
+                size="icon"
+                tooltip="Add to wishlist"
                 aria-label={`Add ${product.title} to wishlist`}
+                className="absolute right-3 top-3 z-10 size-9 rounded-full bg-white/90 text-stone-800 shadow-sm transition hover:scale-105 hover:bg-white"
               >
                 <FavouriteIcon size={18} />
-              </button>
+              </Button>
             </div>
 
             <div className="pt-3">

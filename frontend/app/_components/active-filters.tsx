@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import TooltipWrapper from "@/components/tooltip-wrapper";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Cancel01Icon } from "@hugeicons/core-free-icons";
 import { ProductFilters, Category, SkinType, Promotion, Availability } from "./types";
@@ -110,14 +111,16 @@ export function ActiveFilters({
           )}
         >
           Price : ${filters.priceRange[0].toFixed(2)} - ${filters.priceRange[1].toFixed(2)}
-          <button
-            type="button"
-            onClick={removePrice}
-            className={cn("p-0.5 hover:text-emerald-200 transition-colors")}
-            aria-label="Remove price filter"
-          >
-            <HugeiconsIcon icon={Cancel01Icon} className={cn("size-3")} />
-          </button>
+          <TooltipWrapper message="Remove price filter">
+            <button
+              type="button"
+              onClick={removePrice}
+              className={cn("p-0.5 hover:text-emerald-200 transition-colors cursor-pointer")}
+              aria-label="Remove price filter"
+            >
+              <HugeiconsIcon icon={Cancel01Icon} className={cn("size-3")} />
+            </button>
+          </TooltipWrapper>
         </span>
       )}
 
@@ -130,14 +133,16 @@ export function ActiveFilters({
           )}
         >
           {promo}
-          <button
-            type="button"
-            onClick={() => removePromotion(promo)}
-            className={cn("p-0.5 hover:text-emerald-200 transition-colors")}
-            aria-label={`Remove ${promo} filter`}
-          >
-            <HugeiconsIcon icon={Cancel01Icon} className={cn("size-3")} />
-          </button>
+          <TooltipWrapper message={`Remove ${promo} filter`}>
+            <button
+              type="button"
+              onClick={() => removePromotion(promo)}
+              className={cn("p-0.5 hover:text-emerald-200 transition-colors cursor-pointer")}
+              aria-label={`Remove ${promo} filter`}
+            >
+              <HugeiconsIcon icon={Cancel01Icon} className={cn("size-3")} />
+            </button>
+          </TooltipWrapper>
         </span>
       ))}
 
@@ -150,14 +155,16 @@ export function ActiveFilters({
           )}
         >
           {avail}
-          <button
-            type="button"
-            onClick={() => removeAvailability(avail)}
-            className={cn("p-0.5 hover:text-emerald-200 transition-colors")}
-            aria-label={`Remove ${avail} filter`}
-          >
-            <HugeiconsIcon icon={Cancel01Icon} className={cn("size-3")} />
-          </button>
+          <TooltipWrapper message={`Remove ${avail} filter`}>
+            <button
+              type="button"
+              onClick={() => removeAvailability(avail)}
+              className={cn("p-0.5 hover:text-emerald-200 transition-colors cursor-pointer")}
+              aria-label={`Remove ${avail} filter`}
+            >
+              <HugeiconsIcon icon={Cancel01Icon} className={cn("size-3")} />
+            </button>
+          </TooltipWrapper>
         </span>
       ))}
 
@@ -170,14 +177,16 @@ export function ActiveFilters({
           )}
         >
           {cat}
-          <button
-            type="button"
-            onClick={() => removeCategory(cat)}
-            className={cn("p-0.5 hover:text-emerald-200 transition-colors")}
-            aria-label={`Remove ${cat} filter`}
-          >
-            <HugeiconsIcon icon={Cancel01Icon} className={cn("size-3")} />
-          </button>
+          <TooltipWrapper message={`Remove ${cat} filter`}>
+            <button
+              type="button"
+              onClick={() => removeCategory(cat)}
+              className={cn("p-0.5 hover:text-emerald-200 transition-colors cursor-pointer")}
+              aria-label={`Remove ${cat} filter`}
+            >
+              <HugeiconsIcon icon={Cancel01Icon} className={cn("size-3")} />
+            </button>
+          </TooltipWrapper>
         </span>
       ))}
 
@@ -190,14 +199,16 @@ export function ActiveFilters({
           )}
         >
           {st}
-          <button
-            type="button"
-            onClick={() => removeSkinType(st)}
-            className={cn("p-0.5 hover:text-emerald-200 transition-colors")}
-            aria-label={`Remove ${st} filter`}
-          >
-            <HugeiconsIcon icon={Cancel01Icon} className={cn("size-3")} />
-          </button>
+          <TooltipWrapper message={`Remove ${st} filter`}>
+            <button
+              type="button"
+              onClick={() => removeSkinType(st)}
+              className={cn("p-0.5 hover:text-emerald-200 transition-colors cursor-pointer")}
+              aria-label={`Remove ${st} filter`}
+            >
+              <HugeiconsIcon icon={Cancel01Icon} className={cn("size-3")} />
+            </button>
+          </TooltipWrapper>
         </span>
       ))}
 
@@ -209,14 +220,16 @@ export function ActiveFilters({
           )}
         >
           ★ {filters.minRating}+ Star
-          <button
-            type="button"
-            onClick={removeRating}
-            className={cn("p-0.5 hover:text-emerald-200 transition-colors")}
-            aria-label="Remove rating filter"
-          >
-            <HugeiconsIcon icon={Cancel01Icon} className={cn("size-3")} />
-          </button>
+          <TooltipWrapper message="Remove rating filter">
+            <button
+              type="button"
+              onClick={removeRating}
+              className={cn("p-0.5 hover:text-emerald-200 transition-colors cursor-pointer")}
+              aria-label="Remove rating filter"
+            >
+              <HugeiconsIcon icon={Cancel01Icon} className={cn("size-3")} />
+            </button>
+          </TooltipWrapper>
         </span>
       )}
 

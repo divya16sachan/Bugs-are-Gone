@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { MOCK_PRODUCTS } from "../_components/mock-products";
 import { ShopAnnouncement } from "../_components/shop-announcement";
 import { ShopNavbar } from "../_components/shop-navbar";
 import { ShopFooter } from "../_components/shop-footer";
+import { BackButton } from "./_components/back-button";
 import ProductGallery from "./_components/product-gallery";
 import ProductInfo from "./_components/product-info";
 import ProductActions from "./_components/product-actions";
@@ -49,29 +49,12 @@ export default async function ProductDetailPage({ params }: PageProps) {
       <ShopNavbar />
 
       <main className="flex-1">
-        {/* Sticky Breadcrumbs Bar */}
-        <div className="sticky top-20 z-30 w-full border-b border-stone-200/80 bg-stone-50/95 backdrop-blur-md">
-          <div className="mx-auto max-w-7xl px-4 py-3 sm:px-6 lg:px-8">
-            <nav aria-label="Breadcrumbs" className="flex flex-wrap items-center text-xs sm:text-sm text-stone-500">
-              <Link href="/" className="transition hover:text-emerald-800">
-                Home
-              </Link>
-              <span className="mx-2 text-stone-400">/</span>
-              <Link
-                href={`/?category=${encodeURIComponent(product.category)}`}
-                className="transition hover:text-emerald-800"
-              >
-                {product.category}
-              </Link>
-              <span className="mx-2 text-stone-400">/</span>
-              <span className="font-medium text-stone-900 truncate max-w-[200px] sm:max-w-md">
-                {product.title}
-              </span>
-            </nav>
-          </div>
+        {/* Back Button */}
+        <div className="mx-auto max-w-7xl px-4 pt-6 pb-2 sm:px-6 lg:px-8">
+          <BackButton />
         </div>
 
-        <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
           {/* Product Hero Section: Gallery & Info/Actions */}
           <section className="grid gap-10 lg:grid-cols-2 lg:items-start lg:gap-16">
             <ProductGallery product={product} />
