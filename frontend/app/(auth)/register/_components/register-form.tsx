@@ -185,8 +185,6 @@ export function RegisterForm() {
           <Separator className="flex-1" />
         </div>
 
-        <SocialAuthButtons />
-
         <p className="text-center text-xs text-muted-foreground">
           By creating an account you agree to our{" "}
           <a href="/terms" className="underline underline-offset-4 hover:text-foreground">

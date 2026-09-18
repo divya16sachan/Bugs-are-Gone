@@ -13,6 +13,7 @@
     "dev:order": "npm --workspace=order-service run dev",
     "dev:payment": "npm --workspace=payment-service run dev",
     "build": "npm run --workspaces --if-present build",
+    "prisma:generate": "npm run --workspaces --if-present prisma:generate",
     "typecheck": "npm run --workspaces --if-present typecheck",
     "test": "npm run --workspaces --if-present test",
     "smoke-test": "node scripts/smoke_test.js",

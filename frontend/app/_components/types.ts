@@ -60,4 +60,5 @@ export interface ProductsResponse {
   page: number;
   pageSize: number;
   totalPages: number;
+  isMock?: boolean;
 }

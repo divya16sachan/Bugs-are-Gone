@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, ViewTransition } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
@@ -120,16 +120,22 @@ export function ProductCard({
           href={`/${product.id}`}
           className={cn("block w-full h-full relative")}
         >
-          <Image
-            src={product.imageUrl}
-            alt={product.title}
-            fill
-            priority={priority}
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            className={cn(
-              "object-cover object-center transition-transform duration-500 group-hover:scale-105",
-            )}
-          />
+          <ViewTransition
+            name={`product-image-${product.id}`}
+            share="morph"
+            default="none"
+          >
+            <Image
+              src={product.imageUrl}
+              alt={product.title}
+              fill
+              priority={priority}
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              className={cn(
+                "object-cover object-center transition-transform duration-500 group-hover:scale-105",
+              )}
+            />
+          </ViewTransition>
         </Link>
       </div>
 

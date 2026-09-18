@@ -7,6 +7,8 @@ export interface JwtPayload {
   exp?: number;
 }
 
+export type OrderStatus = "PENDING_PAYMENT" | "COMPLETED" | "FAILED";
+
 export interface HealthCheckResult {
   status: "ok" | "degraded" | "down";
   service: string;
@@ -49,15 +51,6 @@ export interface PaymentProcessedEventData {
 export interface PaymentFailedEventData {
   orderId: string;
   userId: string;
-  reason: string;
-  retryCount?: number;
-}
-
-export interface StockReleasedEventData {
-  orderId: string;
-  items: Array<{
-    productId: string;
-    quantity: number;
-  }>;
+  amount?: number;
   reason: string;
 }

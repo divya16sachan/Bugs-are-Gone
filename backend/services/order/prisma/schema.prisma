@@ -1,5 +1,3 @@
-// Order Service Prisma Schema — finalized in Phase 1
-
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -7,16 +5,27 @@ datasource db {
 
 generator client {
   provider = "prisma-client-js"
+  output   = "../src/generated/client"
+}
+
+enum OrderStatus {
+  PENDING_PAYMENT
+  COMPLETED
+  FAILED
 }
 
 model Order {
-  id          String      @id @default(uuid())
-  userId      String
-  status      String      @default("PENDING_PAYMENT")
-  totalAmount Float
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
-  items       OrderItem[]
+  id              String      @id @default(uuid())
+  userId          String
+  status          OrderStatus @default(PENDING_PAYMENT)
+  totalAmount     Float
+  shippingAddress String
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  items           OrderItem[]
+
+  @@index([userId])
+  @@index([status])
 }
 
 model OrderItem {
@@ -25,5 +34,7 @@ model OrderItem {
   productId String
   quantity  Int
   unitPrice Float
-  order     Order    @relation(fields: [orderId], references: [id])
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
 }
