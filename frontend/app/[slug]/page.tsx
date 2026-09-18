@@ -13,12 +13,12 @@ import ProductReviews from "./_components/product-reviews";
 import RelatedProducts from "./_components/related-products";
 
 interface PageProps {
-  params: Promise<{ id: string }>;
+  params: Promise<{ slug: string }>;
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { id } = await params;
-  const product = MOCK_PRODUCTS.find((p) => p.slug === id || p.id === id);
+  const { slug } = await params;
+  const product = MOCK_PRODUCTS.find((p) => p.slug === slug || p.id === slug);
 
   if (!product) {
     return {
@@ -33,8 +33,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function ProductDetailPage({ params }: PageProps) {
-  const { id } = await params;
-  const product = MOCK_PRODUCTS.find((p) => p.slug === id || p.id === id);
+  const { slug } = await params;
+  const product = MOCK_PRODUCTS.find((p) => p.slug === slug || p.id === slug);
 
   if (!product) {
     notFound();
@@ -57,12 +57,8 @@ export default async function ProductDetailPage({ params }: PageProps) {
                 Home
               </Link>
               <span className="mx-2 text-stone-400">/</span>
-              <Link href="/products" className="transition hover:text-emerald-800">
-                Products
-              </Link>
-              <span className="mx-2 text-stone-400">/</span>
               <Link
-                href={`/products?category=${encodeURIComponent(product.category)}`}
+                href={`/?category=${encodeURIComponent(product.category)}`}
                 className="transition hover:text-emerald-800"
               >
                 {product.category}
@@ -76,7 +72,6 @@ export default async function ProductDetailPage({ params }: PageProps) {
         </div>
 
         <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-
           {/* Product Hero Section: Gallery & Info/Actions */}
           <section className="grid gap-10 lg:grid-cols-2 lg:items-start lg:gap-16">
             <ProductGallery product={product} />

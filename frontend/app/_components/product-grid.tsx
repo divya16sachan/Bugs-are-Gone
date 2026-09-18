@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useCallback } from "react";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
@@ -16,24 +17,36 @@ import { MobileFilterDrawer } from "./mobile-filter-drawer";
 import { ProductToolbar } from "./product-toolbar";
 import { ActiveFilters } from "./active-filters";
 import { ProductCard } from "./product-card";
-
-const INITIAL_FILTERS: ProductFilters = {
-  categories: [],
-  skinTypes: [],
-  priceRange: [10, 100],
-  minRating: null,
-  promotions: ["Best Sellers"],
-  availability: ["In Stock"],
-  sortBy: "default",
-  page: 1,
-  pageSize: 12,
-};
+import {
+  parseFiltersFromSearchParams,
+  createSearchParamsFromFilters,
+} from "./filter-url-sync";
+import { EmptyProductSvg } from "./empty-product-state";
 
 export function ProductGrid() {
-  const [filters, setFilters] = useState<ProductFilters>(INITIAL_FILTERS);
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  // Derive filters directly from URL search parameters
+  const filters = useMemo(() => {
+    return parseFiltersFromSearchParams(searchParams);
+  }, [searchParams]);
 
   // TanStack Query hook - strictly no fetch/axios
   const { data, isLoading, isError, error, refetch } = useProducts(filters);
+
+  // Directly update the URL query when filters change
+  const setFilters = useCallback(
+    (updater: ProductFilters | ((prev: ProductFilters) => ProductFilters)) => {
+      const nextFilters =
+        typeof updater === "function" ? updater(filters) : updater;
+      const newParams = createSearchParamsFromFilters(nextFilters);
+      const qs = newParams.toString();
+      router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
+    },
+    [filters, pathname, router]
+  );
 
   const handleSortChange = (sort: SortOption) => {
     setFilters((prev) => ({
@@ -49,6 +62,10 @@ export function ProductGrid() {
       page: newPage,
     }));
     window.scrollTo({ top: 250, behavior: "smooth" });
+  };
+
+  const handleResetFilters = () => {
+    router.replace(pathname, { scroll: false });
   };
 
   const totalPages = data?.totalPages || 1;
@@ -133,15 +150,11 @@ export function ProductGrid() {
           {!isLoading && !isError && data && data.products.length === 0 && (
             <div
               className={cn(
-                "rounded-2xl border border-border bg-card p-12 text-center space-y-4 my-8"
+                "rounded-2xl border border-border bg-card p-12 text-center flex flex-col items-center justify-center space-y-4 my-8"
               )}
             >
-              <div
-                className={cn(
-                  "size-12 rounded-full bg-muted flex items-center justify-center mx-auto text-muted-foreground"
-                )}
-              >
-                <HugeiconsIcon icon={Search01Icon} className={cn("size-6")} />
+              <div className={cn("text-stone-400 dark:text-stone-500 mx-auto transition-colors")}>
+                <EmptyProductSvg width={200} height={183} className="mx-auto" />
               </div>
               <h3 className={cn("text-lg font-semibold text-foreground")}>
                 No products found
@@ -152,8 +165,8 @@ export function ProductGrid() {
               </p>
               <Button
                 variant="outline"
-                onClick={() => setFilters(INITIAL_FILTERS)}
-                className={cn("mt-2")}
+                onClick={handleResetFilters}
+                className={cn("mt-2 cursor-pointer")}
               >
                 Reset Filters
               </Button>
