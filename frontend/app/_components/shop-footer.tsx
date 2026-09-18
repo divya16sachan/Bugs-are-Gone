@@ -52,22 +52,22 @@ export function ShopFooter() {
           <h4 className={cn("text-sm font-semibold text-white")}>Shop Categories</h4>
           <ul className={cn("space-y-2 text-xs text-emerald-200/80")}>
             <li>
-              <Link href="/products?category=Skin+Care" className={cn("hover:text-white transition-colors")}>
+              <Link href="/?category=Skin+Care" className={cn("hover:text-white transition-colors")}>
                 Skin Care
               </Link>
             </li>
             <li>
-              <Link href="/products?category=Makeup" className={cn("hover:text-white transition-colors")}>
+              <Link href="/?category=Makeup" className={cn("hover:text-white transition-colors")}>
                 Makeup Essentials
               </Link>
             </li>
             <li>
-              <Link href="/products?category=Hair+Care" className={cn("hover:text-white transition-colors")}>
+              <Link href="/?category=Hair+Care" className={cn("hover:text-white transition-colors")}>
                 Hair Care
               </Link>
             </li>
             <li>
-              <Link href="/products?category=Body+Care" className={cn("hover:text-white transition-colors")}>
+              <Link href="/?category=Body+Care" className={cn("hover:text-white transition-colors")}>
                 Body &amp; Bath
               </Link>
             </li>

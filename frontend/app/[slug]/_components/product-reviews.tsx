@@ -47,7 +47,7 @@ export default function ProductReviews({ product }: ProductReviewsProps) {
             <span className="text-xl font-semibold text-stone-900">{product.rating.toFixed(1)}</span>
           </div>
 
-          <span className="text-sm text-stone-500">({product.reviewCount} reviews)</span>
+          <span className="text-sm text-stone-500">{product.reviewCount} reviews</span>
         </div>
       </div>
 
