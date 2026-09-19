@@ -1,11 +1,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: SERVICE_NAME-deployment
+  name: user-service-deployment
   namespace: ecom
   labels:
-    app: SERVICE_NAME
-    app.kubernetes.io/name: SERVICE_NAME
+    app: user-service
+    app.kubernetes.io/name: user-service
     app.kubernetes.io/part-of: ecom-sre-platform
 spec:
   replicas: 1
@@ -17,28 +17,31 @@ spec:
       maxUnavailable: 0
   selector:
     matchLabels:
-      app: SERVICE_NAME
+      app: user-service
   template:
     metadata:
       labels:
-        app: SERVICE_NAME
+        app: user-service
       annotations:
         prometheus.io/scrape: "true"
-        prometheus.io/port: "SERVICE_PORT"
+        prometheus.io/port: "3001"
         prometheus.io/path: "/metrics"
     spec:
       containers:
-        - name: SERVICE_NAME
-          image: DOCKERHUB_USER/ecom-SERVICE_NAME:TAG
+        - name: user-service
+          image: ecom-user-service:latest
           imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: SERVICE_PORT
+            - containerPort: 3001
               name: http
           envFrom:
             - configMapRef:
                 name: ecom-config
             - secretRef:
                 name: ecom-secret
+          env:
+            - name: PORT
+              value: "3001"
           resources:
             requests:
               cpu: "100m"
@@ -49,7 +52,7 @@ spec:
           livenessProbe:
             httpGet:
               path: /health
-              port: SERVICE_PORT
+              port: 3001
             initialDelaySeconds: 15
             periodSeconds: 10
             timeoutSeconds: 3
@@ -57,7 +60,7 @@ spec:
           readinessProbe:
             httpGet:
               path: /health
-              port: SERVICE_PORT
+              port: 3001
             initialDelaySeconds: 5
             periodSeconds: 5
             timeoutSeconds: 2
