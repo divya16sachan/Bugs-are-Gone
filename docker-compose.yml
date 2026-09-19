@@ -76,7 +76,7 @@ services:
     container_name: ecom-grafana
     restart: unless-stopped
     ports:
-      - "3010:3000"
+      - "${GRAFANA_PORT:-3010}:3000"
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin
