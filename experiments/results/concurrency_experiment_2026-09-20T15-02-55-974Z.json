@@ -1,0 +1,154 @@
+{
+  "experiment": "concurrency_experiment",
+  "timestamp": "2026-09-20T15:02:55.975Z",
+  "options": {
+    "stages": "1,10,50,100,250,500,1000",
+    "duration": 10,
+    "endpoint": "http://localhost:8080/api/v1/products",
+    "method": "GET",
+    "payload": null,
+    "name": "concurrency_experiment",
+    "outputDir": "experiments/results"
+  },
+  "kneeAnalysis": {
+    "from": 10,
+    "to": 50,
+    "latencyIncrease": "3.9x",
+    "errorRate": "0%"
+  },
+  "stages": [
+    {
+      "concurrency": 1,
+      "durationSeconds": "10.0",
+      "totalRequests": 5252,
+      "successCount": 5252,
+      "errorCount": 0,
+      "clientErrorCount": 0,
+      "rps": 525.1,
+      "errorRatePercent": 0,
+      "latency": {
+        "avg": 1.87,
+        "p50": 1.76,
+        "p90": 2.4,
+        "p95": 2.76,
+        "p99": 3.58,
+        "min": "1.24",
+        "max": "28.22"
+      }
+    },
+    {
+      "concurrency": 10,
+      "durationSeconds": "10.0",
+      "totalRequests": 21944,
+      "successCount": 21944,
+      "errorCount": 0,
+      "clientErrorCount": 0,
+      "rps": 2193.7,
+      "errorRatePercent": 0,
+      "latency": {
+        "avg": 4.52,
+        "p50": 4.24,
+        "p90": 5.74,
+        "p95": 6.6,
+        "p99": 9.33,
+        "min": "2.25",
+        "max": "29.19"
+      }
+    },
+    {
+      "concurrency": 50,
+      "durationSeconds": "10.0",
+      "totalRequests": 26223,
+      "successCount": 26223,
+      "errorCount": 0,
+      "clientErrorCount": 0,
+      "rps": 2618.1,
+      "errorRatePercent": 0,
+      "latency": {
+        "avg": 19.05,
+        "p50": 18.53,
+        "p90": 23.54,
+        "p95": 25.7,
+        "p99": 30.52,
+        "min": "8.18",
+        "max": "70.18"
+      }
+    },
+    {
+      "concurrency": 100,
+      "durationSeconds": "10.0",
+      "totalRequests": 26712,
+      "successCount": 26712,
+      "errorCount": 0,
+      "clientErrorCount": 0,
+      "rps": 2661.4,
+      "errorRatePercent": 0,
+      "latency": {
+        "avg": 37.46,
+        "p50": 35.98,
+        "p90": 46.38,
+        "p95": 50.91,
+        "p99": 64.46,
+        "min": "15.44",
+        "max": "147.94"
+      }
+    },
+    {
+      "concurrency": 250,
+      "durationSeconds": "10.1",
+      "totalRequests": 25887,
+      "successCount": 25887,
+      "errorCount": 0,
+      "clientErrorCount": 0,
+      "rps": 2565.9,
+      "errorRatePercent": 0,
+      "latency": {
+        "avg": 96.81,
+        "p50": 89.91,
+        "p90": 111.68,
+        "p95": 121.31,
+        "p99": 202.93,
+        "min": "3.45",
+        "max": "1058.13"
+      }
+    },
+    {
+      "concurrency": 500,
+      "durationSeconds": "10.1",
+      "totalRequests": 21495,
+      "successCount": 1085,
+      "errorCount": 20410,
+      "clientErrorCount": 0,
+      "rps": 2138.2,
+      "errorRatePercent": 94.95,
+      "latency": {
+        "avg": 251.03,
+        "p50": 141.04,
+        "p90": 475.83,
+        "p95": 567.88,
+        "p99": 758.31,
+        "min": "114.64",
+        "max": "779.08"
+      }
+    },
+    {
+      "concurrency": 1000,
+      "durationSeconds": "10.9",
+      "totalRequests": 11585,
+      "successCount": 0,
+      "errorCount": 11585,
+      "clientErrorCount": 0,
+      "rps": 1060.3,
+      "errorRatePercent": 100,
+      "latency": {
+        "avg": 0,
+        "p50": 0,
+        "p90": 0,
+        "p95": 0,
+        "p99": 0,
+        "min": 0,
+        "max": 0
+      }
+    }
+  ]
+}

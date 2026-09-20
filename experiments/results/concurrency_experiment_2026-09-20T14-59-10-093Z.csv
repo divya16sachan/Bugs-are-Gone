@@ -1,0 +1,2 @@
+concurrency,durationSeconds,totalRequests,rps,p50_ms,p90_ms,p95_ms,p99_ms,errorRatePercent
+25,10.0,23626,2360.5,9.76,13.62,16.25,24.94,0.24

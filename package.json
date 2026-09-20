@@ -8,6 +8,7 @@
     "backend/services/*"
   ],
   "scripts": {
+    "dev:all": "node scripts/run_all_services.mjs",
     "dev:user": "npm --workspace=user-service run dev",
     "dev:catalog": "npm --workspace=catalog-service run dev",
     "dev:order": "npm --workspace=order-service run dev",

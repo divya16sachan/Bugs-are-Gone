@@ -7,7 +7,7 @@
 import http from "http";
 import { execSync } from "child_process";
 
-const BASE_URL = process.env.GATEWAY_URL || "http://localhost:8080";
+const BASE_URL = process.env.GATEWAY_URL || "http://127.0.0.1:8080";
 const CHAOS_PORT = 3002; // Catalog service port
 
 function sleep(ms) {
@@ -43,7 +43,7 @@ function setChaos(data) {
     const payload = JSON.stringify(data);
     const req = http.request(
       {
-        hostname: "localhost",
+        hostname: "127.0.0.1",
         port: CHAOS_PORT,
         path: "/chaos/inject",
         method: "POST",
@@ -67,7 +67,7 @@ function resetChaos() {
   return new Promise((resolve, reject) => {
     const req = http.request(
       {
-        hostname: "localhost",
+        hostname: "127.0.0.1",
         port: CHAOS_PORT,
         path: "/chaos/reset",
         method: "POST",
