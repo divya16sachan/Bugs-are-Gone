@@ -1,11 +1,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: SERVICE_NAME-deployment
+  name: payment-service-deployment
   namespace: ecom
   labels:
-    app: SERVICE_NAME
-    app.kubernetes.io/name: SERVICE_NAME
+    app: payment-service
+    app.kubernetes.io/name: payment-service
     app.kubernetes.io/part-of: ecom-sre-platform
 spec:
   replicas: 1
@@ -17,28 +17,36 @@ spec:
       maxUnavailable: 0
   selector:
     matchLabels:
-      app: SERVICE_NAME
+      app: payment-service
   template:
     metadata:
       labels:
-        app: SERVICE_NAME
+        app: payment-service
       annotations:
         prometheus.io/scrape: "true"
-        prometheus.io/port: "SERVICE_PORT"
+        prometheus.io/port: "3004"
         prometheus.io/path: "/metrics"
     spec:
       containers:
-        - name: SERVICE_NAME
-          image: DOCKERHUB_USER/ecom-SERVICE_NAME:TAG
+        - name: payment-service
+          image: ecom-payment-service:latest
           imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: SERVICE_PORT
+            - containerPort: 3004
               name: http
           envFrom:
             - configMapRef:
                 name: ecom-config
             - secretRef:
                 name: ecom-secret
+          env:
+            - name: PORT
+              value: "3004"
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: ecom-secret
+                  key: DATABASE_URL_PAYMENT
           resources:
             requests:
               cpu: "100m"
@@ -49,7 +57,7 @@ spec:
           livenessProbe:
             httpGet:
               path: /health
-              port: SERVICE_PORT
+              port: 3004
             initialDelaySeconds: 15
             periodSeconds: 10
             timeoutSeconds: 3
@@ -57,7 +65,7 @@ spec:
           readinessProbe:
             httpGet:
               path: /health
-              port: SERVICE_PORT
+              port: 3004
             initialDelaySeconds: 5
             periodSeconds: 5
             timeoutSeconds: 2

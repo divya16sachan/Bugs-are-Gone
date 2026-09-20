@@ -1,10 +1,11 @@
-# TODO: Phase 3 — Kubernetes Service Template
 apiVersion: v1
 kind: Service
 metadata:
   name: SERVICE_NAME-service
+  namespace: ecom
   labels:
     app: SERVICE_NAME
+    app.kubernetes.io/name: SERVICE_NAME
 spec:
   type: ClusterIP
   ports:

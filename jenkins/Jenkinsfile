@@ -1,0 +1,4 @@
+// Jenkinsfile — Person D Platform & Delivery Pipeline
+// Mirror of root Jenkinsfile for CI setups pointing at jenkins/ path
+
+evaluate(new File("${WORKSPACE}/Jenkinsfile"))

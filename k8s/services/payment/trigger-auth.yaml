@@ -1,0 +1,10 @@
+apiVersion: keda.sh/v1alpha1
+kind: TriggerAuthentication
+metadata:
+  name: rabbitmq-trigger-auth
+  namespace: ecom
+spec:
+  secretTargetRef:
+    - parameter: host
+      name: ecom-secret
+      key: RABBITMQ_URL
