@@ -4,6 +4,7 @@ global:
 
 # Placeholder for alert rules in Phase 2
 rule_files:
+  - "/etc/prometheus/rules/alerts.yml"
   - "/etc/prometheus/rules/*.yml"
 
 alerting:
@@ -18,6 +19,17 @@ scrape_configs:
       - targets: ["localhost:9090"]
 
   - job_name: "rabbitmq"
+    scrape_interval: 15s
+    scrape_timeout: 12s
+    static_configs:
+      - targets: ["rabbitmq:15692"]
+
+  - job_name: "rabbitmq-queues"
+    scrape_interval: 15s
+    scrape_timeout: 12s
+    metrics_path: "/metrics/detailed"
+    params:
+      family: ["queue_coarse_metrics"]
     static_configs:
       - targets: ["rabbitmq:15692"]
 
