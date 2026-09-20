@@ -1,0 +1,35 @@
+{
+  "experiment": "concurrency_experiment",
+  "timestamp": "2026-09-20T14:59:10.094Z",
+  "options": {
+    "stages": "25",
+    "duration": 10,
+    "endpoint": "http://localhost:8080/api/v1/products",
+    "method": "GET",
+    "payload": null,
+    "name": "concurrency_experiment",
+    "outputDir": "experiments/results"
+  },
+  "kneeAnalysis": null,
+  "stages": [
+    {
+      "concurrency": 25,
+      "durationSeconds": "10.0",
+      "totalRequests": 23626,
+      "successCount": 23569,
+      "errorCount": 57,
+      "clientErrorCount": 0,
+      "rps": 2360.5,
+      "errorRatePercent": 0.24,
+      "latency": {
+        "avg": 10.53,
+        "p50": 9.76,
+        "p90": 13.62,
+        "p95": 16.25,
+        "p99": 24.94,
+        "min": "1.90",
+        "max": "114.07"
+      }
+    }
+  ]
+}

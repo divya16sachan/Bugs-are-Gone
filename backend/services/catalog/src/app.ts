@@ -50,7 +50,10 @@ export async function buildApp(): Promise<FastifyInstance> {
   healthManager.registerCheck("redis", async () => {
     try {
       const redis = getRedisClient();
-      const ping = await redis.ping();
+      const ping = await Promise.race([
+        redis.ping(),
+        new Promise<string>((_, reject) => setTimeout(() => reject(new Error("Redis ping timeout")), 2000)),
+      ]);
       return { name: "redis", ok: ping === "PONG" };
     } catch (err: any) {
       return { name: "redis", ok: false, details: err.message };

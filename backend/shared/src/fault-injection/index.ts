@@ -51,9 +51,9 @@ export class ChaosManager {
     if (level === "none") return;
 
     let iterations = 0;
-    if (level === "low") iterations = 10000;
-    else if (level === "medium") iterations = 80000;
-    else if (level === "high") iterations = 300000;
+    if (level === "low") iterations = 1000;
+    else if (level === "medium") iterations = 5000;
+    else if (level === "high") iterations = 15000;
 
     // Deterministic CPU burn using cryptographic hashing
     let hash = "chaos-seed";
