@@ -1,0 +1,54 @@
+{
+  "experiment": "concurrency_experiment",
+  "timestamp": "2026-09-20T19:37:28.474Z",
+  "options": {
+    "stages": "1,10",
+    "duration": 2,
+    "endpoint": "http://127.0.0.1:8080/api/v1/products",
+    "method": "GET",
+    "payload": null,
+    "name": "concurrency_experiment",
+    "outputDir": "experiments/results"
+  },
+  "kneeAnalysis": null,
+  "stages": [
+    {
+      "concurrency": 1,
+      "durationSeconds": "2.0",
+      "totalRequests": 784,
+      "successCount": 784,
+      "errorCount": 0,
+      "clientErrorCount": 0,
+      "rps": 391.6,
+      "errorRatePercent": 0,
+      "latency": {
+        "avg": 2.5,
+        "p50": 2.17,
+        "p90": 3.82,
+        "p95": 4.29,
+        "p99": 5.85,
+        "min": "1.63",
+        "max": "13.48"
+      }
+    },
+    {
+      "concurrency": 10,
+      "durationSeconds": "2.0",
+      "totalRequests": 2928,
+      "successCount": 2928,
+      "errorCount": 0,
+      "clientErrorCount": 0,
+      "rps": 1459.6,
+      "errorRatePercent": 0,
+      "latency": {
+        "avg": 6.77,
+        "p50": 6.38,
+        "p90": 9.43,
+        "p95": 10.61,
+        "p99": 13.66,
+        "min": "3.25",
+        "max": "19.82"
+      }
+    }
+  ]
+}

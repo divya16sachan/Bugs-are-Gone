@@ -20,6 +20,6 @@ export const config: AppConfig = {
   nodeEnv: process.env.NODE_ENV || "development",
   logLevel: process.env.LOG_LEVEL || "info",
   jwtSecret: process.env.JWT_SECRET || "super-secret-jwt-key-change-in-production",
-  databaseUrl: process.env.DATABASE_URL || "postgresql://postgres:postgres@localhost:5432/user_db?schema=public",
-  rabbitmqUrl: process.env.RABBITMQ_URL || "amqp://guest:guest@localhost:5672",
+  databaseUrl: process.env.DATABASE_URL || process.env.DATABASE_URL_USER || "postgresql://postgres:postgres@127.0.0.1:5432/user_db?schema=public",
+  rabbitmqUrl: process.env.RABBITMQ_URL || "amqp://guest:guest@127.0.0.1:5672",
 };

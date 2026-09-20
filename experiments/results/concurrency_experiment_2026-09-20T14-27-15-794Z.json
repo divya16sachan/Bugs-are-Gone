@@ -1,0 +1,35 @@
+{
+  "experiment": "concurrency_experiment",
+  "timestamp": "2026-09-20T14:27:15.795Z",
+  "options": {
+    "stages": "1000",
+    "duration": 5,
+    "endpoint": "http://localhost:8080/health",
+    "method": "GET",
+    "payload": null,
+    "name": "concurrency_experiment",
+    "outputDir": "experiments/results"
+  },
+  "kneeAnalysis": null,
+  "stages": [
+    {
+      "concurrency": 1000,
+      "durationSeconds": "5.2",
+      "totalRequests": 17420,
+      "successCount": 17420,
+      "errorCount": 0,
+      "clientErrorCount": 0,
+      "rps": 3342.3,
+      "errorRatePercent": 0,
+      "latency": {
+        "avg": 287.6,
+        "p50": 210.91,
+        "p90": 338.13,
+        "p95": 1184,
+        "p99": 2175.85,
+        "min": "17.72",
+        "max": "2379.72"
+      }
+    }
+  ]
+}
