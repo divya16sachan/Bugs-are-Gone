@@ -1,0 +1,55 @@
+{
+  "timestamp": "2026-09-20T20:11:35.833Z",
+  "options": {
+    "concurrency": 5,
+    "duration": 10,
+    "gatewayUrl": "http://127.0.0.1:8080",
+    "outputDir": "experiments/results"
+  },
+  "summary": {
+    "totalTimeSec": 12.189,
+    "completedJourneys": 6,
+    "failedJourneys": 17,
+    "journeysPerSec": 0.5,
+    "totalApiCalls": 115,
+    "totalRps": 9.4
+  },
+  "services": {
+    "userService": {
+      "success": 46,
+      "errors": 0,
+      "authLatency": {
+        "p50": 186.3,
+        "p95": 439.16,
+        "p99": 439.66
+      }
+    },
+    "catalogService": {
+      "success": 46,
+      "errors": 0,
+      "readLatency": {
+        "p50": 7.7,
+        "p95": 97.44,
+        "p99": 100.37
+      }
+    },
+    "orderService": {
+      "success": 23,
+      "errors": 0,
+      "writeLatency": {
+        "p50": 23.42,
+        "p95": 66.67,
+        "p99": 71.43
+      }
+    },
+    "paymentService": {
+      "settled": 6,
+      "timeouts": 17,
+      "settlementTimeMs": {
+        "p50": 2152,
+        "p95": 2168,
+        "p99": 2168
+      }
+    }
+  }
+}
