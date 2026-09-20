@@ -9,6 +9,9 @@ export function getRedisClient(): Redis {
     redisClient = new Redis(config.redisUrl, {
       maxRetriesPerRequest: 3,
       lazyConnect: false,
+      retryStrategy(times) {
+        return Math.min(times * 100, 3000);
+      },
     });
 
     redisClient.on("error", (err: any) => {

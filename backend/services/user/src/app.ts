@@ -1,6 +1,6 @@
 import Fastify, { FastifyInstance } from "fastify";
 import cors from "@fastify/cors";
-import { createLogger } from "@ecom/shared";
+import { createLogger, createChaosPlugin } from "@ecom/shared";
 import { registerMetricsMiddleware } from "./middleware/metrics.middleware.js";
 import { errorHandler } from "./middleware/errorHandler.js";
 import { healthRoutes, healthManager } from "./health/health.js";
@@ -32,6 +32,9 @@ export async function buildApp(): Promise<FastifyInstance> {
 
   // RED Metrics Middleware & /metrics Route
   await registerMetricsMiddleware(app);
+
+  // Chaos / Fault-Injection Plugin (Person B)
+  await app.register(createChaosPlugin(config.serviceName));
 
   // Register real dependency health checks
   healthManager.registerCheck("database", async () => {
