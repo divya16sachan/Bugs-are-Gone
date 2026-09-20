@@ -1,0 +1,24 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: rabbitmq-service-monitor
+  namespace: monitoring
+  labels:
+    release: prometheus-stack
+    app: rabbitmq
+spec:
+  selector:
+    matchLabels:
+      app: rabbitmq
+  namespaceSelector:
+    matchNames:
+      - default
+      - ecom
+  endpoints:
+    - port: metrics
+      path: /metrics/detailed
+      params:
+        family:
+          - queue_coarse_metrics
+      interval: 15s
+      scrapeTimeout: 12s
