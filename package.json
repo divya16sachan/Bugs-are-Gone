@@ -17,6 +17,10 @@
     "typecheck": "npm run --workspaces --if-present typecheck",
     "test": "npm run --workspaces --if-present test",
     "smoke-test": "node scripts/smoke_test.js",
+    "load:test": "node load/experiment_runner.js",
+    "load:1k": "node load/experiment_runner.js --concurrency 1000 --duration 20",
+    "chaos": "node chaos/chaos_controller.js",
+    "scenario": "node experiments/run_scenario.js",
     "infra:up": "docker compose up -d",
     "infra:down": "docker compose down",
     "infra:logs": "docker compose logs -f"
