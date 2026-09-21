@@ -327,8 +327,20 @@ Defined in [`monitoring/alertmanager/alertmanager.yml`](file:///Users/anushkadav
 - Hierarchical routing:
   - `severity: critical` $\rightarrow$ `critical-receiver` (`http://host.docker.internal:5001/alerts/critical`)
   - `severity: warning` $\rightarrow$ `warning-receiver` (`http://host.docker.internal:5001/alerts/warning`)
+  - `severity: critical|warning` $\rightarrow$ `slack-notifications` (Slack `#sre-alerts` channel)
   - Default catch-all $\rightarrow$ `webhook-receiver` (`http://host.docker.internal:5001/alerts`)
   - `send_resolved: true` enabled on all receivers so teams know when incidents clear.
+
+#### Slack Webhook Notification Integration
+Alertmanager is configured with native Slack incoming webhook support ([`monitoring/alertmanager/alertmanager.yml`](file:///Users/anushkadave/Documents/Bugs-are-Gone/monitoring/alertmanager/alertmanager.yml)) and local webhook forwarding ([`monitoring/alertmanager/webhook_receiver.js`](file:///Users/anushkadave/Documents/Bugs-are-Gone/monitoring/alertmanager/webhook_receiver.js)):
+1. **Alertmanager Native Slack Receiver (`slack-notifications`)**:
+   - Matches all `critical` and `warning` severity alerts (`match_re: severity: "critical|warning"`).
+   - Formats rich Slack notifications with dynamic status badges (`[FIRING:1]` / `[RESOLVED]`), severity tags, service names, and clickable links to the corresponding incident runbook (`<runbook_url>`).
+   - Uses channel `#sre-alerts` with `:rotating_light:` emoji for immediate on-call visibility.
+   - Configurable via `slack_api_url` in `alertmanager.yml` or `SLACK_WEBHOOK_URL` in `.env`.
+2. **Local Webhook Receiver with Slack Proxy**:
+   - `monitoring/alertmanager/webhook_receiver.js` runs on port 5001 to receive HTTP payloads locally during demos and unit tests.
+   - If `SLACK_WEBHOOK_URL` is set in the environment, it additionally constructs Slack Blocks attachments and dispatches live HTTP POST requests directly to Slack.
 
 #### Local Webhook Test Receiver
 Authored [`monitoring/alertmanager/webhook_receiver.js`](file:///Users/anushkadave/Documents/Bugs-are-Gone/monitoring/alertmanager/webhook_receiver.js) to receive Alertmanager POST payloads during live demos, printing alert summaries and exposing `GET /alerts` for audit logs.
