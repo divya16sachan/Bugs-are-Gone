@@ -47,8 +47,13 @@ export function initMetrics(config: MetricsConfig): ServiceMetrics {
   };
 }
 
+import { createTracingPlugin } from "../tracing/index.js";
+
 export function createMetricsPlugin(metrics: ServiceMetrics, serviceName: string): FastifyPluginAsync {
   const plugin: FastifyPluginAsync = async (fastify) => {
+    // Automatically register OpenTelemetry distributed tracing
+    await fastify.register(createTracingPlugin({ serviceName }));
+
     // Record start time on request
     fastify.addHook("onRequest", async (request: FastifyRequest) => {
       (request as any).startTime = process.hrtime();

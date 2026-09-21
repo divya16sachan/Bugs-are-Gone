@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: metrics-stub
+  labels:
+    app: metrics-stub
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: metrics-stub
+  template:
+    metadata:
+      labels:
+        app: metrics-stub
+    spec:
+      containers:
+        - name: metrics-stub
+          image: metrics-stub:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 9000

@@ -19,7 +19,7 @@ export interface ReserveStockResponse {
 }
 
 export class CatalogClient {
-  async reserveStock(orderId: string, items: ReserveItem[]): Promise<ReserveStockResponse> {
+  async reserveStock(orderId: string, items: ReserveItem[], traceparent?: string): Promise<ReserveStockResponse> {
     if (process.env.USE_MOCKS === "true") {
       console.log(`[Mock CatalogClient] Stock reserved for order ${orderId}`);
       return {
@@ -36,9 +36,13 @@ export class CatalogClient {
 
     try {
       const url = `${config.catalogServiceUrl}/api/v1/products/reserve`;
+      const headers: Record<string, string> = { "Content-Type": "application/json" };
+      if (traceparent) {
+        headers["traceparent"] = traceparent;
+      }
       const response = await fetch(url, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers,
         body: JSON.stringify({ orderId, items }),
       });
 
