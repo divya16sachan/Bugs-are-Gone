@@ -224,7 +224,7 @@
         },
         "overrides": []
       },
-      "gridPos": { "h": 7, "w": 12, "x": 0, "y": 19 },
+      "gridPos": { "h": 7, "w": 8, "x": 0, "y": 19 },
       "id": 6,
       "options": {
         "orientation": "auto",
@@ -238,7 +238,7 @@
         {
           "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
           "editorMode": "code",
-          "expr": "(1 - (sum(rate(http_requests_total{status_code=~\"5..\"}[5m])) / sum(rate(http_requests_total[5m])))) * 100 or vector(100)",
+          "expr": "(1 - ((sum(rate(http_requests_total{status_code=~\"5..\"}[5m])) or vector(0)) / (sum(rate(http_requests_total[5m])) > 0 or vector(1)))) * 100",
           "legendFormat": "Availability %",
           "range": true,
           "refId": "A"
@@ -265,7 +265,7 @@
         },
         "overrides": []
       },
-      "gridPos": { "h": 7, "w": 12, "x": 12, "y": 19 },
+      "gridPos": { "h": 7, "w": 8, "x": 8, "y": 19 },
       "id": 7,
       "options": {
         "orientation": "auto",
@@ -281,6 +281,47 @@
           "editorMode": "code",
           "expr": "histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket[5m])) by (le)) or vector(0)",
           "legendFormat": "p95 Latency",
+          "range": true,
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "mappings": [],
+          "max": 100,
+          "min": 80,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "yellow", "value": 90 },
+              { "color": "green", "value": 95 }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 7, "w": 8, "x": 16, "y": 19 },
+      "id": 8,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "title": "Order Fulfillment SLO (Target: >= 95%)",
+      "type": "gauge",
+      "targets": [
+        {
+          "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+          "editorMode": "code",
+          "expr": "((sum(rate(payment_transactions_total{status=\"success\"}[15m])) or sum(rate(orders_created_total[15m]))) / (sum(rate(orders_created_total[15m])) or vector(1))) * 100 or vector(100)",
+          "legendFormat": "Fulfillment %",
           "range": true,
           "refId": "A"
         }

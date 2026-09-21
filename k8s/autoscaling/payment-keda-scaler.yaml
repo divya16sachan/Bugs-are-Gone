@@ -2,7 +2,7 @@ apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
 metadata:
   name: payment-service-scaler
-  namespace: default
+  namespace: ecom
   labels:
     app: payment-service
     role: autoscaling
@@ -44,7 +44,7 @@ apiVersion: keda.sh/v1alpha1
 kind: TriggerAuthentication
 metadata:
   name: rabbitmq-keda-auth
-  namespace: default
+  namespace: ecom
 spec:
   secretTargetRef:
     - parameter: host
