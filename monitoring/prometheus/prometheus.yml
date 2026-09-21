@@ -60,3 +60,9 @@ scrape_configs:
       - targets: ["host.docker.internal:3004"]
         labels:
           service: "payment-service"
+
+  - job_name: "kube-state-metrics"
+    scrape_interval: 5s
+    static_configs:
+      - targets: ["host.docker.internal:8088"]
+
