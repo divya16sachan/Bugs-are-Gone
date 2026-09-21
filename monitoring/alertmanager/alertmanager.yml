@@ -1,5 +1,6 @@
 global:
   resolve_timeout: 5m
+  slack_api_url: "http://host.docker.internal:5001/alerts/slack"
 
 route:
   group_by: ["alertname", "service"]
@@ -15,6 +16,10 @@ route:
     - match:
         severity: warning
       receiver: "warning-receiver"
+      continue: true
+    - match_re:
+        severity: "critical|warning"
+      receiver: "slack-notifications"
       continue: true
 
 receivers:
@@ -32,3 +37,21 @@ receivers:
     webhook_configs:
       - url: "http://host.docker.internal:5001/alerts/warning"
         send_resolved: true
+
+  - name: "slack-notifications"
+    slack_configs:
+      - channel: "#sre-alerts"
+        send_resolved: true
+        icon_emoji: ":rotating_light:"
+        title: |-
+          [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ .CommonLabels.alertname }} ({{ .CommonLabels.severity }})
+        text: >-
+          {{ range .Alerts -}}
+          *Alert:* {{ .Annotations.summary }}{{ if .Labels.severity }} - `{{ .Labels.severity }}`{{ end }}
+          *Description:* {{ .Annotations.description }}
+          *Service:* {{ .Labels.service }}
+          {{ if .Annotations.runbook_url }}*Runbook:* <{{ .Annotations.runbook_url }}|Runbook Link>{{ end }}
+          *Details:*
+            {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
+            {{ end }}
+          {{ end }}
