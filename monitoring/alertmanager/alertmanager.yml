@@ -1,6 +1,5 @@
 global:
   resolve_timeout: 5m
-  slack_api_url: "http://host.docker.internal:5001/alerts/slack"
 
 route:
   group_by: ["alertname", "service"]
@@ -40,7 +39,8 @@ receivers:
 
   - name: "slack-notifications"
     slack_configs:
-      - channel: "#sre-alerts"
+      - api_url: "https://slack.example.com/webhook/YOUR_WORKSPACE_TOKEN"
+        channel: "#all-sre-alertmanager"
         send_resolved: true
         icon_emoji: ":rotating_light:"
         title: |-
@@ -55,3 +55,8 @@ receivers:
             {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
             {{ end }}
           {{ end }}
+
+  - name: "webhook-site"
+    webhook_configs:
+      - url: "https://webhook.site/ddb875bb-a21c-4b6e-a7b3-384905d6cfa5"
+        send_resolved: true
