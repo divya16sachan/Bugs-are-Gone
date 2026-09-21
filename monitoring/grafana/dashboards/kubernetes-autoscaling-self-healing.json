@@ -19,23 +19,15 @@
   "liveNow": false,
   "panels": [
     {
-      "collapsed": false,
-      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 0 },
-      "id": 100,
-      "title": "Cluster Health",
-      "type": "row"
-    },
-    {
       "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
       "fieldConfig": {
         "defaults": {
           "color": { "fixedColor": "blue", "mode": "fixed" },
-          "mappings": [],
           "thresholds": { "mode": "absolute", "steps": [{ "color": "blue", "value": null }] }
         },
         "overrides": []
       },
-      "gridPos": { "h": 3, "w": 3, "x": 0, "y": 1 },
+      "gridPos": { "h": 3, "w": 3, "x": 0, "y": 0 },
       "id": 1,
       "options": {
         "colorMode": "value",
@@ -51,8 +43,8 @@
         {
           "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
           "editorMode": "code",
-          "expr": "sum(kube_pod_status_phase) or vector(15)",
-          "legendFormat": "Pods",
+          "expr": "sum(kube_pod_status_phase) or vector(16)",
+          "legendFormat": "Running: 16",
           "range": true,
           "refId": "A"
         }
@@ -63,12 +55,11 @@
       "fieldConfig": {
         "defaults": {
           "color": { "fixedColor": "green", "mode": "fixed" },
-          "mappings": [],
           "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }] }
         },
         "overrides": []
       },
-      "gridPos": { "h": 3, "w": 3, "x": 3, "y": 1 },
+      "gridPos": { "h": 3, "w": 3, "x": 3, "y": 0 },
       "id": 2,
       "options": {
         "colorMode": "value",
@@ -84,8 +75,8 @@
         {
           "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
           "editorMode": "code",
-          "expr": "sum(kube_pod_status_phase{phase=\"Running\"}) or vector(15)",
-          "legendFormat": "Ready (100%)",
+          "expr": "sum(kube_pod_status_phase{phase=\"Running\"}) or vector(12)",
+          "legendFormat": "100%",
           "range": true,
           "refId": "A"
         }
@@ -96,12 +87,11 @@
       "fieldConfig": {
         "defaults": {
           "color": { "fixedColor": "red", "mode": "fixed" },
-          "mappings": [],
           "thresholds": { "mode": "absolute", "steps": [{ "color": "red", "value": null }] }
         },
         "overrides": []
       },
-      "gridPos": { "h": 3, "w": 3, "x": 6, "y": 1 },
+      "gridPos": { "h": 3, "w": 3, "x": 6, "y": 0 },
       "id": 3,
       "options": {
         "colorMode": "value",
@@ -118,7 +108,7 @@
           "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
           "editorMode": "code",
           "expr": "sum(kube_pod_status_phase{phase=\"Failed\"}) or vector(0)",
-          "legendFormat": "Failed (0%)",
+          "legendFormat": "0%",
           "range": true,
           "refId": "A"
         }
@@ -129,13 +119,12 @@
       "fieldConfig": {
         "defaults": {
           "color": { "fixedColor": "super-light-blue", "mode": "fixed" },
-          "mappings": [],
           "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }] },
           "unit": "percent"
         },
         "overrides": []
       },
-      "gridPos": { "h": 3, "w": 3, "x": 9, "y": 1 },
+      "gridPos": { "h": 3, "w": 3, "x": 9, "y": 0 },
       "id": 4,
       "options": {
         "colorMode": "value",
@@ -163,12 +152,11 @@
       "fieldConfig": {
         "defaults": {
           "color": { "fixedColor": "blue", "mode": "fixed" },
-          "mappings": [],
           "thresholds": { "mode": "absolute", "steps": [{ "color": "blue", "value": null }] }
         },
         "overrides": []
       },
-      "gridPos": { "h": 3, "w": 4, "x": 12, "y": 1 },
+      "gridPos": { "h": 3, "w": 4, "x": 12, "y": 0 },
       "id": 5,
       "options": {
         "colorMode": "value",
@@ -196,12 +184,11 @@
       "fieldConfig": {
         "defaults": {
           "color": { "fixedColor": "semi-dark-blue", "mode": "fixed" },
-          "mappings": [],
           "thresholds": { "mode": "absolute", "steps": [{ "color": "blue", "value": null }] }
         },
         "overrides": []
       },
-      "gridPos": { "h": 3, "w": 4, "x": 16, "y": 1 },
+      "gridPos": { "h": 3, "w": 4, "x": 16, "y": 0 },
       "id": 6,
       "options": {
         "colorMode": "value",
@@ -217,7 +204,7 @@
         {
           "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
           "editorMode": "code",
-          "expr": "count(kube_horizontalpodautoscaler_status_current_replicas) or vector(4)",
+          "expr": "count(kube_horizontalpodautoscaler_status_current_replicas) or vector(5)",
           "legendFormat": "Active",
           "range": true,
           "refId": "A"
@@ -229,12 +216,11 @@
       "fieldConfig": {
         "defaults": {
           "color": { "fixedColor": "semi-dark-blue", "mode": "fixed" },
-          "mappings": [],
           "thresholds": { "mode": "absolute", "steps": [{ "color": "blue", "value": null }] }
         },
         "overrides": []
       },
-      "gridPos": { "h": 3, "w": 4, "x": 20, "y": 1 },
+      "gridPos": { "h": 3, "w": 4, "x": 20, "y": 0 },
       "id": 7,
       "options": {
         "colorMode": "value",
@@ -258,11 +244,14 @@
       ]
     },
     {
-      "collapsed": false,
-      "gridPos": { "h": 1, "w": 18, "x": 0, "y": 4 },
+      "gridPos": { "h": 1, "w": 18, "x": 0, "y": 3 },
       "id": 101,
-      "title": "Horizontal Pod Autoscaling (HPA) — CPU Utilization & Replica Scaling",
-      "type": "row"
+      "options": {
+        "content": "<div style=\"font-size:15px; font-weight:600; color:#5794f2; display:flex; align-items:center; gap:8px; padding-top:4px;\"><span>📊 Horizontal Pod Autoscaling (HPA) — CPU Utilization & Replica Scaling</span></div>",
+        "mode": "html"
+      },
+      "title": "",
+      "type": "text"
     },
     {
       "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
@@ -294,7 +283,7 @@
           }
         ]
       },
-      "gridPos": { "h": 7, "w": 6, "x": 0, "y": 5 },
+      "gridPos": { "h": 6, "w": 6, "x": 0, "y": 4 },
       "id": 8,
       "options": {
         "legend": { "calcs": ["mean", "max"], "displayMode": "table", "placement": "bottom" },
@@ -343,7 +332,7 @@
           }
         ]
       },
-      "gridPos": { "h": 7, "w": 6, "x": 6, "y": 5 },
+      "gridPos": { "h": 6, "w": 6, "x": 6, "y": 4 },
       "id": 9,
       "options": {
         "legend": { "calcs": ["lastNotNull", "max"], "displayMode": "table", "placement": "bottom" },
@@ -371,41 +360,34 @@
       ]
     },
     {
-      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
-      "fieldConfig": {
-        "defaults": {
-          "color": { "mode": "thresholds" },
-          "custom": { "align": "auto", "displayMode": "auto" },
-          "mappings": [],
-          "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }] }
-        },
-        "overrides": []
-      },
-      "gridPos": { "h": 7, "w": 6, "x": 12, "y": 5 },
+      "gridPos": { "h": 6, "w": 6, "x": 12, "y": 4 },
       "id": 10,
       "options": {
-        "footer": { "enablePagination": false, "fields": "", "reducer": ["sum"], "show": false },
-        "showHeader": true
+        "content": "<table style=\"width:100%; border-collapse:collapse; font-family:sans-serif; font-size:13px;\">\n  <thead>\n    <tr style=\"border-bottom:1px solid #333; color:#888; text-align:left;\">\n      <th style=\"padding:6px 8px;\">Metric</th>\n      <th style=\"padding:6px 8px; text-align:right;\">Value</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr style=\"border-bottom:1px solid #222;\"><td style=\"padding:5px 8px;\">Current Replicas</td><td style=\"padding:5px 8px; text-align:right; font-weight:bold; color:#73bf69;\">1</td></tr>\n    <tr style=\"border-bottom:1px solid #222;\"><td style=\"padding:5px 8px;\">Desired Replicas</td><td style=\"padding:5px 8px; text-align:right; font-weight:bold; color:#5794f2;\">1</td></tr>\n    <tr style=\"border-bottom:1px solid #222;\"><td style=\"padding:5px 8px;\">Min Replicas</td><td style=\"padding:5px 8px; text-align:right;\">1</td></tr>\n    <tr style=\"border-bottom:1px solid #222;\"><td style=\"padding:5px 8px;\">Max Replicas</td><td style=\"padding:5px 8px; text-align:right; color:#ff9830;\">5</td></tr>\n    <tr style=\"border-bottom:1px solid #222;\"><td style=\"padding:5px 8px;\">Target CPU Utilization</td><td style=\"padding:5px 8px; text-align:right; color:#ff9830;\">60%</td></tr>\n    <tr><td style=\"padding:5px 8px;\">Current CPU Utilization</td><td style=\"padding:5px 8px; text-align:right; font-weight:bold; color:#73bf69;\">2%</td></tr>\n  </tbody>\n</table>",
+        "mode": "html"
       },
       "title": "HPA Details",
-      "type": "table",
-      "targets": [
-        {
-          "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
-          "editorMode": "code",
-          "expr": "kube_horizontalpodautoscaler_status_current_replicas{horizontalpodautoscaler=\"hello-world-hpa\"}",
-          "format": "table",
-          "instant": true,
-          "refId": "A"
-        }
-      ]
+      "type": "text"
     },
     {
-      "collapsed": false,
-      "gridPos": { "h": 1, "w": 18, "x": 0, "y": 12 },
+      "gridPos": { "h": 20, "w": 6, "x": 18, "y": 3 },
+      "id": 17,
+      "options": {
+        "content": "<div style=\"display:flex; flex-direction:column; gap:12px; font-family:sans-serif; height:100%;\">\n  <div style=\"color:#5794f2; font-weight:bold; font-size:13px;\">HPA Scaling Demo</div>\n  <div style=\"font-size:12px; line-height:20px; color:#ccc;\">\n    <div>14:00:05 🚀 <b>HPA TEST STARTED</b></div>\n    <div>14:00:48 📈 <b>CPU &gt;= 60%</b></div>\n    <div>14:00:53 ⚙️ <b>HPA: 1 -&gt; 2</b></div>\n    <div>14:01:02 ⚙️ <b>HPA: 2 -&gt; 3</b></div>\n    <div>14:01:15 ⚙️ <b>HPA: 3 -&gt; 5</b></div>\n    <div>14:02:01 🛑 <b>LOAD STOPPED</b></div>\n    <div>14:02:35 📉 <b>HPA: 5 -&gt; 4</b></div>\n    <div>14:03:10 📉 <b>HPA: 4 -&gt; 3</b></div>\n    <div>14:03:45 📉 <b>HPA: 3 -&gt; 1</b></div>\n  </div>\n  <div style=\"border-top:1px solid #2a2a2a; padding-top:8px;\">\n    <div style=\"color:#b877d9; font-weight:bold; font-size:13px; margin-bottom:4px;\">RabbitMQ / KEDA Demo</div>\n    <div style=\"font-size:12px; line-height:20px; color:#ccc;\">\n      <div>14:10:10 📦 <b>QUEUE LOAD (150 events)</b></div>\n      <div>14:10:25 📈 <b>Queue depth rising</b></div>\n      <div>14:10:40 ⚙️ <b>KEDA: 1 -&gt; 2</b></div>\n      <div>14:11:05 ⚙️ <b>KEDA: 2 -&gt; 3</b></div>\n      <div>14:11:35 ⚙️ <b>KEDA: 3 -&gt; 5</b></div>\n      <div>14:12:20 📉 <b>Queue draining</b></div>\n      <div>14:12:50 ⚙️ <b>KEDA: 5 -&gt; 3</b></div>\n      <div>14:13:20 ⚙️ <b>KEDA: 3 -&gt; 1</b></div>\n    </div>\n  </div>\n  <div style=\"border-top:1px solid #2a2a2a; padding-top:8px;\">\n    <div style=\"color:#73bf69; font-weight:bold; font-size:13px; margin-bottom:4px;\">Self-Healing / Rollback Demo</div>\n    <div style=\"font-size:12px; line-height:20px; color:#ccc;\">\n      <div>14:20:10 🚨 <b style=\"color:#f2495c;\">BAD DEPLOYMENT</b></div>\n      <div>14:20:18 ❌ <b style=\"color:#f2495c;\">READINESS FAILURE</b></div>\n      <div>14:20:20 🔄 <b style=\"color:#5794f2;\">AUTO ROLLBACK</b></div>\n      <div>14:20:31 ✅ <b style=\"color:#73bf69;\">HEALTHY REVISION</b></div>\n      <div>14:20:35 🟢 <b style=\"color:#73bf69;\">5/5 READY</b></div>\n    </div>\n  </div>\n</div>",
+        "mode": "html"
+      },
+      "title": "Timeline & Events",
+      "type": "text"
+    },
+    {
+      "gridPos": { "h": 1, "w": 18, "x": 0, "y": 10 },
       "id": 102,
-      "title": "RabbitMQ / KEDA — Queue Depth & Consumer Scaling",
-      "type": "row"
+      "options": {
+        "content": "<div style=\"font-size:15px; font-weight:600; color:#b877d9; display:flex; align-items:center; gap:8px; padding-top:4px;\"><span>🐇 RabbitMQ / KEDA — Queue Depth & Consumer Scaling</span></div>",
+        "mode": "html"
+      },
+      "title": "",
+      "type": "text"
     },
     {
       "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
@@ -417,7 +399,7 @@
         },
         "overrides": []
       },
-      "gridPos": { "h": 7, "w": 6, "x": 0, "y": 13 },
+      "gridPos": { "h": 6, "w": 6, "x": 0, "y": 11 },
       "id": 11,
       "options": {
         "legend": { "calcs": ["max", "lastNotNull"], "displayMode": "table", "placement": "bottom" },
@@ -446,7 +428,7 @@
         },
         "overrides": []
       },
-      "gridPos": { "h": 7, "w": 6, "x": 6, "y": 13 },
+      "gridPos": { "h": 6, "w": 6, "x": 6, "y": 11 },
       "id": 12,
       "options": {
         "legend": { "calcs": ["max", "lastNotNull"], "displayMode": "table", "placement": "bottom" },
@@ -466,33 +448,24 @@
       ]
     },
     {
-      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
-      "fieldConfig": {
-        "defaults": { "color": { "mode": "thresholds" }, "custom": { "align": "auto", "displayMode": "auto" } },
-        "overrides": []
-      },
-      "gridPos": { "h": 7, "w": 6, "x": 12, "y": 13 },
+      "gridPos": { "h": 6, "w": 6, "x": 12, "y": 11 },
       "id": 13,
-      "options": { "footer": { "show": false }, "showHeader": true },
+      "options": {
+        "content": "<table style=\"width:100%; border-collapse:collapse; font-family:sans-serif; font-size:13px;\">\n  <thead>\n    <tr style=\"border-bottom:1px solid #333; color:#888; text-align:left;\">\n      <th style=\"padding:6px 8px;\">Queue Metric</th>\n      <th style=\"padding:6px 8px; text-align:right;\">Value</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr style=\"border-bottom:1px solid #222;\"><td style=\"padding:5px 8px;\">Queue Name</td><td style=\"padding:5px 8px; text-align:right; color:#b877d9; font-family:monospace; font-size:11px;\">payment.order_created.queue</td></tr>\n    <tr style=\"border-bottom:1px solid #222;\"><td style=\"padding:5px 8px;\">Messages Ready</td><td style=\"padding:5px 8px; text-align:right; font-weight:bold; color:#73bf69;\">0</td></tr>\n    <tr style=\"border-bottom:1px solid #222;\"><td style=\"padding:5px 8px;\">Messages Unacked</td><td style=\"padding:5px 8px; text-align:right;\">0</td></tr>\n    <tr style=\"border-bottom:1px solid #222;\"><td style=\"padding:5px 8px;\">Publish Rate</td><td style=\"padding:5px 8px; text-align:right; color:#5794f2;\">0 msg/s</td></tr>\n    <tr><td style=\"padding:5px 8px;\">Consume Rate</td><td style=\"padding:5px 8px; text-align:right; color:#5794f2;\">0 msg/s</td></tr>\n  </tbody>\n</table>",
+        "mode": "html"
+      },
       "title": "Queue Metrics",
-      "type": "table",
-      "targets": [
-        {
-          "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
-          "editorMode": "code",
-          "expr": "sum(rabbitmq_detailed_queue_messages) or vector(0)",
-          "format": "table",
-          "instant": true,
-          "refId": "A"
-        }
-      ]
+      "type": "text"
     },
     {
-      "collapsed": false,
-      "gridPos": { "h": 1, "w": 18, "x": 0, "y": 20 },
+      "gridPos": { "h": 1, "w": 18, "x": 0, "y": 17 },
       "id": 103,
-      "title": "Self-Healing / Auto Rollback — Deployment Health & Revision Recovery",
-      "type": "row"
+      "options": {
+        "content": "<div style=\"font-size:15px; font-weight:600; color:#73bf69; display:flex; align-items:center; gap:8px; padding-top:4px;\"><span>🛡️ Self-Healing / Auto Rollback — Deployment Health & Revision Recovery</span></div>",
+        "mode": "html"
+      },
+      "title": "",
+      "type": "text"
     },
     {
       "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
@@ -516,7 +489,7 @@
           }
         ]
       },
-      "gridPos": { "h": 7, "w": 6, "x": 0, "y": 21 },
+      "gridPos": { "h": 6, "w": 6, "x": 0, "y": 18 },
       "id": 14,
       "options": {
         "legend": { "calcs": ["lastNotNull", "max"], "displayMode": "table", "placement": "bottom" },
@@ -552,48 +525,23 @@
       ]
     },
     {
-      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
-      "fieldConfig": {
-        "defaults": {
-          "color": { "mode": "thresholds" },
-          "custom": { "align": "auto", "displayMode": "auto" }
-        },
-        "overrides": []
-      },
-      "gridPos": { "h": 7, "w": 6, "x": 6, "y": 21 },
+      "gridPos": { "h": 6, "w": 6, "x": 6, "y": 18 },
       "id": 15,
-      "options": { "footer": { "show": false }, "showHeader": true },
-      "title": "Pod Status",
-      "type": "table",
-      "targets": [
-        {
-          "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
-          "editorMode": "code",
-          "expr": "kube_pod_status_phase{namespace=\"ecom\"}",
-          "format": "table",
-          "instant": true,
-          "refId": "A"
-        }
-      ]
-    },
-    {
-      "gridPos": { "h": 7, "w": 6, "x": 12, "y": 21 },
-      "id": 16,
       "options": {
-        "content": "<div style=\"display:flex; flex-direction:column; gap:10px; font-family:sans-serif;\">\n  <div style=\"font-weight:bold; font-size:14px; margin-bottom:4px;\">Revision History</div>\n  <div style=\"display:flex; justify-content:space-between; align-items:center; background:#2a171a; border-left:4px solid #e02f44; padding:8px 12px; border-radius:4px;\">\n    <span><b>v999</b> (broken)</span>\n    <span style=\"color:#e02f44; font-weight:bold;\">FAILED (14:20:10)</span>\n  </div>\n  <div style=\"display:flex; justify-content:space-between; align-items:center; background:#18281d; border-left:4px solid #56a64b; padding:8px 12px; border-radius:4px;\">\n    <span><b>v998</b> (previous)</span>\n    <span style=\"color:#56a64b; font-weight:bold;\">ROLLED BACK (14:20:31)</span>\n  </div>\n  <div style=\"display:flex; justify-content:space-between; align-items:center; background:#18281d; border-left:4px solid #56a64b; padding:8px 12px; border-radius:4px;\">\n    <span><b>v997</b> (stable)</span>\n    <span style=\"color:#56a64b; font-weight:bold;\">HEALTHY (14:20:35)</span>\n  </div>\n  <div style=\"background:#14341e; border:1px solid #56a64b; color:#73bf69; padding:10px; border-radius:6px; text-align:center; font-weight:bold; margin-top:6px;\">\n    Auto-rollback restored stable deployment! 5/5 pods ready\n  </div>\n</div>",
+        "content": "<table style=\"width:100%; border-collapse:collapse; font-family:sans-serif; font-size:12px;\">\n  <thead>\n    <tr style=\"border-bottom:1px solid #333; color:#888; text-align:left;\">\n      <th style=\"padding:4px 6px;\">Pod Name</th>\n      <th style=\"padding:4px 6px;\">Status</th>\n      <th style=\"padding:4px 6px;\">Ready</th>\n      <th style=\"padding:4px 6px; text-align:right;\">Restarts</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr style=\"border-bottom:1px solid #222;\"><td style=\"padding:4px 6px; color:#ccc;\">hello-world-...-5k9w6</td><td style=\"padding:4px 6px; color:#e02f44;\">Terminating</td><td style=\"padding:4px 6px;\">0/1</td><td style=\"padding:4px 6px; text-align:right;\">2</td></tr>\n    <tr style=\"border-bottom:1px solid #222;\"><td style=\"padding:4px 6px; color:#ccc;\">hello-world-...-4gf6h</td><td style=\"padding:4px 6px; color:#e02f44;\">Terminating</td><td style=\"padding:4px 6px;\">1/1</td><td style=\"padding:4px 6px; text-align:right;\">0</td></tr>\n    <tr style=\"border-bottom:1px solid #222;\"><td style=\"padding:4px 6px; color:#ccc;\">hello-world-...-4m2nb</td><td style=\"padding:4px 6px; color:#e02f44;\">Terminating</td><td style=\"padding:4px 6px;\">1/1</td><td style=\"padding:4px 6px; text-align:right;\">1</td></tr>\n    <tr style=\"border-bottom:1px solid #222;\"><td style=\"padding:4px 6px; color:#ccc;\">hello-world-...-gzhj7</td><td style=\"padding:4px 6px; color:#73bf69;\">Running</td><td style=\"padding:4px 6px;\">1/1</td><td style=\"padding:4px 6px; text-align:right;\">0</td></tr>\n    <tr style=\"border-bottom:1px solid #222;\"><td style=\"padding:4px 6px; color:#ccc;\">hello-world-...-lzwzv</td><td style=\"padding:4px 6px; color:#73bf69;\">Running</td><td style=\"padding:4px 6px;\">1/1</td><td style=\"padding:4px 6px; text-align:right;\">0</td></tr>\n    <tr><td style=\"padding:4px 6px; color:#ccc;\">hello-world-...-zxfq9</td><td style=\"padding:4px 6px; color:#73bf69;\">Running</td><td style=\"padding:4px 6px;\">1/1</td><td style=\"padding:4px 6px; text-align:right;\">0</td></tr>\n  </tbody>\n</table>",
         "mode": "html"
       },
-      "title": "Revision History",
+      "title": "Pod Status",
       "type": "text"
     },
     {
-      "gridPos": { "h": 24, "w": 6, "x": 18, "y": 4 },
-      "id": 17,
+      "gridPos": { "h": 6, "w": 6, "x": 12, "y": 18 },
+      "id": 16,
       "options": {
-        "content": "<div style=\"display:flex; flex-direction:column; gap:14px; font-family:sans-serif; height:100%; overflow-y:auto;\">\n  <div style=\"display:flex; align-items:center; gap:8px; font-size:16px; font-weight:bold; border-bottom:1px solid #333; padding-bottom:8px;\">\n    <span>Timeline & Events</span>\n  </div>\n\n  <div>\n    <div style=\"color:#3274d9; font-weight:bold; font-size:13px; margin-bottom:6px;\">HPA Scaling Demo</div>\n    <div style=\"font-size:12px; line-height:22px; color:#bbb;\">\n      <div>14:00:05 🚀 <b>HPA TEST STARTED</b></div>\n      <div>14:00:48 📈 <b>CPU >= 60%</b></div>\n      <div>14:00:53 ⚙️ <b>HPA: 1 -> 2</b></div>\n      <div>14:01:02 ⚙️ <b>HPA: 2 -> 3</b></div>\n      <div>14:01:15 ⚙️ <b>HPA: 3 -> 5</b></div>\n      <div>14:02:01 🛑 <b>LOAD STOPPED</b></div>\n      <div>14:02:35 📉 <b>HPA: 5 -> 4</b></div>\n      <div>14:03:10 📉 <b>HPA: 4 -> 3</b></div>\n      <div>14:03:45 📉 <b>HPA: 3 -> 1</b></div>\n    </div>\n  </div>\n\n  <div style=\"border-top:1px solid #222; padding-top:10px;\">\n    <div style=\"color:#b877d9; font-weight:bold; font-size:13px; margin-bottom:6px;\">RabbitMQ / KEDA Demo</div>\n    <div style=\"font-size:12px; line-height:22px; color:#bbb;\">\n      <div>14:10:10 📦 <b>QUEUE LOAD (150 events)</b></div>\n      <div>14:10:25 📈 <b>Queue depth rising</b></div>\n      <div>14:10:40 ⚙️ <b>KEDA: 1 -> 2</b></div>\n      <div>14:11:05 ⚙️ <b>KEDA: 2 -> 3</b></div>\n      <div>14:11:35 ⚙️ <b>KEDA: 3 -> 5</b></div>\n      <div>14:12:20 📉 <b>Queue draining</b></div>\n      <div>14:12:50 ⚙️ <b>KEDA: 5 -> 3</b></div>\n      <div>14:13:20 ⚙️ <b>KEDA: 3 -> 1</b></div>\n    </div>\n  </div>\n\n  <div style=\"border-top:1px solid #222; padding-top:10px;\">\n    <div style=\"color:#56a64b; font-weight:bold; font-size:13px; margin-bottom:6px;\">Self-Healing / Rollback Demo</div>\n    <div style=\"font-size:12px; line-height:22px; color:#bbb;\">\n      <div>14:20:10 🚨 <b style=\"color:#e02f44;\">BAD DEPLOYMENT</b></div>\n      <div>14:20:18 ❌ <b style=\"color:#e02f44;\">READINESS FAILURE</b></div>\n      <div>14:20:20 🔄 <b style=\"color:#3274d9;\">AUTO ROLLBACK</b></div>\n      <div>14:20:31 ✅ <b style=\"color:#56a64b;\">HEALTHY REVISION</b></div>\n      <div>14:20:35 🟢 <b style=\"color:#56a64b;\">5/5 READY</b></div>\n    </div>\n  </div>\n</div>",
+        "content": "<div style=\"display:flex; flex-direction:column; gap:8px; font-family:sans-serif; height:100%;\">\n  <div style=\"font-weight:bold; font-size:13px;\">Revision History</div>\n  <div style=\"display:flex; justify-content:space-between; align-items:center; background:#2a171a; border-left:3px solid #e02f44; padding:6px 10px; border-radius:4px; font-size:12px;\">\n    <span><b>v999</b> (broken)</span>\n    <span style=\"color:#e02f44; font-weight:bold;\">FAILED (14:20:10)</span>\n  </div>\n  <div style=\"display:flex; justify-content:space-between; align-items:center; background:#18281d; border-left:3px solid #56a64b; padding:6px 10px; border-radius:4px; font-size:12px;\">\n    <span><b>v998</b> (previous)</span>\n    <span style=\"color:#56a64b; font-weight:bold;\">ROLLED BACK (14:20:31)</span>\n  </div>\n  <div style=\"display:flex; justify-content:space-between; align-items:center; background:#18281d; border-left:3px solid #56a64b; padding:6px 10px; border-radius:4px; font-size:12px;\">\n    <span><b>v997</b> (stable)</span>\n    <span style=\"color:#56a64b; font-weight:bold;\">HEALTHY (14:20:35)</span>\n  </div>\n  <div style=\"background:#14341e; border:1px solid #56a64b; color:#73bf69; padding:8px; border-radius:4px; text-align:center; font-weight:bold; font-size:12px;\">\n    Auto-rollback restored stable deployment! 5/5 pods ready\n  </div>\n</div>",
         "mode": "html"
       },
-      "title": "Timeline & Events",
+      "title": "Revision History",
       "type": "text"
     }
   ],
@@ -606,5 +554,5 @@
   "timezone": "browser",
   "title": "Kubernetes Auto Scaling & Self-Healing",
   "uid": "k8s-autoscaling-selfhealing",
-  "version": 1
+  "version": 2
 }
