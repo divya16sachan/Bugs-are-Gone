@@ -1,0 +1,52 @@
+groups:
+  - name: ecom-alerts
+    rules:
+      - alert: HighErrorRate
+        expr: sum(rate(http_requests_total{status_code=~"5.."}[5m])) by (service) / sum(rate(http_requests_total[5m])) by (service) > 0.05
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "{{ $labels.service }} error rate above 5%"
+          description: "Service {{ $labels.service }} has a 5xx error rate exceeding 5% over the last 5 minutes."
+          runbook_url: "https://github.com/divya16sachan/Bugs-are-Gone/blob/main/docs/runbooks/high-error-rate.md"
+
+      - alert: HighLatency
+        expr: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket[5m])) by (service, le)) > 1
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "{{ $labels.service }} p95 latency above 1s"
+          description: "Service {{ $labels.service }} has p95 HTTP response duration greater than 1 second."
+          runbook_url: "https://github.com/divya16sachan/Bugs-are-Gone/blob/main/docs/runbooks/high-latency.md"
+
+      - alert: ServiceDown
+        expr: up{job=~".*-service"} == 0
+        for: 30s
+        labels:
+          severity: critical
+        annotations:
+          summary: "{{ $labels.job }} is down"
+          description: "Service instance {{ $labels.job }} has been unreachable for more than 30 seconds."
+          runbook_url: "https://github.com/divya16sachan/Bugs-are-Gone/blob/main/docs/runbooks/service-down.md"
+
+      - alert: QueueBacklog
+        expr: (rabbitmq_queue_messages_ready{queue="payment.order_created.queue"} > 100) or (rabbitmq_queue_messages{queue="payment.order_created.queue"} > 100)
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Queue {{ $labels.queue }} backlog above 100 messages"
+          description: "RabbitMQ queue {{ $labels.queue }} has more than 100 unprocessed messages pending for over 1 minute."
+          runbook_url: "https://github.com/divya16sachan/Bugs-are-Gone/blob/main/docs/runbooks/queue-backlog.md"
+
+      - alert: DeadLetterQueueGrowing
+        expr: rabbitmq_queue_messages_ready{queue="ecommerce.dead_letter_queue"} > 0
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Messages landing in dead-letter queue"
+          description: "RabbitMQ dead-letter queue ecommerce.dead_letter_queue has messages, indicating repeated processing failures."
+          runbook_url: "https://github.com/divya16sachan/Bugs-are-Gone/blob/main/docs/runbooks/dead-letter-queue.md"

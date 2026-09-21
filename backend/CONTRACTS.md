@@ -356,3 +356,19 @@ Allowed status values: `PENDING_PAYMENT`, `COMPLETED`, `FAILED`.
 - **Payment Service:**
   - `payment_transactions_total{status="success|failed"}` (Counter)
   - `payment_queue_consumer_lag_seconds` (Histogram)
+
+### 5.3 RabbitMQ Prometheus Metrics
+Exposed by RabbitMQ Prometheus plugin on `:15692/metrics`:
+- `rabbitmq_queue_messages_ready{queue, vhost}` (Gauge: Count of messages ready for delivery)
+- `rabbitmq_queue_messages_unacknowledged{queue, vhost}` (Gauge: Count of unacknowledged messages delivered to consumers)
+- `rabbitmq_queue_messages{queue, vhost}` (Gauge: Total messages in queue)
+- `rabbitmq_connections` (Gauge: Active client connections)
+- `rabbitmq_channels` (Gauge: Active AMQP channels)
+- `rabbitmq_process_resident_memory_bytes` (Gauge: Memory resident set size)
+
+**Target Queues:**
+- `payment.order_created.queue`
+- `order.payment_processed.queue`
+- `order.payment_failed.queue`
+- `ecommerce.dead_letter_queue`
+

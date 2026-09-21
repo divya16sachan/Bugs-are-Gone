@@ -20,7 +20,7 @@ export function initMetrics(config: MetricsConfig): ServiceMetrics {
   if (config.collectDefaultMetrics !== false) {
     client.collectDefaultMetrics({
       register: registry,
-      prefix: "nodejs_",
+      prefix: "",
       labels: { service: config.serviceName },
     });
   }
