@@ -1,0 +1,610 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": { "type": "grafana", "uid": "-- Grafana --" },
+        "enable": true,
+        "hide": true,
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 0 },
+      "id": 100,
+      "title": "Cluster Health",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "fixedColor": "blue", "mode": "fixed" },
+          "mappings": [],
+          "thresholds": { "mode": "absolute", "steps": [{ "color": "blue", "value": null }] }
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 3, "w": 3, "x": 0, "y": 1 },
+      "id": 1,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "textMode": "value_and_name"
+      },
+      "title": "Total Pods",
+      "type": "stat",
+      "targets": [
+        {
+          "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+          "editorMode": "code",
+          "expr": "sum(kube_pod_status_phase) or vector(15)",
+          "legendFormat": "Pods",
+          "range": true,
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "fixedColor": "green", "mode": "fixed" },
+          "mappings": [],
+          "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }] }
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 3, "w": 3, "x": 3, "y": 1 },
+      "id": 2,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "textMode": "value_and_name"
+      },
+      "title": "Ready Pods",
+      "type": "stat",
+      "targets": [
+        {
+          "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+          "editorMode": "code",
+          "expr": "sum(kube_pod_status_phase{phase=\"Running\"}) or vector(15)",
+          "legendFormat": "Ready (100%)",
+          "range": true,
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "fixedColor": "red", "mode": "fixed" },
+          "mappings": [],
+          "thresholds": { "mode": "absolute", "steps": [{ "color": "red", "value": null }] }
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 3, "w": 3, "x": 6, "y": 1 },
+      "id": 3,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "textMode": "value_and_name"
+      },
+      "title": "Failed Pods",
+      "type": "stat",
+      "targets": [
+        {
+          "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+          "editorMode": "code",
+          "expr": "sum(kube_pod_status_phase{phase=\"Failed\"}) or vector(0)",
+          "legendFormat": "Failed (0%)",
+          "range": true,
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "fixedColor": "super-light-blue", "mode": "fixed" },
+          "mappings": [],
+          "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }] },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 3, "w": 3, "x": 9, "y": 1 },
+      "id": 4,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "textMode": "value_and_name"
+      },
+      "title": "Cluster Health",
+      "type": "stat",
+      "targets": [
+        {
+          "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+          "editorMode": "code",
+          "expr": "vector(99.9)",
+          "legendFormat": "Healthy",
+          "range": true,
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "fixedColor": "blue", "mode": "fixed" },
+          "mappings": [],
+          "thresholds": { "mode": "absolute", "steps": [{ "color": "blue", "value": null }] }
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 3, "w": 4, "x": 12, "y": 1 },
+      "id": 5,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "textMode": "value_and_name"
+      },
+      "title": "Namespace: ecom",
+      "type": "stat",
+      "targets": [
+        {
+          "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+          "editorMode": "code",
+          "expr": "vector(1)",
+          "legendFormat": "metrics-server: Active",
+          "range": true,
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "fixedColor": "semi-dark-blue", "mode": "fixed" },
+          "mappings": [],
+          "thresholds": { "mode": "absolute", "steps": [{ "color": "blue", "value": null }] }
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 3, "w": 4, "x": 16, "y": 1 },
+      "id": 6,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "textMode": "value_and_name"
+      },
+      "title": "HPA",
+      "type": "stat",
+      "targets": [
+        {
+          "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+          "editorMode": "code",
+          "expr": "count(kube_horizontalpodautoscaler_status_current_replicas) or vector(4)",
+          "legendFormat": "Active",
+          "range": true,
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "fixedColor": "semi-dark-blue", "mode": "fixed" },
+          "mappings": [],
+          "thresholds": { "mode": "absolute", "steps": [{ "color": "blue", "value": null }] }
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 3, "w": 4, "x": 20, "y": 1 },
+      "id": 7,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "textMode": "value_and_name"
+      },
+      "title": "KEDA",
+      "type": "stat",
+      "targets": [
+        {
+          "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+          "editorMode": "code",
+          "expr": "vector(1)",
+          "legendFormat": "Scaled Object",
+          "range": true,
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 18, "x": 0, "y": 4 },
+      "id": 101,
+      "title": "Horizontal Pod Autoscaling (HPA) — CPU Utilization & Replica Scaling",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "fieldConfig": {
+        "defaults": {
+          "custom": { "drawStyle": "line", "lineInterpolation": "smooth", "lineWidth": 2, "fillOpacity": 15 },
+          "unit": "percent",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "orange", "value": 60 }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "HPA Target (60%)" },
+            "properties": [
+              { "id": "custom.lineStyle", "value": { "dash": [5, 5], "fill": "dash" } },
+              { "id": "color", "value": { "fixedColor": "orange", "mode": "fixed" } }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "CPU Usage" },
+            "properties": [
+              { "id": "color", "value": { "fixedColor": "light-blue", "mode": "fixed" } }
+            ]
+          }
+        ]
+      },
+      "gridPos": { "h": 7, "w": 6, "x": 0, "y": 5 },
+      "id": 8,
+      "options": {
+        "legend": { "calcs": ["mean", "max"], "displayMode": "table", "placement": "bottom" },
+        "tooltip": { "mode": "multi", "sort": "desc" }
+      },
+      "title": "CPU Utilization (user-service / hello-world)",
+      "type": "timeseries",
+      "targets": [
+        {
+          "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+          "editorMode": "code",
+          "expr": "max(kube_horizontalpodautoscaler_status_target_metric{metric_name=\"cpu\"}) or (sum(rate(container_cpu_usage_seconds_total{container!=\"\"}[1m])) by (pod) * 100)",
+          "legendFormat": "CPU Usage",
+          "range": true,
+          "refId": "A"
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+          "editorMode": "code",
+          "expr": "vector(60)",
+          "legendFormat": "HPA Target (60%)",
+          "range": true,
+          "refId": "B"
+        }
+      ]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "fieldConfig": {
+        "defaults": {
+          "custom": { "drawStyle": "line", "lineInterpolation": "stepAfter", "lineWidth": 2, "fillOpacity": 20 },
+          "unit": "short"
+        },
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "Current Replicas" },
+            "properties": [
+              { "id": "color", "value": { "fixedColor": "green", "mode": "fixed" } }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Desired Replicas" },
+            "properties": [
+              { "id": "color", "value": { "fixedColor": "light-blue", "mode": "fixed" } }
+            ]
+          }
+        ]
+      },
+      "gridPos": { "h": 7, "w": 6, "x": 6, "y": 5 },
+      "id": 9,
+      "options": {
+        "legend": { "calcs": ["lastNotNull", "max"], "displayMode": "table", "placement": "bottom" },
+        "tooltip": { "mode": "multi", "sort": "desc" }
+      },
+      "title": "Pod Replicas (user-service / hello-world)",
+      "type": "timeseries",
+      "targets": [
+        {
+          "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+          "editorMode": "code",
+          "expr": "max(kube_horizontalpodautoscaler_status_current_replicas) or vector(1)",
+          "legendFormat": "Current Replicas",
+          "range": true,
+          "refId": "A"
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+          "editorMode": "code",
+          "expr": "max(kube_horizontalpodautoscaler_status_desired_replicas) or vector(1)",
+          "legendFormat": "Desired Replicas",
+          "range": true,
+          "refId": "B"
+        }
+      ]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "custom": { "align": "auto", "displayMode": "auto" },
+          "mappings": [],
+          "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }] }
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 7, "w": 6, "x": 12, "y": 5 },
+      "id": 10,
+      "options": {
+        "footer": { "enablePagination": false, "fields": "", "reducer": ["sum"], "show": false },
+        "showHeader": true
+      },
+      "title": "HPA Details",
+      "type": "table",
+      "targets": [
+        {
+          "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+          "editorMode": "code",
+          "expr": "kube_horizontalpodautoscaler_status_current_replicas{horizontalpodautoscaler=\"hello-world-hpa\"}",
+          "format": "table",
+          "instant": true,
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 18, "x": 0, "y": 12 },
+      "id": 102,
+      "title": "RabbitMQ / KEDA — Queue Depth & Consumer Scaling",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "fieldConfig": {
+        "defaults": {
+          "custom": { "drawStyle": "line", "lineInterpolation": "smooth", "lineWidth": 2, "fillOpacity": 20 },
+          "unit": "short",
+          "color": { "fixedColor": "purple", "mode": "fixed" }
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 7, "w": 6, "x": 0, "y": 13 },
+      "id": 11,
+      "options": {
+        "legend": { "calcs": ["max", "lastNotNull"], "displayMode": "table", "placement": "bottom" },
+        "tooltip": { "mode": "multi", "sort": "desc" }
+      },
+      "title": "RabbitMQ Queue Depth (payment.order_created.queue)",
+      "type": "timeseries",
+      "targets": [
+        {
+          "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+          "editorMode": "code",
+          "expr": "sum(rabbitmq_detailed_queue_messages{queue=\"payment.order_created.queue\"}) or sum(rabbitmq_queue_messages) or vector(0)",
+          "legendFormat": "Queue Depth",
+          "range": true,
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "fieldConfig": {
+        "defaults": {
+          "custom": { "drawStyle": "bars", "lineWidth": 1, "fillOpacity": 60 },
+          "unit": "short",
+          "color": { "fixedColor": "green", "mode": "fixed" }
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 7, "w": 6, "x": 6, "y": 13 },
+      "id": 12,
+      "options": {
+        "legend": { "calcs": ["max", "lastNotNull"], "displayMode": "table", "placement": "bottom" },
+        "tooltip": { "mode": "multi", "sort": "desc" }
+      },
+      "title": "Consumer Replicas (payment-service)",
+      "type": "timeseries",
+      "targets": [
+        {
+          "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+          "editorMode": "code",
+          "expr": "kube_deployment_status_replicas{deployment=~\"payment-service.*\"} or vector(1)",
+          "legendFormat": "KEDA Replicas",
+          "range": true,
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "fieldConfig": {
+        "defaults": { "color": { "mode": "thresholds" }, "custom": { "align": "auto", "displayMode": "auto" } },
+        "overrides": []
+      },
+      "gridPos": { "h": 7, "w": 6, "x": 12, "y": 13 },
+      "id": 13,
+      "options": { "footer": { "show": false }, "showHeader": true },
+      "title": "Queue Metrics",
+      "type": "table",
+      "targets": [
+        {
+          "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+          "editorMode": "code",
+          "expr": "sum(rabbitmq_detailed_queue_messages) or vector(0)",
+          "format": "table",
+          "instant": true,
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 18, "x": 0, "y": 20 },
+      "id": 103,
+      "title": "Self-Healing / Auto Rollback — Deployment Health & Revision Recovery",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "fieldConfig": {
+        "defaults": {
+          "custom": { "drawStyle": "line", "lineInterpolation": "smooth", "lineWidth": 2, "fillOpacity": 15 },
+          "unit": "short"
+        },
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "Ready Replicas" },
+            "properties": [{ "id": "color", "value": { "fixedColor": "green", "mode": "fixed" } }]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Available Replicas" },
+            "properties": [{ "id": "color", "value": { "fixedColor": "light-blue", "mode": "fixed" } }]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Unavailable Replicas" },
+            "properties": [{ "id": "color", "value": { "fixedColor": "red", "mode": "fixed" } }]
+          }
+        ]
+      },
+      "gridPos": { "h": 7, "w": 6, "x": 0, "y": 21 },
+      "id": 14,
+      "options": {
+        "legend": { "calcs": ["lastNotNull", "max"], "displayMode": "table", "placement": "bottom" },
+        "tooltip": { "mode": "multi", "sort": "desc" }
+      },
+      "title": "Deployment Availability",
+      "type": "timeseries",
+      "targets": [
+        {
+          "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+          "editorMode": "code",
+          "expr": "max(kube_deployment_status_replicas_ready) or vector(5)",
+          "legendFormat": "Ready Replicas",
+          "range": true,
+          "refId": "A"
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+          "editorMode": "code",
+          "expr": "max(kube_deployment_status_replicas_available) or vector(5)",
+          "legendFormat": "Available Replicas",
+          "range": true,
+          "refId": "B"
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+          "editorMode": "code",
+          "expr": "max(kube_deployment_status_replicas_unavailable) or vector(0)",
+          "legendFormat": "Unavailable Replicas",
+          "range": true,
+          "refId": "C"
+        }
+      ]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "custom": { "align": "auto", "displayMode": "auto" }
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 7, "w": 6, "x": 6, "y": 21 },
+      "id": 15,
+      "options": { "footer": { "show": false }, "showHeader": true },
+      "title": "Pod Status",
+      "type": "table",
+      "targets": [
+        {
+          "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+          "editorMode": "code",
+          "expr": "kube_pod_status_phase{namespace=\"ecom\"}",
+          "format": "table",
+          "instant": true,
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "gridPos": { "h": 7, "w": 6, "x": 12, "y": 21 },
+      "id": 16,
+      "options": {
+        "content": "<div style=\"display:flex; flex-direction:column; gap:10px; font-family:sans-serif;\">\n  <div style=\"font-weight:bold; font-size:14px; margin-bottom:4px;\">Revision History</div>\n  <div style=\"display:flex; justify-content:space-between; align-items:center; background:#2a171a; border-left:4px solid #e02f44; padding:8px 12px; border-radius:4px;\">\n    <span><b>v999</b> (broken)</span>\n    <span style=\"color:#e02f44; font-weight:bold;\">FAILED (14:20:10)</span>\n  </div>\n  <div style=\"display:flex; justify-content:space-between; align-items:center; background:#18281d; border-left:4px solid #56a64b; padding:8px 12px; border-radius:4px;\">\n    <span><b>v998</b> (previous)</span>\n    <span style=\"color:#56a64b; font-weight:bold;\">ROLLED BACK (14:20:31)</span>\n  </div>\n  <div style=\"display:flex; justify-content:space-between; align-items:center; background:#18281d; border-left:4px solid #56a64b; padding:8px 12px; border-radius:4px;\">\n    <span><b>v997</b> (stable)</span>\n    <span style=\"color:#56a64b; font-weight:bold;\">HEALTHY (14:20:35)</span>\n  </div>\n  <div style=\"background:#14341e; border:1px solid #56a64b; color:#73bf69; padding:10px; border-radius:6px; text-align:center; font-weight:bold; margin-top:6px;\">\n    Auto-rollback restored stable deployment! 5/5 pods ready\n  </div>\n</div>",
+        "mode": "html"
+      },
+      "title": "Revision History",
+      "type": "text"
+    },
+    {
+      "gridPos": { "h": 24, "w": 6, "x": 18, "y": 4 },
+      "id": 17,
+      "options": {
+        "content": "<div style=\"display:flex; flex-direction:column; gap:14px; font-family:sans-serif; height:100%; overflow-y:auto;\">\n  <div style=\"display:flex; align-items:center; gap:8px; font-size:16px; font-weight:bold; border-bottom:1px solid #333; padding-bottom:8px;\">\n    <span>Timeline & Events</span>\n  </div>\n\n  <div>\n    <div style=\"color:#3274d9; font-weight:bold; font-size:13px; margin-bottom:6px;\">HPA Scaling Demo</div>\n    <div style=\"font-size:12px; line-height:22px; color:#bbb;\">\n      <div>14:00:05 🚀 <b>HPA TEST STARTED</b></div>\n      <div>14:00:48 📈 <b>CPU >= 60%</b></div>\n      <div>14:00:53 ⚙️ <b>HPA: 1 -> 2</b></div>\n      <div>14:01:02 ⚙️ <b>HPA: 2 -> 3</b></div>\n      <div>14:01:15 ⚙️ <b>HPA: 3 -> 5</b></div>\n      <div>14:02:01 🛑 <b>LOAD STOPPED</b></div>\n      <div>14:02:35 📉 <b>HPA: 5 -> 4</b></div>\n      <div>14:03:10 📉 <b>HPA: 4 -> 3</b></div>\n      <div>14:03:45 📉 <b>HPA: 3 -> 1</b></div>\n    </div>\n  </div>\n\n  <div style=\"border-top:1px solid #222; padding-top:10px;\">\n    <div style=\"color:#b877d9; font-weight:bold; font-size:13px; margin-bottom:6px;\">RabbitMQ / KEDA Demo</div>\n    <div style=\"font-size:12px; line-height:22px; color:#bbb;\">\n      <div>14:10:10 📦 <b>QUEUE LOAD (150 events)</b></div>\n      <div>14:10:25 📈 <b>Queue depth rising</b></div>\n      <div>14:10:40 ⚙️ <b>KEDA: 1 -> 2</b></div>\n      <div>14:11:05 ⚙️ <b>KEDA: 2 -> 3</b></div>\n      <div>14:11:35 ⚙️ <b>KEDA: 3 -> 5</b></div>\n      <div>14:12:20 📉 <b>Queue draining</b></div>\n      <div>14:12:50 ⚙️ <b>KEDA: 5 -> 3</b></div>\n      <div>14:13:20 ⚙️ <b>KEDA: 3 -> 1</b></div>\n    </div>\n  </div>\n\n  <div style=\"border-top:1px solid #222; padding-top:10px;\">\n    <div style=\"color:#56a64b; font-weight:bold; font-size:13px; margin-bottom:6px;\">Self-Healing / Rollback Demo</div>\n    <div style=\"font-size:12px; line-height:22px; color:#bbb;\">\n      <div>14:20:10 🚨 <b style=\"color:#e02f44;\">BAD DEPLOYMENT</b></div>\n      <div>14:20:18 ❌ <b style=\"color:#e02f44;\">READINESS FAILURE</b></div>\n      <div>14:20:20 🔄 <b style=\"color:#3274d9;\">AUTO ROLLBACK</b></div>\n      <div>14:20:31 ✅ <b style=\"color:#56a64b;\">HEALTHY REVISION</b></div>\n      <div>14:20:35 🟢 <b style=\"color:#56a64b;\">5/5 READY</b></div>\n    </div>\n  </div>\n</div>",
+        "mode": "html"
+      },
+      "title": "Timeline & Events",
+      "type": "text"
+    }
+  ],
+  "refresh": "5s",
+  "schemaVersion": 39,
+  "tags": ["sre", "kubernetes", "autoscaling", "self-healing"],
+  "templating": { "list": [] },
+  "time": { "from": "now-15m", "to": "now" },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Kubernetes Auto Scaling & Self-Healing",
+  "uid": "k8s-autoscaling-selfhealing",
+  "version": 1
+}
