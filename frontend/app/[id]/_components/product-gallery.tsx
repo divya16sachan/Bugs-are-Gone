@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, ViewTransition } from "react";
+import { useState, useEffect, ViewTransition } from "react";
 import Image from "next/image";
 import { Product } from "../../_components/types";
 import { Button } from "@/components/ui/button";
@@ -23,6 +23,10 @@ export default function ProductGallery({ product }: ProductGalleryProps) {
   ].filter((img, idx, self) => self.indexOf(img) === idx);
 
   const [activeImage, setActiveImage] = useState(0);
+
+  useEffect(() => {
+    setActiveImage(0);
+  }, [product.id]);
 
   const previousImage = () => {
     setActiveImage((current) =>

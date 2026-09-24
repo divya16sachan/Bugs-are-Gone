@@ -24,7 +24,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
     },
     {
       title: "Key Benefits & Skin Types",
-      content: `Tailored for ${product.skinTypes.join(", ")} skin. Delivers active nourishment, long-lasting moisture balance, and promotes a naturally revitalized complexion.`,
+      content: `Tailored for ${product.skinTypes?.length ? product.skinTypes.join(", ") : "all"} skin. Delivers active nourishment, long-lasting moisture balance, and promotes a naturally revitalized complexion.`,
     },
     {
       title: "How to Use",

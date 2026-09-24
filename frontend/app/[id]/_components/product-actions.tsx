@@ -10,11 +10,15 @@ import {
   ShoppingCart01Icon,
 } from "./icons";
 
+import { useCart } from "@/features/cart/cart-context";
+
 interface ProductActionsProps {
   product: Product;
 }
 
 export default function ProductActions({ product }: ProductActionsProps) {
+  const { addToCart: cartAdd, buyNow: cartBuyNow } = useCart();
+
   const [quantity, setQuantity] = useState(1);
   const [liked, setLiked] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
@@ -28,34 +32,16 @@ export default function ProductActions({ product }: ProductActionsProps) {
     setQuantity((current) => current + 1);
   };
 
-  const addToCart = () => {
-    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-
-    const existingItem = cart.find(
-      (item: { productId: string }) => item.productId === product.id
-    );
-
-    if (existingItem) {
-      existingItem.quantity += quantity;
-    } else {
-      cart.push({
-        productId: product.id,
-        title: product.title,
-        price: product.price,
-        imageUrl: product.imageUrl,
-        quantity,
-      });
-    }
-
-    localStorage.setItem("cart", JSON.stringify(cart));
-
+  const handleAddToCart = () => {
+    if (!product.inStock) return;
+    cartAdd(product, quantity);
     setAddedToCart(true);
-    setMessage(`${quantity} item${quantity > 1 ? "s" : ""} added to cart`);
+    setMessage(`${quantity} item${quantity > 1 ? "s" : ""} added to bag ✓`);
 
     setTimeout(() => {
       setAddedToCart(false);
       setMessage("");
-    }, 2000);
+    }, 2500);
   };
 
   const toggleWishlist = () => {
@@ -67,9 +53,11 @@ export default function ProductActions({ product }: ProductActionsProps) {
     }, 2000);
   };
 
-  const buyNow = () => {
-    addToCart();
-    setMessage("Proceeding to checkout...");
+  // Buy Now must NOT behave like Add to Cart!
+  // Buy Now must directly follow the existing Buy Now → Order Review/Checkout flow.
+  const handleBuyNow = () => {
+    if (!product.inStock) return;
+    cartBuyNow(product, quantity);
   };
 
   return (
@@ -107,7 +95,8 @@ export default function ProductActions({ product }: ProductActionsProps) {
 
         <button
           type="button"
-          onClick={addToCart}
+          id="add-to-cart-btn"
+          onClick={handleAddToCart}
           disabled={!product.inStock}
           className="flex items-center justify-center gap-2 rounded-full bg-emerald-900 px-6 py-3 text-sm font-semibold text-white transition hover:bg-emerald-800 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
         >
@@ -137,7 +126,8 @@ export default function ProductActions({ product }: ProductActionsProps) {
 
       <button
         type="button"
-        onClick={buyNow}
+        id="buy-now-btn"
+        onClick={handleBuyNow}
         disabled={!product.inStock}
         className="w-full rounded-full bg-amber-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-amber-700 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer sm:w-fit"
       >

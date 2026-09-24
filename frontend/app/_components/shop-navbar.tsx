@@ -12,6 +12,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { useSession, useLogout } from "@/features/auth/hooks";
+import { useCart } from "@/features/cart/cart-context";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
   Search01Icon,
@@ -26,6 +27,7 @@ import {
 export function ShopNavbar() {
   const { data: user, isLoading } = useSession();
   const logout = useLogout();
+  const { totalCount, openCart } = useCart();
 
   const userInitials = user?.name
     ? user.name
@@ -111,18 +113,22 @@ export function ShopNavbar() {
             type="button"
             variant="ghost"
             size="icon"
-            tooltip="Shopping Cart"
-            aria-label="Shopping Cart"
-            className={cn("rounded-full text-foreground hover:text-emerald-800 hover:bg-muted relative")}
+            onClick={openCart}
+            id="navbar-cart-btn"
+            tooltip={`Shopping Bag (${totalCount} items)`}
+            aria-label={`Shopping Bag (${totalCount} items)`}
+            className={cn("rounded-full text-foreground hover:text-emerald-800 hover:bg-muted relative cursor-pointer")}
           >
             <HugeiconsIcon icon={ShoppingBag01Icon} className={cn("size-5")} />
-            <span
-              className={cn(
-                "absolute 0.5 top-0.5 right-0.5 size-4 rounded-full bg-emerald-900 text-white text-[10px] font-semibold flex items-center justify-center leading-none"
-              )}
-            >
-              3
-            </span>
+            {totalCount > 0 && (
+              <span
+                className={cn(
+                  "absolute top-0.5 right-0.5 min-w-4 h-4 px-1 rounded-full bg-emerald-900 text-white text-[10px] font-semibold flex items-center justify-center leading-none shadow-xs"
+                )}
+              >
+                {totalCount}
+              </span>
+            )}
           </Button>
 
           {/* User Account Section — Only shown for authenticated users */}

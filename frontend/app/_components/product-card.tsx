@@ -3,6 +3,7 @@
 import { useState, ViewTransition } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { HugeiconsIcon } from "@hugeicons/react";
@@ -13,6 +14,7 @@ import {
   StarIcon,
 } from "@hugeicons/core-free-icons";
 import { Product } from "./types";
+import { useCart } from "@/features/cart/cart-context";
 
 interface ProductCardProps {
   product: Product;
@@ -29,12 +31,50 @@ export function ProductCard({
   onQuickView,
   onAddToCart,
 }: ProductCardProps) {
+  const router = useRouter();
+  const cart = useCart();
   const [isWishlisted, setIsWishlisted] = useState(false);
+
+  const handleCardClick = (e: React.MouseEvent) => {
+    // Only navigate if click wasn't on an interactive child button
+    const target = e.target as HTMLElement;
+    if (target.closest("button") || target.closest("a")) {
+      return;
+    }
+    router.push(`/${product.id}`);
+  };
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (onAddToCart) {
+      onAddToCart(product);
+    } else {
+      cart.addToCart(product, 1);
+    }
+  };
+
+  const handleQuickView = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (onQuickView) {
+      onQuickView(product);
+    } else {
+      router.push(`/${product.id}`);
+    }
+  };
+
+  const handleWishlist = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsWishlisted(!isWishlisted);
+  };
 
   return (
     <div
+      onClick={handleCardClick}
       className={cn(
-        "group relative flex flex-col rounded-2xl bg-card border border-border/70 overflow-hidden hover:shadow-lg transition-all duration-300",
+        "group relative flex flex-col rounded-2xl bg-card border border-border/70 overflow-hidden hover:shadow-lg transition-all duration-300 cursor-pointer",
         className,
       )}
     >
@@ -66,7 +106,7 @@ export function ProductCard({
             type="button"
             variant="ghost"
             size="icon"
-            onClick={() => setIsWishlisted(!isWishlisted)}
+            onClick={handleWishlist}
             tooltip={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
             aria-label={
               isWishlisted ? "Remove from wishlist" : "Add to wishlist"
@@ -89,7 +129,7 @@ export function ProductCard({
             type="button"
             variant="ghost"
             size="icon"
-            onClick={() => onQuickView?.(product)}
+            onClick={handleQuickView}
             tooltip="Quick view"
             aria-label="Quick view product"
             className={cn(
@@ -104,11 +144,12 @@ export function ProductCard({
             type="button"
             variant="ghost"
             size="icon"
-            onClick={() => onAddToCart?.(product)}
+            id={`quick-add-${product.id}`}
+            onClick={handleAddToCart}
             tooltip="Add to cart"
             aria-label="Add to cart"
             className={cn(
-              "size-8 rounded-full bg-white/90 dark:bg-zinc-900/90 backdrop-blur-xs flex items-center justify-center text-zinc-700 dark:text-zinc-200 shadow-sm transition-all hover:scale-110 hover:bg-emerald-950 hover:text-white",
+              "size-8 rounded-full bg-white/90 dark:bg-zinc-900/90 backdrop-blur-xs flex items-center justify-center text-zinc-700 dark:text-zinc-200 shadow-sm transition-all hover:scale-110 hover:bg-emerald-950 hover:text-white cursor-pointer",
             )}
           >
             <HugeiconsIcon icon={ShoppingBag01Icon} className={cn("size-4")} />
