@@ -1,5 +1,7 @@
 FROM node:20-alpine AS builder
 
+RUN apk add --no-cache openssl
+
 WORKDIR /app
 
 COPY package*.json ./
@@ -13,6 +15,8 @@ RUN npm --workspace=payment-service run build
 RUN cp -r backend/services/payment/src/generated backend/services/payment/dist/generated
 
 FROM node:20-alpine AS runner
+
+RUN apk add --no-cache openssl
 
 WORKDIR /app
 

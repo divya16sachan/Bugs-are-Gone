@@ -216,7 +216,17 @@ if not exist "%USERPROFILE%\\.kube\\config" (
                             runCmd("kubectl set image deployment/${deploymentName} ${containerName}=${imageTag} -n ${env.K8S_NAMESPACE}", true)
 
                             echo "Waiting for rollout to complete..."
-                            runCmd("kubectl rollout status deployment/${deploymentName} -n ${env.K8S_NAMESPACE} --timeout=90s")
+                            try {
+                                runCmd("kubectl rollout status deployment/${deploymentName} -n ${env.K8S_NAMESPACE} --timeout=90s")
+                            } catch (Exception rollErr) {
+                                echo "⚠️ Rollout status failed for ${deploymentName}. Fetching pod logs..."
+                                runCmd("kubectl logs -n ${env.K8S_NAMESPACE} -l app=${svc} --tail=30", true)
+                                if (params.AUTO_ROLLBACK) {
+                                    echo "Triggering auto-rollback for ${deploymentName}..."
+                                    runCmd("kubectl rollout undo deployment/${deploymentName} -n ${env.K8S_NAMESPACE}", true)
+                                }
+                                error("Deployment rollout failed for ${deploymentName}: ${rollErr.message}")
+                            }
                         }
                     }
                 }
