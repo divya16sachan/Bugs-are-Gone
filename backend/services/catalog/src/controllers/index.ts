@@ -84,6 +84,7 @@ export async function getProductsHandler(req: FastifyRequest, reply: FastifyRepl
     isOnSale,
     availability: availability.length > 0 ? availability : undefined,
     sortBy,
+    search: query.search || query.q || undefined,
     page: isNaN(page) ? 1 : page,
     limit: isNaN(limit) ? 12 : limit,
   };

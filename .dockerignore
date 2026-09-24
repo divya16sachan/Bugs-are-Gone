@@ -1,0 +1,15 @@
+node_modules
+**/node_modules
+.git
+.github
+frontend
+load
+chaos
+docs
+experiments
+monitoring
+k8s
+jenkins
+*.md
+.env
+.env.example

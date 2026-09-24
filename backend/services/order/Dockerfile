@@ -1,5 +1,7 @@
 FROM node:20-alpine AS builder
 
+RUN apk add --no-cache openssl
+
 WORKDIR /app
 
 COPY package*.json ./
@@ -8,9 +10,13 @@ COPY backend/services/order ./backend/services/order
 
 RUN npm ci
 RUN npm --workspace=@ecom/shared run build
+RUN npm --workspace=order-service run prisma:generate
 RUN npm --workspace=order-service run build
+RUN cp -r backend/services/order/src/generated backend/services/order/dist/generated
 
 FROM node:20-alpine AS runner
+
+RUN apk add --no-cache openssl
 
 WORKDIR /app
 

@@ -14,7 +14,6 @@ import {
   StarIcon,
 } from "@hugeicons/core-free-icons";
 import { Product } from "./types";
-import { useCart } from "@/features/cart/cart-context";
 
 interface ProductCardProps {
   product: Product;
@@ -31,44 +30,7 @@ export function ProductCard({
   onQuickView,
   onAddToCart,
 }: ProductCardProps) {
-  const router = useRouter();
-  const cart = useCart();
   const [isWishlisted, setIsWishlisted] = useState(false);
-
-  const handleCardClick = (e: React.MouseEvent) => {
-    // Only navigate if click wasn't on an interactive child button
-    const target = e.target as HTMLElement;
-    if (target.closest("button") || target.closest("a")) {
-      return;
-    }
-    router.push(`/${product.id}`);
-  };
-
-  const handleAddToCart = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (onAddToCart) {
-      onAddToCart(product);
-    } else {
-      cart.addToCart(product, 1);
-    }
-  };
-
-  const handleQuickView = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (onQuickView) {
-      onQuickView(product);
-    } else {
-      router.push(`/${product.id}`);
-    }
-  };
-
-  const handleWishlist = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsWishlisted(!isWishlisted);
-  };
 
   return (
     <div
@@ -106,7 +68,7 @@ export function ProductCard({
             type="button"
             variant="ghost"
             size="icon"
-            onClick={handleWishlist}
+            onClick={() => setIsWishlisted(!isWishlisted)}
             tooltip={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
             aria-label={
               isWishlisted ? "Remove from wishlist" : "Add to wishlist"
@@ -120,7 +82,7 @@ export function ProductCard({
           >
             <HugeiconsIcon
               icon={FavouriteIcon}
-              className={cn("size-4", isWishlisted && "fill-current")}
+              className={cn("size-4", isWishlisted && "fill-current text-red-500")}
             />
           </Button>
 
@@ -144,8 +106,7 @@ export function ProductCard({
             type="button"
             variant="ghost"
             size="icon"
-            id={`quick-add-${product.id}`}
-            onClick={handleAddToCart}
+            onClick={() => onAddToCart?.(product)}
             tooltip="Add to cart"
             aria-label="Add to cart"
             className={cn(

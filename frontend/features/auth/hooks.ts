@@ -10,7 +10,8 @@ function onAuthed(
   qc: ReturnType<typeof useQueryClient>,
   data: AuthResponse
 ) {
-  setAccessToken(data.accessToken);
+  const token = data.accessToken || (data as any).token;
+  setAccessToken(token);
   qc.setQueryData(authKeys.session(), data.user);
   qc.invalidateQueries({ queryKey: authKeys.session() });
 }
