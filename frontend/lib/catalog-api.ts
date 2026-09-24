@@ -10,6 +10,17 @@ export function applyFiltersAndPagination(
 ): ProductsResponse {
   let result = [...items];
 
+  // Filter: Search Keyword
+  if (filters.search) {
+    const q = filters.search.toLowerCase();
+    result = result.filter(
+      (p) =>
+        p.title.toLowerCase().includes(q) ||
+        p.category.toLowerCase().includes(q) ||
+        (p.description && p.description.toLowerCase().includes(q))
+    );
+  }
+
   // Filter: Categories
   if (filters.categories.length > 0) {
     result = result.filter((p) => filters.categories.includes(p.category));

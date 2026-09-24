@@ -13,6 +13,9 @@ import {
   StarIcon,
 } from "@hugeicons/core-free-icons";
 import { Product } from "./types";
+import { useWishlist } from "@/features/wishlist/use-wishlist";
+import { useCart } from "@/features/cart/use-cart";
+import { toast } from "sonner";
 
 interface ProductCardProps {
   product: Product;
@@ -29,7 +32,43 @@ export function ProductCard({
   onQuickView,
   onAddToCart,
 }: ProductCardProps) {
-  const [isWishlisted, setIsWishlisted] = useState(false);
+  const { isInWishlist, toggleWishlist } = useWishlist();
+  const { addToCart } = useCart();
+  const isWishlisted = isInWishlist(product.id);
+
+  const handleWishlistClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const added = toggleWishlist({
+      id: product.id,
+      title: product.title,
+      price: product.price,
+      imageUrl: product.imageUrl,
+      category: product.category,
+    });
+    if (added) {
+      toast.success(`Added "${product.title}" to wishlist!`);
+    } else {
+      toast.info(`Removed "${product.title}" from wishlist`);
+    }
+  };
+
+  const handleAddToCartClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    addToCart(
+      {
+        id: product.id,
+        title: product.title,
+        price: product.price,
+        imageUrl: product.imageUrl,
+        category: product.category,
+      },
+      1
+    );
+    toast.success(`Added "${product.title}" to cart!`);
+    onAddToCart?.(product);
+  };
 
   return (
     <div
@@ -66,7 +105,7 @@ export function ProductCard({
             type="button"
             variant="ghost"
             size="icon"
-            onClick={() => setIsWishlisted(!isWishlisted)}
+            onClick={handleWishlistClick}
             tooltip={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
             aria-label={
               isWishlisted ? "Remove from wishlist" : "Add to wishlist"
@@ -80,7 +119,7 @@ export function ProductCard({
           >
             <HugeiconsIcon
               icon={FavouriteIcon}
-              className={cn("size-4", isWishlisted && "fill-current")}
+              className={cn("size-4", isWishlisted && "fill-current text-red-500")}
             />
           </Button>
 
@@ -104,7 +143,7 @@ export function ProductCard({
             type="button"
             variant="ghost"
             size="icon"
-            onClick={() => onAddToCart?.(product)}
+            onClick={handleAddToCartClick}
             tooltip="Add to cart"
             aria-label="Add to cart"
             className={cn(

@@ -52,6 +52,7 @@ export interface ProductFilters {
   sortBy: SortOption;
   page: number;
   pageSize: number;
+  search?: string;
 }
 
 export interface ProductsResponse {

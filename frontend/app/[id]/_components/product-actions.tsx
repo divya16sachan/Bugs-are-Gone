@@ -3,6 +3,9 @@
 import { useState } from "react";
 import { Product } from "../../_components/types";
 import { Button } from "@/components/ui/button";
+import { useCart } from "@/features/cart/use-cart";
+import { useWishlist } from "@/features/wishlist/use-wishlist";
+import { toast } from "sonner";
 import {
   FavouriteIcon,
   MinusSignIcon,
@@ -16,9 +19,13 @@ interface ProductActionsProps {
 
 export default function ProductActions({ product }: ProductActionsProps) {
   const [quantity, setQuantity] = useState(1);
-  const [liked, setLiked] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
   const [message, setMessage] = useState("");
+
+  const { addToCart, openCart } = useCart();
+  const { isInWishlist, toggleWishlist } = useWishlist();
+
+  const liked = isInWishlist(product.id);
 
   const decreaseQuantity = () => {
     setQuantity((current) => Math.max(1, current - 1));
@@ -28,29 +35,22 @@ export default function ProductActions({ product }: ProductActionsProps) {
     setQuantity((current) => current + 1);
   };
 
-  const addToCart = () => {
-    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-
-    const existingItem = cart.find(
-      (item: { productId: string }) => item.productId === product.id
-    );
-
-    if (existingItem) {
-      existingItem.quantity += quantity;
-    } else {
-      cart.push({
-        productId: product.id,
+  const handleAddToCart = () => {
+    addToCart(
+      {
+        id: product.id,
         title: product.title,
         price: product.price,
         imageUrl: product.imageUrl,
-        quantity,
-      });
-    }
-
-    localStorage.setItem("cart", JSON.stringify(cart));
+        category: product.category,
+      },
+      quantity
+    );
 
     setAddedToCart(true);
-    setMessage(`${quantity} item${quantity > 1 ? "s" : ""} added to cart`);
+    const msg = `${quantity} item${quantity > 1 ? "s" : ""} added to cart`;
+    setMessage(msg);
+    toast.success(msg);
 
     setTimeout(() => {
       setAddedToCart(false);
@@ -58,18 +58,43 @@ export default function ProductActions({ product }: ProductActionsProps) {
     }, 2000);
   };
 
-  const toggleWishlist = () => {
-    setLiked((current) => !current);
-    setMessage(liked ? "Removed from wishlist" : "Added to wishlist");
+  const handleToggleWishlist = () => {
+    const isAdded = toggleWishlist({
+      id: product.id,
+      title: product.title,
+      price: product.price,
+      imageUrl: product.imageUrl,
+      category: product.category,
+    });
+
+    const msg = isAdded ? "Added to wishlist" : "Removed from wishlist";
+    setMessage(msg);
+    if (isAdded) {
+      toast.success(`Added "${product.title}" to wishlist!`);
+    } else {
+      toast.info(`Removed "${product.title}" from wishlist`);
+    }
 
     setTimeout(() => {
       setMessage("");
     }, 2000);
   };
 
-  const buyNow = () => {
-    addToCart();
-    setMessage("Proceeding to checkout...");
+  const handleBuyNow = () => {
+    addToCart(
+      {
+        id: product.id,
+        title: product.title,
+        price: product.price,
+        imageUrl: product.imageUrl,
+        category: product.category,
+      },
+      quantity
+    );
+    toast.success("Proceeding to checkout...", {
+      description: `${quantity}x ${product.title}`,
+    });
+    openCart();
   };
 
   return (
@@ -107,7 +132,7 @@ export default function ProductActions({ product }: ProductActionsProps) {
 
         <button
           type="button"
-          onClick={addToCart}
+          onClick={handleAddToCart}
           disabled={!product.inStock}
           className="flex items-center justify-center gap-2 rounded-full bg-emerald-900 px-6 py-3 text-sm font-semibold text-white transition hover:bg-emerald-800 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
         >
@@ -119,7 +144,7 @@ export default function ProductActions({ product }: ProductActionsProps) {
           type="button"
           variant="outline"
           size="icon"
-          onClick={toggleWishlist}
+          onClick={handleToggleWishlist}
           tooltip={liked ? "Remove from wishlist" : "Add to wishlist"}
           aria-label={liked ? "Remove from wishlist" : "Add to wishlist"}
           className={`size-11 rounded-full transition active:scale-95 ${
@@ -130,14 +155,14 @@ export default function ProductActions({ product }: ProductActionsProps) {
         >
           <FavouriteIcon
             size={20}
-            className={liked ? "fill-current" : ""}
+            className={liked ? "fill-current text-emerald-800" : ""}
           />
         </Button>
       </div>
 
       <button
         type="button"
-        onClick={buyNow}
+        onClick={handleBuyNow}
         disabled={!product.inStock}
         className="w-full rounded-full bg-amber-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-amber-700 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer sm:w-fit"
       >
