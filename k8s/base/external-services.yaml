@@ -4,11 +4,20 @@ metadata:
   name: ecom-postgres
   namespace: ecom
 spec:
-  type: ExternalName
-  externalName: host.docker.internal
   ports:
     - port: 5432
       targetPort: 5432
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: ecom-postgres
+  namespace: ecom
+subsets:
+  - addresses:
+      - ip: 172.18.0.1
+    ports:
+      - port: 5432
 ---
 apiVersion: v1
 kind: Service
@@ -16,11 +25,20 @@ metadata:
   name: ecom-redis
   namespace: ecom
 spec:
-  type: ExternalName
-  externalName: host.docker.internal
   ports:
     - port: 6379
       targetPort: 6379
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: ecom-redis
+  namespace: ecom
+subsets:
+  - addresses:
+      - ip: 172.18.0.1
+    ports:
+      - port: 6379
 ---
 apiVersion: v1
 kind: Service
@@ -28,8 +46,18 @@ metadata:
   name: ecom-rabbitmq
   namespace: ecom
 spec:
-  type: ExternalName
-  externalName: host.docker.internal
   ports:
     - port: 5672
       targetPort: 5672
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: ecom-rabbitmq
+  namespace: ecom
+subsets:
+  - addresses:
+      - ip: 172.18.0.1
+    ports:
+      - port: 5672
+

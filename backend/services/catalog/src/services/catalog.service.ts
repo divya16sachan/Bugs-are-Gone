@@ -16,6 +16,8 @@ export interface ListProductsFilters {
   isOnSale?: boolean;
   availability?: string[];
   sortBy?: "default" | "price-asc" | "price-desc" | "rating-desc" | "best-selling" | string;
+  search?: string;
+  q?: string;
   page?: number;
   limit?: number;
 }
@@ -43,8 +45,10 @@ export class CatalogService {
 
     const promotions = filters.promotions || [];
     const availability = filters.availability || [];
+    const searchQuery = (filters.search || filters.q || "").trim();
 
     const hasCustomFilters =
+      searchQuery.length > 0 ||
       categories.length > 0 ||
       skinTypes.length > 0 ||
       promotions.length > 0 ||
@@ -66,6 +70,15 @@ export class CatalogService {
     }
 
     const where: any = {};
+
+    // 0. Search keyword
+    if (searchQuery) {
+      where.OR = [
+        { title: { contains: searchQuery, mode: "insensitive" } },
+        { description: { contains: searchQuery, mode: "insensitive" } },
+        { category: { contains: searchQuery, mode: "insensitive" } },
+      ];
+    }
 
     // 1. Categories
     if (categories.length === 1) {

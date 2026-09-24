@@ -112,6 +112,9 @@ export function parseFiltersFromSearchParams(
       ? Number(pageRaw)
       : 1;
 
+  // Search
+  const searchRaw = (searchParams.get("search") || searchParams.get("q") || "").trim();
+
   return {
     categories,
     skinTypes,
@@ -122,11 +125,16 @@ export function parseFiltersFromSearchParams(
     sortBy,
     page,
     pageSize: 12,
+    search: searchRaw || undefined,
   };
 }
 
 export function createSearchParamsFromFilters(filters: ProductFilters): URLSearchParams {
   const params = new URLSearchParams();
+
+  if (filters.search) {
+    params.set("search", filters.search);
+  }
 
   if (filters.categories && filters.categories.length > 0) {
     filters.categories.forEach((cat) => params.append("category", cat));

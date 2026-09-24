@@ -10,7 +10,7 @@
  * handling stays in one place.
  */
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8080";
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 
 // Short-lived access token kept in memory only (never localStorage — XSS-safe).
 // The long-lived refresh token lives in an httpOnly, Secure cookie set by the

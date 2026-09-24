@@ -24,6 +24,8 @@ export const catalogRoutes: FastifyPluginAsync = async (fastify) => {
             availability: { anyOf: [{ type: "string" }, { type: "array", items: { type: "string" } }] },
             sortBy: { type: "string" },
             sort: { type: "string" },
+            search: { type: "string" },
+            q: { type: "string" },
             isBestSeller: { anyOf: [{ type: "string" }, { type: "boolean" }] },
             isNewArrival: { anyOf: [{ type: "string" }, { type: "boolean" }] },
             isOnSale: { anyOf: [{ type: "string" }, { type: "boolean" }] },

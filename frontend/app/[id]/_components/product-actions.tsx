@@ -3,6 +3,9 @@
 import { useState } from "react";
 import { Product } from "../../_components/types";
 import { Button } from "@/components/ui/button";
+import { useCart } from "@/features/cart/use-cart";
+import { useWishlist } from "@/features/wishlist/use-wishlist";
+import { toast } from "sonner";
 import {
   FavouriteIcon,
   MinusSignIcon,
@@ -20,9 +23,13 @@ export default function ProductActions({ product }: ProductActionsProps) {
   const { addToCart: cartAdd, buyNow: cartBuyNow } = useCart();
 
   const [quantity, setQuantity] = useState(1);
-  const [liked, setLiked] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
   const [message, setMessage] = useState("");
+
+  const { addToCart, openCart } = useCart();
+  const { isInWishlist, toggleWishlist } = useWishlist();
+
+  const liked = isInWishlist(product.id);
 
   const decreaseQuantity = () => {
     setQuantity((current) => Math.max(1, current - 1));
@@ -33,10 +40,7 @@ export default function ProductActions({ product }: ProductActionsProps) {
   };
 
   const handleAddToCart = () => {
-    if (!product.inStock) return;
-    cartAdd(product, quantity);
-    setAddedToCart(true);
-    setMessage(`${quantity} item${quantity > 1 ? "s" : ""} added to bag ✓`);
+
 
     setTimeout(() => {
       setAddedToCart(false);
@@ -44,20 +48,51 @@ export default function ProductActions({ product }: ProductActionsProps) {
     }, 2500);
   };
 
-  const toggleWishlist = () => {
-    setLiked((current) => !current);
-    setMessage(liked ? "Removed from wishlist" : "Added to wishlist");
+  const handleToggleWishlist = () => {
+    const isAdded = toggleWishlist({
+      id: product.id,
+      title: product.title,
+      price: product.price,
+      imageUrl: product.imageUrl,
+      category: product.category,
+    });
+
+    const msg = isAdded ? "Added to wishlist" : "Removed from wishlist";
+    setMessage(msg);
+    if (isAdded) {
+      toast.success(`Added "${product.title}" to wishlist!`);
+    } else {
+      toast.info(`Removed "${product.title}" from wishlist`);
+    }
 
     setTimeout(() => {
       setMessage("");
     }, 2000);
   };
 
+<<<<<<< HEAD
   // Buy Now must NOT behave like Add to Cart!
   // Buy Now must directly follow the existing Buy Now → Order Review/Checkout flow.
   const handleBuyNow = () => {
     if (!product.inStock) return;
     cartBuyNow(product, quantity);
+=======
+  const handleBuyNow = () => {
+    addToCart(
+      {
+        id: product.id,
+        title: product.title,
+        price: product.price,
+        imageUrl: product.imageUrl,
+        category: product.category,
+      },
+      quantity
+    );
+    toast.success("Proceeding to checkout...", {
+      description: `${quantity}x ${product.title}`,
+    });
+    openCart();
+>>>>>>> 816d700 (feat: complete e-commerce UI, stabilize k8s external routing, and configure prometheus metrics)
   };
 
   return (
@@ -95,7 +130,10 @@ export default function ProductActions({ product }: ProductActionsProps) {
 
         <button
           type="button"
+<<<<<<< HEAD
           id="add-to-cart-btn"
+=======
+>>>>>>> 816d700 (feat: complete e-commerce UI, stabilize k8s external routing, and configure prometheus metrics)
           onClick={handleAddToCart}
           disabled={!product.inStock}
           className="flex items-center justify-center gap-2 rounded-full bg-emerald-900 px-6 py-3 text-sm font-semibold text-white transition hover:bg-emerald-800 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
@@ -108,25 +146,27 @@ export default function ProductActions({ product }: ProductActionsProps) {
           type="button"
           variant="outline"
           size="icon"
-          onClick={toggleWishlist}
+          onClick={handleToggleWishlist}
           tooltip={liked ? "Remove from wishlist" : "Add to wishlist"}
           aria-label={liked ? "Remove from wishlist" : "Add to wishlist"}
-          className={`size-11 rounded-full transition active:scale-95 ${
-            liked
+          className={`size-11 rounded-full transition active:scale-95 ${liked
               ? "border-emerald-800 bg-emerald-50 text-emerald-800 hover:bg-emerald-100"
               : "border-stone-200 bg-white text-stone-700 hover:border-emerald-700 hover:bg-stone-50"
-          }`}
+            }`}
         >
           <FavouriteIcon
             size={20}
-            className={liked ? "fill-current" : ""}
+            className={liked ? "fill-current text-emerald-800" : ""}
           />
         </Button>
       </div>
 
       <button
         type="button"
+<<<<<<< HEAD
         id="buy-now-btn"
+=======
+>>>>>>> 816d700 (feat: complete e-commerce UI, stabilize k8s external routing, and configure prometheus metrics)
         onClick={handleBuyNow}
         disabled={!product.inStock}
         className="w-full rounded-full bg-amber-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-amber-700 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer sm:w-fit"
