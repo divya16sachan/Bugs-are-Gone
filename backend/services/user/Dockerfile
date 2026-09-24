@@ -8,7 +8,9 @@ COPY backend/services/user ./backend/services/user
 
 RUN npm ci
 RUN npm --workspace=@ecom/shared run build
+RUN npm --workspace=user-service run prisma:generate
 RUN npm --workspace=user-service run build
+RUN cp -r backend/services/user/src/generated backend/services/user/dist/generated
 
 FROM node:20-alpine AS runner
 

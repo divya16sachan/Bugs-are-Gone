@@ -8,7 +8,9 @@ COPY backend/services/payment ./backend/services/payment
 
 RUN npm ci
 RUN npm --workspace=@ecom/shared run build
+RUN npm --workspace=payment-service run prisma:generate
 RUN npm --workspace=payment-service run build
+RUN cp -r backend/services/payment/src/generated backend/services/payment/dist/generated
 
 FROM node:20-alpine AS runner
 
