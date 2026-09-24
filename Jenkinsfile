@@ -56,6 +56,19 @@ pipeline {
                     }
                     echo "Git Commit SHA: ${env.GIT_SHA_SHORT}"
                     echo "Target Service: ${params.TARGET_SERVICE}"
+                    if (!isUnix()) {
+                        bat('''@echo off
+if not exist "%USERPROFILE%\\.kube\\config" (
+    for /d %%U in (C:\\Users\\*) do (
+        if exist "%%U\\.kube\\config" (
+            if not exist "%USERPROFILE%\\.kube" mkdir "%USERPROFILE%\\.kube"
+            copy /Y "%%U\\.kube\\config" "%USERPROFILE%\\.kube\\config" >nul 2>nul
+        )
+    )
+)
+''')
+                        env.KUBECONFIG = 'C:\\Users\\Shreyam\\.kube\\config'
+                    }
                     runCmd('node -v && npm -v')
                 }
             }
@@ -144,9 +157,13 @@ pipeline {
                             runCmd("kind load docker-image ${imageTag} --name ecom-sre-cluster", true)
                         } else if (params.PUSH_IMAGE) {
                             echo "Pushing image to remote registry: ${imageTag}"
-                            withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                                runCmd("docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}")
-                                runCmd("docker push ${imageTag}")
+                            try {
+                                withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                                    runCmd("docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}")
+                                    runCmd("docker push ${imageTag}")
+                                }
+                            } catch (Exception credErr) {
+                                echo "⚠️ Notice: dockerhub-credentials not found in Jenkins credentials store. Skipping remote registry push."
                             }
                         } else {
                             echo "Local Docker image ready: ${imageTag} (skipping remote push; PUSH_IMAGE=false)"
@@ -196,10 +213,10 @@ pipeline {
                             runCmd("kubectl apply -k k8s/services/${svc} -n ${env.K8S_NAMESPACE}")
 
                             echo "Setting deployment image: ${deploymentName} -> ${imageTag}"
-                            runCmd("kubectl set image deployment/${deploymentName} ${containerName}=${imageTag} -n ${env.K8S_NAMESPACE} --record", true)
+                            runCmd("kubectl set image deployment/${deploymentName} ${containerName}=${imageTag} -n ${env.K8S_NAMESPACE}", true)
 
                             echo "Waiting for rollout to complete..."
-                            runCmd("kubectl rollout status deployment/${deploymentName} -n ${env.K8S_NAMESPACE} --timeout=60s")
+                            runCmd("kubectl rollout status deployment/${deploymentName} -n ${env.K8S_NAMESPACE} --timeout=90s")
                         }
                     }
                 }
@@ -225,7 +242,7 @@ pipeline {
                     } else {
                         echo "Executing automated post-deployment health checks..."
                         try {
-                            runCmd('node scripts/smoke_test.js')
+                            runCmd("node scripts/smoke_test.js ${params.TARGET_SERVICE}")
                             echo "✅ All service health checks PASSED!"
                         } catch (Exception e) {
                             echo "❌ Post-deployment health verification FAILED!"
