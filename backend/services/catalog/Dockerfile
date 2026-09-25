@@ -1,5 +1,7 @@
 FROM node:20-alpine AS builder
 
+RUN apk add --no-cache openssl
+
 WORKDIR /app
 
 COPY package*.json ./
@@ -8,9 +10,13 @@ COPY backend/services/catalog ./backend/services/catalog
 
 RUN npm ci
 RUN npm --workspace=@ecom/shared run build
+RUN npm --workspace=catalog-service run prisma:generate
 RUN npm --workspace=catalog-service run build
+RUN cp -r backend/services/catalog/src/generated backend/services/catalog/dist/generated
 
 FROM node:20-alpine AS runner
+
+RUN apk add --no-cache openssl
 
 WORKDIR /app
 

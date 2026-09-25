@@ -3,6 +3,7 @@
 import { ViewTransition } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { HugeiconsIcon } from "@hugeicons/react";
@@ -42,6 +43,7 @@ export function ProductCard({
 
   return (
     <div
+      onClick={handleCardClick}
       className={cn(
         "group relative flex flex-col rounded-2xl bg-card border border-border/70 overflow-hidden hover:shadow-md hover:border-border transition-all duration-300",
         className

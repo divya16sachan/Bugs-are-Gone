@@ -34,6 +34,10 @@ export default function ProductGallery({ product }: ProductGalleryProps) {
 
   const [activeImage, setActiveImage] = useState(0);
 
+  useEffect(() => {
+    setActiveImage(0);
+  }, [product.id]);
+
   const previousImage = () => {
     setActiveImage((current) =>
       current === 0 ? productImages.length - 1 : current - 1,

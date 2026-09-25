@@ -20,6 +20,7 @@ export function ActiveFilters({
   const isPriceFiltered =
     filters.priceRange[0] > 0 || filters.priceRange[1] < 150;
   const hasActiveFilters =
+    Boolean(filters.search) ||
     filters.categories.length > 0 ||
     filters.skinTypes.length > 0 ||
     isPriceFiltered ||
@@ -30,6 +31,14 @@ export function ActiveFilters({
   if (!hasActiveFilters) {
     return null;
   }
+
+  const removeSearch = () => {
+    onFilterChange((prev) => ({
+      ...prev,
+      page: 1,
+      search: undefined,
+    }));
+  };
 
   const removePrice = () => {
     onFilterChange((prev) => ({
@@ -89,6 +98,7 @@ export function ActiveFilters({
       minRating: null,
       promotions: [],
       availability: [],
+      search: undefined,
     }));
   };
 
@@ -102,6 +112,29 @@ export function ActiveFilters({
       <span className={cn("text-xs font-semibold text-foreground mr-1")}>
         Active Filter
       </span>
+
+      {/* Search Query Pill */}
+      {filters.search && (
+        <span
+          className={cn(
+            "inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-medium bg-emerald-950 text-white dark:bg-emerald-900 shadow-xs"
+          )}
+        >
+          Search: &ldquo;{filters.search}&rdquo;
+          <TooltipWrapper message="Remove search filter">
+            <button
+              type="button"
+              onClick={removeSearch}
+              className={cn(
+                "p-0.5 rounded-full hover:bg-emerald-800 focus:outline-hidden focus:ring-1 focus:ring-white cursor-pointer"
+              )}
+              aria-label="Remove search filter"
+            >
+              <HugeiconsIcon icon={Cancel01Icon} className={cn("size-3")} />
+            </button>
+          </TooltipWrapper>
+        </span>
+      )}
 
       {/* Price Pill */}
       {isPriceFiltered && (

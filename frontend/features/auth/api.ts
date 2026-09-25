@@ -16,10 +16,11 @@ export const authApi = {
       ? mockLogin(input)
       : apiClient.post<AuthResponse>("/api/v1/auth/login", input),
 
-  register: (input: RegisterInput): Promise<AuthResponse> =>
-    USE_MOCKS
-      ? mockRegister(input)
-      : apiClient.post<AuthResponse>("/api/v1/auth/signup", input),
+  register: (input: RegisterInput): Promise<AuthResponse> => {
+    if (USE_MOCKS) return mockRegister(input);
+    const { confirmPassword, ...payload } = input;
+    return apiClient.post<AuthResponse>("/api/v1/auth/signup", payload);
+  },
 
   forgotPassword: (input: ForgotPasswordInput): Promise<MessageResponse> =>
     USE_MOCKS

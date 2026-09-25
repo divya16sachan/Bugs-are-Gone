@@ -1,5 +1,6 @@
 "use client";
 
+import { Product } from "../../_components/types";
 import { useProduct } from "../../_components/use-products";
 import ProductGallery from "./product-gallery";
 import ProductInfo from "./product-info";
@@ -10,10 +11,11 @@ import RelatedProducts from "./related-products";
 
 interface ProductDetailClientProps {
   id: string;
+  initialProduct?: Product | null;
 }
 
-export default function ProductDetailClient({ id }: ProductDetailClientProps) {
-  const { data: product, isLoading, isError } = useProduct(id);
+export default function ProductDetailClient({ id, initialProduct }: ProductDetailClientProps) {
+  const { data: product, isLoading, isError } = useProduct(id, initialProduct);
 
   if (isLoading) {
     return (

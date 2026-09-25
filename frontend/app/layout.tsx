@@ -3,6 +3,7 @@ import { Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { QueryProvider } from "@/components/providers/query-provider";
+import { AppCartProvider } from "@/components/providers/app-cart-provider";
 import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({
@@ -53,8 +54,10 @@ export default function RootLayout({
         )}
       >
         <QueryProvider>
-          {children}
-          <Toaster richColors position="top-center" />
+          <AppCartProvider>
+            {children}
+            <Toaster richColors position="top-center" />
+          </AppCartProvider>
         </QueryProvider>
       </body>
     </html>
