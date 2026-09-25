@@ -127,18 +127,41 @@ export function OrdersDashboard() {
       toast.success(`Payment processed (${payment.status})! Tx: ${payment.transactionReference || "OK"}`);
       setPaymentDetails(payment);
 
-      // Refresh orders list
-      await loadOrders();
+      // Optimistically update the order status in the list immediately
+      const completedStatus = payment.status === "FAILED" ? "FAILED" : "COMPLETED";
+      setOrders((prev) =>
+        prev.map((o) =>
+          o.id === order.id ? { ...o, status: completedStatus as Order["status"] } : o
+        )
+      );
 
-      // Update selected order status
-      const updated = await servicesApi.getOrderById(order.id);
-      setSelectedOrder(updated);
+      // Optimistically update the selected order (inspector panel)
+      setSelectedOrder((prev) =>
+        prev && prev.id === order.id
+          ? { ...prev, status: completedStatus as Order["status"] }
+          : prev
+      );
+
+      // Background re-fetch after a short delay to sync with actual backend state
+      // (order service updates via RabbitMQ async event)
+      setTimeout(async () => {
+        try {
+          await loadOrders();
+          const updated = await servicesApi.getOrderById(order.id);
+          setSelectedOrder((prev) =>
+            prev && prev.id === order.id ? updated : prev
+          );
+        } catch {
+          // Silent — optimistic state is already correct
+        }
+      }, 1500);
     } catch (err: any) {
       toast.error(err.message || "Payment processing failed");
     } finally {
       setPayingOrderId(null);
     }
   };
+
 
   const copyToClipboard = (text: string, label: string) => {
     navigator.clipboard.writeText(text);
@@ -149,14 +172,14 @@ export function OrdersDashboard() {
     switch (status) {
       case "COMPLETED":
         return (
-          <Badge variant="default" className="bg-emerald-600 hover:bg-emerald-600 text-white gap-1 text-[11px] py-0.5">
+          <Badge variant="default" className="gap-1 bg-emerald-600 hover:bg-emerald-600 py-0.5 text-[11px] text-white">
             <HugeiconsIcon icon={CheckmarkCircle01Icon} strokeWidth={2} className="size-3" />
             COMPLETED
           </Badge>
         );
       case "FAILED":
         return (
-          <Badge variant="destructive" className="gap-1 text-[11px] py-0.5">
+          <Badge variant="destructive" className="gap-1 py-0.5 text-[11px]">
             <HugeiconsIcon icon={AlertCircleIcon} strokeWidth={2} className="size-3" />
             FAILED
           </Badge>
@@ -164,7 +187,7 @@ export function OrdersDashboard() {
       case "PENDING_PAYMENT":
       default:
         return (
-          <Badge variant="secondary" className="bg-amber-500/15 text-amber-700 dark:text-amber-400 border border-amber-500/30 gap-1 text-[11px] py-0.5 animate-pulse">
+          <Badge variant="secondary" className="gap-1 bg-amber-500/15 py-0.5 border border-amber-500/30 text-[11px] text-amber-700 dark:text-amber-400 animate-pulse">
             <HugeiconsIcon icon={Clock01Icon} strokeWidth={2} className="size-3" />
             PENDING_PAYMENT
           </Badge>
@@ -175,18 +198,18 @@ export function OrdersDashboard() {
   return (
     <div className="space-y-6">
       {/* Service Header Info */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-5 rounded-2xl bg-gradient-to-r from-purple-500/10 via-primary/5 to-transparent border border-purple-500/20 backdrop-blur-xs">
+      <div className="flex md:flex-row flex-col justify-between md:items-center gap-4 bg-gradient-to-r from-purple-500/10 via-primary/5 to-transparent backdrop-blur-xs p-5 border border-purple-500/20 rounded-2xl">
         <div>
           <div className="flex items-center gap-2">
-            <span className="p-2 rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400">
+            <span className="bg-purple-500/10 p-2 rounded-xl text-purple-600 dark:text-purple-400">
               <HugeiconsIcon icon={ShoppingBag01Icon} strokeWidth={2} className="size-5" />
             </span>
-            <h2 className="text-xl font-bold tracking-tight">Order Microservice Operations</h2>
-            <Badge variant="outline" className="bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/30">
+            <h2 className="font-bold text-xl tracking-tight">Order Microservice Operations</h2>
+            <Badge variant="outline" className="bg-purple-500/10 border-purple-500/30 text-purple-600 dark:text-purple-400">
               Port 3003
             </Badge>
           </div>
-          <p className="text-sm text-muted-foreground mt-1">
+          <p className="mt-1 text-muted-foreground text-sm">
             Order lifecycle state machine, stock reservation orchestration, PostgreSQL ledger & payment event stream.
           </p>
         </div>
@@ -204,20 +227,20 @@ export function OrdersDashboard() {
 
       {/* READ: Orders List Table */}
       <Card className="shadow-xs border-border/70 overflow-hidden">
-        <CardHeader className="pb-3 border-b border-border/40">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <CardHeader className="pb-3 border-border/40 border-b">
+          <div className="flex sm:flex-row flex-col justify-between sm:items-center gap-3">
             <div>
               <div className="flex items-center gap-2">
-                <CardTitle className="text-base font-semibold">Orders Directory</CardTitle>
+                <CardTitle className="font-semibold text-base">Orders Directory</CardTitle>
                 <Badge variant="secondary" className="font-mono text-xs">
                   {totalCount} {totalCount === 1 ? "Order" : "Orders"}
                 </Badge>
-                <Badge variant="outline" className="font-mono text-[11px] bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/30">
+                <Badge variant="outline" className="bg-purple-500/10 border-purple-500/30 font-mono text-[11px] text-purple-600 dark:text-purple-400">
                   GET /api/v1/orders
                 </Badge>
               </div>
-              <CardDescription className="text-xs mt-0.5">
-                Real-time user orders placed through the Storefront Cart UI with atomic stock tracking.
+              <CardDescription className="mt-0.5 text-xs">
+                Real-time user orders placed through the Beauty Shop Cart UI with atomic stock tracking.
               </CardDescription>
             </div>
 
@@ -227,9 +250,9 @@ export function OrdersDashboard() {
                 placeholder="Search Order UUID..."
                 value={orderSearchId}
                 onChange={(e) => setOrderSearchId(e.target.value)}
-                className="h-8 text-xs font-mono w-48 sm:w-64"
+                className="w-48 sm:w-64 h-8 font-mono text-xs"
               />
-              <Button type="submit" size="sm" variant="secondary" disabled={searchLoading} className="h-8 text-xs cursor-pointer gap-1">
+              <Button type="submit" size="sm" variant="secondary" disabled={searchLoading} className="gap-1 h-8 text-xs cursor-pointer">
                 <HugeiconsIcon icon={Search01Icon} strokeWidth={2} className="size-3" />
                 Find
               </Button>
@@ -241,20 +264,20 @@ export function OrdersDashboard() {
           <div className="overflow-x-auto">
             <Table>
               <TableHeader>
-                <TableRow className="hover:bg-transparent border-b border-border/60">
-                  <TableHead className="text-xs w-[240px]">Order ID</TableHead>
-                  <TableHead className="text-xs w-[160px]">Status</TableHead>
-                  <TableHead className="text-xs w-[120px]">Items</TableHead>
-                  <TableHead className="text-xs w-[140px]">Total Amount</TableHead>
-                  <TableHead className="text-xs w-[180px]">Created At</TableHead>
-                  <TableHead className="text-right text-xs">Actions</TableHead>
+                <TableRow className="hover:bg-transparent border-border/60 border-b">
+                  <TableHead className="w-[240px] text-xs">Order ID</TableHead>
+                  <TableHead className="w-[160px] text-xs">Status</TableHead>
+                  <TableHead className="w-[120px] text-xs">Items</TableHead>
+                  <TableHead className="w-[140px] text-xs">Total Amount</TableHead>
+                  <TableHead className="w-[180px] text-xs">Created At</TableHead>
+                  <TableHead className="text-xs text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {loading ? (
                   <TableRow>
-                    <TableCell colSpan={6} className="text-center py-10 text-muted-foreground text-xs">
-                      <div className="flex items-center justify-center gap-2">
+                    <TableCell colSpan={6} className="py-10 text-muted-foreground text-xs text-center">
+                      <div className="flex justify-center items-center gap-2">
                         <HugeiconsIcon icon={RefreshIcon} strokeWidth={2} className="size-4 animate-spin" />
                         <span>Loading orders ledger...</span>
                       </div>
@@ -262,11 +285,11 @@ export function OrdersDashboard() {
                   </TableRow>
                 ) : orders.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={6} className="text-center py-12 text-muted-foreground text-xs space-y-2">
+                    <TableCell colSpan={6} className="space-y-2 py-12 text-muted-foreground text-xs text-center">
                       <p>{hasToken ? "No orders found in your account yet." : "Please login in the Users tab to view authenticated orders."}</p>
-                      <Button asChild size="sm" variant="outline" className="text-xs mt-2 cursor-pointer gap-1.5">
+                      <Button asChild size="sm" variant="outline" className="gap-1.5 mt-2 text-xs cursor-pointer">
                         <Link href="/">
-                          <span>Shop on Storefront</span>
+                          <span>Shop on Beauty Shop</span>
                           <HugeiconsIcon icon={ArrowRight01Icon} strokeWidth={2} className="size-3.5" />
                         </Link>
                       </Button>
@@ -277,11 +300,11 @@ export function OrdersDashboard() {
                     return (
                       <TableRow
                         key={o.id}
-                        className="cursor-pointer transition-colors hover:bg-muted/30"
+                        className="hover:bg-muted/30 transition-colors cursor-pointer"
                         onClick={() => handleOpenInspector(o)}
                       >
-                        <TableCell className="py-3 font-mono text-xs font-semibold text-primary">
-                          <span className="truncate max-w-[200px] block" title={o.id}>
+                        <TableCell className="py-3 font-mono font-semibold text-primary text-xs">
+                          <span className="block max-w-[200px] truncate" title={o.id}>
                             {o.id}
                           </span>
                         </TableCell>
@@ -293,7 +316,7 @@ export function OrdersDashboard() {
                             {o.items ? `${o.items.length} item(s)` : "—"}
                           </Badge>
                         </TableCell>
-                        <TableCell className="py-3 font-mono text-xs font-bold text-foreground">
+                        <TableCell className="py-3 font-mono font-bold text-foreground text-xs">
                           ${o.totalAmount.toFixed(2)}
                         </TableCell>
                         <TableCell className="py-3 text-muted-foreground text-xs">
@@ -303,12 +326,12 @@ export function OrdersDashboard() {
                           </div>
                         </TableCell>
                         <TableCell className="py-3 text-right">
-                          <div className="flex items-center justify-end gap-1.5">
+                          <div className="flex justify-end items-center gap-1.5">
                             {o.status === "PENDING_PAYMENT" && (
                               <Button
                                 size="sm"
                                 variant="default"
-                                className="h-7 text-xs px-2.5 bg-emerald-600 hover:bg-emerald-500 text-white cursor-pointer gap-1"
+                                className="gap-1 bg-emerald-600 hover:bg-emerald-500 px-2.5 h-7 text-white text-xs cursor-pointer"
                                 disabled={payingOrderId === o.id}
                                 onClick={(e) => {
                                   e.stopPropagation();
@@ -322,7 +345,7 @@ export function OrdersDashboard() {
                             <Button
                               size="sm"
                               variant="outline"
-                              className="h-7 text-xs px-2.5 cursor-pointer gap-1"
+                              className="gap-1 px-2.5 h-7 text-xs cursor-pointer"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 handleOpenInspector(o);
@@ -342,8 +365,8 @@ export function OrdersDashboard() {
 
           {/* Shadcn Pagination Bar */}
           {totalPages > 1 && (
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 p-4 border-t border-border/40">
-              <p className="text-xs text-muted-foreground">
+            <div className="flex sm:flex-row flex-col justify-between items-center gap-3 p-4 border-border/40 border-t">
+              <p className="text-muted-foreground text-xs">
                 Page <span className="font-medium text-foreground">{page}</span> of{" "}
                 <span className="font-medium text-foreground">{totalPages}</span> • Total {totalCount} orders
               </p>
@@ -384,19 +407,19 @@ export function OrdersDashboard() {
 
       {/* SLIDE-OUT ORDER INSPECTOR SHEET WITH PAYMENT DETAILS */}
       <Sheet open={inspectorOpen} onOpenChange={setInspectorOpen}>
-        <SheetContent side="right" className="flex flex-col w-full sm:max-w-xl md:max-w-2xl lg:max-w-3xl data-[side=right]:sm:max-w-xl data-[side=right]:md:max-w-2xl p-0 bg-background overflow-hidden">
+        <SheetContent side="right" className="flex flex-col bg-background p-0 w-full data-[side=right]:sm:max-w-xl sm:max-w-xl data-[side=right]:md:max-w-2xl md:max-w-2xl lg:max-w-3xl overflow-hidden">
           {selectedOrder && (
             <>
               {/* Sheet Header */}
-              <SheetHeader className="p-4 sm:p-5 border-b border-border/70 flex-shrink-0">
-                <div className="flex items-center justify-between pr-6">
+              <SheetHeader className="flex-shrink-0 p-4 sm:p-5 border-border/70 border-b">
+                <div className="flex justify-between items-center pr-6">
                   <div className="flex items-center gap-2">
-                    <span className="p-2 rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400">
+                    <span className="bg-purple-500/10 p-2 rounded-xl text-purple-600 dark:text-purple-400">
                       <HugeiconsIcon icon={ShoppingBag01Icon} strokeWidth={2} className="size-5" />
                     </span>
                     <div>
-                      <SheetTitle className="text-base font-bold">Order Inspector</SheetTitle>
-                      <SheetDescription className="text-xs font-mono">
+                      <SheetTitle className="font-bold text-base">Order Inspector</SheetTitle>
+                      <SheetDescription className="font-mono text-xs">
                         GET /api/v1/orders/{selectedOrder.id.slice(0, 8)}...
                       </SheetDescription>
                     </div>
@@ -406,11 +429,11 @@ export function OrdersDashboard() {
               </SheetHeader>
 
               {/* Sheet Body Scrollable Area */}
-              <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-5 text-xs">
+              <div className="flex-1 space-y-5 p-4 sm:p-5 overflow-y-auto text-xs">
                 {/* Overview Summary */}
-                <div className="p-3.5 rounded-2xl bg-muted/30 border border-border/60 space-y-3">
-                  <div className="flex justify-between items-center pb-2 border-b border-border/40">
-                    <span className="text-muted-foreground font-medium">Order UUID</span>
+                <div className="space-y-3 bg-muted/30 p-3.5 border border-border/60 rounded-2xl">
+                  <div className="flex justify-between items-center pb-2 border-border/40 border-b">
+                    <span className="font-medium text-muted-foreground">Order UUID</span>
                     <div className="flex items-center gap-1">
                       <span className="font-mono font-semibold text-primary">{selectedOrder.id}</span>
                       <button
@@ -424,40 +447,40 @@ export function OrdersDashboard() {
                     </div>
                   </div>
 
-                  <div className="flex justify-between items-center pb-2 border-b border-border/40">
-                    <span className="text-muted-foreground font-medium">Customer (User ID)</span>
+                  <div className="flex justify-between items-center pb-2 border-border/40 border-b">
+                    <span className="font-medium text-muted-foreground">Customer (User ID)</span>
                     <span className="font-mono text-muted-foreground">{selectedOrder.userId}</span>
                   </div>
 
-                  <div className="flex justify-between items-center pb-2 border-b border-border/40">
-                    <span className="text-muted-foreground font-medium">Order Date</span>
+                  <div className="flex justify-between items-center pb-2 border-border/40 border-b">
+                    <span className="font-medium text-muted-foreground">Order Date</span>
                     <span className="text-foreground">{new Date(selectedOrder.createdAt).toLocaleString()}</span>
                   </div>
 
                   <div className="flex justify-between items-center">
-                    <span className="text-muted-foreground font-medium">Total Amount</span>
-                    <span className="font-mono font-bold text-base text-emerald-600 dark:text-emerald-400">
+                    <span className="font-medium text-muted-foreground">Total Amount</span>
+                    <span className="font-mono font-bold text-emerald-600 dark:text-emerald-400 text-base">
                       ${selectedOrder.totalAmount.toFixed(2)}
                     </span>
                   </div>
                 </div>
 
                 {/* Delivery Address */}
-                <div className="p-3 rounded-2xl bg-muted/20 border border-border/50 space-y-1">
-                  <div className="flex items-center gap-1.5 font-semibold text-muted-foreground text-[11px]">
+                <div className="space-y-1 bg-muted/20 p-3 border border-border/50 rounded-2xl">
+                  <div className="flex items-center gap-1.5 font-semibold text-[11px] text-muted-foreground">
                     <HugeiconsIcon icon={DeliveryTruck01Icon} strokeWidth={2} className="size-3.5 text-emerald-600" />
                     <span>Shipping & Delivery Address</span>
                   </div>
-                  <p className="text-foreground pl-5">{selectedOrder.shippingAddress || "Not specified"}</p>
+                  <p className="pl-5 text-foreground">{selectedOrder.shippingAddress || "Not specified"}</p>
                 </div>
 
                 {/* Reserved Line Items */}
                 <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <Label className="text-xs font-semibold text-foreground">
+                  <div className="flex justify-between items-center">
+                    <Label className="font-semibold text-foreground text-xs">
                       Reserved Line Items ({selectedOrder.items?.length || 0})
                     </Label>
-                    <Badge variant="outline" className="text-[10px] bg-emerald-500/10 text-emerald-600">
+                    <Badge variant="outline" className="bg-emerald-500/10 text-[10px] text-emerald-600">
                       PostgreSQL Reserved
                     </Badge>
                   </div>
@@ -467,14 +490,14 @@ export function OrdersDashboard() {
                       {selectedOrder.items.map((item, idx) => (
                         <div
                           key={idx}
-                          className="flex justify-between items-center p-3 rounded-xl bg-background border border-border/60"
+                          className="flex justify-between items-center bg-background p-3 border border-border/60 rounded-xl"
                         >
                           <div>
-                            <span className="font-mono font-medium text-foreground block">{item.productId}</span>
+                            <span className="block font-mono font-medium text-foreground">{item.productId}</span>
                             <span className="text-[11px] text-muted-foreground">Quantity: {item.quantity} units</span>
                           </div>
                           <div className="text-right">
-                            <span className="font-mono font-bold text-foreground block">
+                            <span className="block font-mono font-bold text-foreground">
                               ${(item.unitPrice * item.quantity).toFixed(2)}
                             </span>
                             <span className="text-[10px] text-muted-foreground">(${item.unitPrice.toFixed(2)}/ea)</span>
@@ -488,35 +511,35 @@ export function OrdersDashboard() {
                 </div>
 
                 {/* REAL-TIME PAYMENT DETAILS (FROM PAYMENT MICROSERVICE :3004) */}
-                <div className="space-y-2.5 pt-2 border-t border-border/50">
-                  <div className="flex items-center justify-between">
+                <div className="space-y-2.5 pt-2 border-border/50 border-t">
+                  <div className="flex justify-between items-center">
                     <div className="flex items-center gap-1.5">
-                      <span className="p-1 rounded-lg bg-amber-500/10 text-amber-600">
+                      <span className="bg-amber-500/10 p-1 rounded-lg text-amber-600">
                         <HugeiconsIcon icon={RupeeIcon} strokeWidth={2} className="size-3.5" />
                       </span>
-                      <Label className="text-xs font-semibold text-foreground">Payment Microservice Record</Label>
+                      <Label className="font-semibold text-foreground text-xs">Payment Microservice Record</Label>
                     </div>
-                    <Badge variant="outline" className="text-[10px] font-mono bg-amber-500/10 text-amber-600 border-amber-500/30">
+                    <Badge variant="outline" className="bg-amber-500/10 border-amber-500/30 font-mono text-[10px] text-amber-600">
                       Port 3004
                     </Badge>
                   </div>
 
                   {loadingPayment ? (
-                    <div className="p-4 rounded-xl bg-muted/20 border border-border/50 text-center text-muted-foreground flex items-center justify-center gap-2">
+                    <div className="flex justify-center items-center gap-2 bg-muted/20 p-4 border border-border/50 rounded-xl text-muted-foreground text-center">
                       <HugeiconsIcon icon={RefreshIcon} strokeWidth={2} className="size-4 animate-spin" />
                       <span>Checking payment ledger...</span>
                     </div>
                   ) : paymentDetails ? (
-                    <div className="p-3.5 rounded-2xl bg-emerald-500/5 border border-emerald-500/20 space-y-2.5">
-                      <div className="flex justify-between items-center pb-2 border-b border-emerald-500/10">
+                    <div className="space-y-2.5 bg-emerald-500/5 p-3.5 border border-emerald-500/20 rounded-2xl">
+                      <div className="flex justify-between items-center pb-2 border-emerald-500/10 border-b">
                         <span className="text-muted-foreground">Payment Status</span>
-                        <Badge variant="default" className="bg-emerald-600 text-white text-[10px] gap-1">
+                        <Badge variant="default" className="gap-1 bg-emerald-600 text-[10px] text-white">
                           <HugeiconsIcon icon={CheckmarkCircle01Icon} strokeWidth={2} className="size-3" />
                           {paymentDetails.status}
                         </Badge>
                       </div>
 
-                      <div className="flex justify-between items-center pb-2 border-b border-emerald-500/10">
+                      <div className="flex justify-between items-center pb-2 border-emerald-500/10 border-b">
                         <span className="text-muted-foreground">Transaction Reference</span>
                         <div className="flex items-center gap-1">
                           <span className="font-mono font-medium text-foreground">
@@ -535,7 +558,7 @@ export function OrdersDashboard() {
                         </div>
                       </div>
 
-                      <div className="flex justify-between items-center pb-2 border-b border-emerald-500/10">
+                      <div className="flex justify-between items-center pb-2 border-emerald-500/10 border-b">
                         <span className="text-muted-foreground">Paid Amount</span>
                         <span className="font-mono font-bold text-emerald-600 dark:text-emerald-400">
                           ${paymentDetails.amount.toFixed(2)} USD
@@ -550,12 +573,12 @@ export function OrdersDashboard() {
                       </div>
                     </div>
                   ) : selectedOrder.status === "PENDING_PAYMENT" ? (
-                    <div className="p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/20 space-y-3">
+                    <div className="space-y-3 bg-amber-500/10 p-3.5 border border-amber-500/20 rounded-2xl">
                       <div className="flex items-start gap-2 text-amber-700 dark:text-amber-400">
-                        <HugeiconsIcon icon={Clock01Icon} strokeWidth={2} className="size-4 shrink-0 mt-0.5" />
+                        <HugeiconsIcon icon={Clock01Icon} strokeWidth={2} className="mt-0.5 size-4 shrink-0" />
                         <div>
                           <p className="font-semibold text-xs">Payment Pending</p>
-                          <p className="text-[11px] text-muted-foreground mt-0.5">
+                          <p className="mt-0.5 text-[11px] text-muted-foreground">
                             Order is waiting for payment settlement before fulfillment.
                           </p>
                         </div>
@@ -565,7 +588,7 @@ export function OrdersDashboard() {
                         type="button"
                         onClick={() => handleProcessPaymentForOrder(selectedOrder)}
                         disabled={payingOrderId === selectedOrder.id}
-                        className="w-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold h-9 rounded-xl cursor-pointer gap-1.5 shadow-sm"
+                        className="gap-1.5 bg-emerald-600 hover:bg-emerald-700 shadow-sm rounded-xl w-full h-9 font-semibold text-white text-xs cursor-pointer"
                       >
                         {payingOrderId === selectedOrder.id ? (
                           <>
@@ -581,7 +604,7 @@ export function OrdersDashboard() {
                       </Button>
                     </div>
                   ) : (
-                    <div className="p-3 rounded-xl bg-muted/20 border border-border/50 text-muted-foreground text-center">
+                    <div className="bg-muted/20 p-3 border border-border/50 rounded-xl text-muted-foreground text-center">
                       No external payment record found.
                     </div>
                   )}

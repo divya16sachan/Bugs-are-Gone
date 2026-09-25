@@ -154,7 +154,6 @@ export function UsersDashboard() {
       setCurrentUser(user);
       if (user.email) setLoginEmail(user.email);
       if (user.id) setSearchId(user.id);
-      toast.success("Profile fetched successfully");
     } catch (err: any) {
       console.warn("Failed to fetch /users/me:", err);
       setCurrentUser(null);
@@ -259,29 +258,29 @@ export function UsersDashboard() {
   return (
     <div className="space-y-6">
       {/* Service Header Info */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-5 rounded-2xl bg-gradient-to-r from-blue-500/10 via-primary/5 to-transparent border border-blue-500/20 backdrop-blur-xs">
+      <div className="flex md:flex-row flex-col justify-between md:items-center gap-4 bg-gradient-to-r from-blue-500/10 via-primary/5 to-transparent backdrop-blur-xs p-5 border border-blue-500/20 rounded-2xl">
         <div>
-          <div className="flex items-center gap-2 flex-wrap">
-            <span className="p-2 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="bg-blue-500/10 p-2 rounded-xl text-blue-600 dark:text-blue-400">
               <HugeiconsIcon icon={UserIcon} strokeWidth={2} className="size-5" />
             </span>
-            <h2 className="text-xl font-bold tracking-tight">User Microservice Operations</h2>
-            <Badge variant="outline" className="bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/30">
+            <h2 className="font-bold text-xl tracking-tight">User Microservice Operations</h2>
+            <Badge variant="outline" className="bg-blue-500/10 border-blue-500/30 text-blue-600 dark:text-blue-400">
               Port 3001
             </Badge>
           </div>
-          <p className="text-sm text-muted-foreground mt-1">
+          <p className="mt-1 text-muted-foreground text-sm">
             JWT Auth (HS256), PostgreSQL User Records, Paginated Directory & Authorization enforcement.
           </p>
         </div>
 
-        <div className="flex items-center gap-3 flex-wrap">
+        <div className="flex flex-wrap items-center gap-3">
           {/* LOGIN USER DIALOG */}
           <Dialog open={isLoginOpen} onOpenChange={setIsLoginOpen}>
             <DialogTrigger render={
               <Button
                 variant="outline"
-                className="cursor-pointer gap-2 font-medium border-blue-500/30 text-blue-600 dark:text-blue-400 hover:bg-blue-500/10"
+                className="gap-2 hover:bg-blue-500/10 border-blue-500/30 font-medium text-blue-600 dark:text-blue-400 cursor-pointer"
                 onClick={() => {
                   if (!loginDialogEmail && currentUser?.email) {
                     setLoginDialogEmail(currentUser.email);
@@ -295,7 +294,7 @@ export function UsersDashboard() {
             <DialogContent className="sm:max-w-md">
               <DialogHeader>
                 <div className="flex items-center gap-2">
-                  <span className="p-2 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400">
+                  <span className="bg-blue-500/10 p-2 rounded-xl text-blue-600 dark:text-blue-400">
                     <HugeiconsIcon icon={Key01Icon} strokeWidth={2} className="size-5" />
                   </span>
                   <div>
@@ -309,7 +308,7 @@ export function UsersDashboard() {
 
               <form onSubmit={handleDialogLogin} className="space-y-4 pt-2">
                 <div className="space-y-1.5">
-                  <Label htmlFor="dlg-login-email" className="text-xs font-semibold">Email Address</Label>
+                  <Label htmlFor="dlg-login-email" className="font-semibold text-xs">Email Address</Label>
                   <Input
                     id="dlg-login-email"
                     type="email"
@@ -322,9 +321,9 @@ export function UsersDashboard() {
                 </div>
 
                 <div className="space-y-1.5">
-                  <div className="flex items-center justify-between">
-                    <Label htmlFor="dlg-login-password" className="text-xs font-semibold">Password</Label>
-                    <span className="text-[11px] text-muted-foreground">Default: <code className="font-mono text-primary font-semibold">Password123!</code></span>
+                  <div className="flex justify-between items-center">
+                    <Label htmlFor="dlg-login-password" className="font-semibold text-xs">Password</Label>
+                    <span className="text-[11px] text-muted-foreground">Default: <code className="font-mono font-semibold text-primary">Password123!</code></span>
                   </div>
                   <div className="relative">
                     <Input
@@ -333,13 +332,13 @@ export function UsersDashboard() {
                       value={loginDialogPassword}
                       onChange={(e) => setLoginDialogPassword(e.target.value)}
                       placeholder="Enter password"
-                      className="h-9 pr-9"
+                      className="pr-9 h-9"
                       required
                     />
                     <button
                       type="button"
                       onClick={() => setShowLoginDialogPassword((prev) => !prev)}
-                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors p-1 rounded-md cursor-pointer focus:outline-none"
+                      className="top-1/2 right-2.5 absolute p-1 rounded-md focus:outline-none text-muted-foreground hover:text-foreground transition-colors -translate-y-1/2 cursor-pointer"
                       aria-label={showLoginDialogPassword ? "Hide password" : "Show password"}
                     >
                       <HugeiconsIcon
@@ -351,7 +350,7 @@ export function UsersDashboard() {
                   </div>
                 </div>
 
-                <DialogFooter className="pt-2 flex flex-col-reverse sm:flex-row gap-2">
+                <DialogFooter className="flex sm:flex-row flex-col-reverse gap-2 pt-2">
                   <Button
                     type="button"
                     variant="outline"
@@ -363,7 +362,7 @@ export function UsersDashboard() {
                   <Button
                     type="submit"
                     disabled={loginDialogLoading}
-                    className="cursor-pointer gap-2 bg-blue-600 hover:bg-blue-500 text-white font-medium"
+                    className="gap-2 bg-blue-600 hover:bg-blue-500 font-medium text-white cursor-pointer"
                   >
                     {loginDialogLoading ? (
                       <>
@@ -384,7 +383,7 @@ export function UsersDashboard() {
 
           {token ? (
             <div className="flex items-center gap-2">
-              <Badge variant="default" className="bg-emerald-600 hover:bg-emerald-600 text-white gap-1 py-1 px-2.5">
+              <Badge variant="default" className="gap-1 bg-emerald-600 hover:bg-emerald-600 px-2.5 py-1 text-white">
                 <HugeiconsIcon icon={CheckmarkCircle01Icon} strokeWidth={2} className="size-3.5" />
                 Authenticated
               </Badge>
@@ -399,19 +398,19 @@ export function UsersDashboard() {
 
       {/* USERS LIST TABLE WITH SHADCN PAGINATION */}
       <Card className="shadow-xs border-border/70 overflow-hidden">
-        <CardHeader className="pb-3 border-b border-border/40">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <CardHeader className="pb-3 border-border/40 border-b">
+          <div className="flex sm:flex-row flex-col justify-between sm:items-center gap-3">
             <div>
               <div className="flex items-center gap-2">
-                <CardTitle className="text-base font-semibold">User Directory</CardTitle>
+                <CardTitle className="font-semibold text-base">User Directory</CardTitle>
                 <Badge variant="secondary" className="font-mono text-xs">
                   {totalUsers} {totalUsers === 1 ? "User" : "Users"}
                 </Badge>
-                <Badge variant="outline" className="font-mono text-[11px] bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/30">
+                <Badge variant="outline" className="bg-blue-500/10 border-blue-500/30 font-mono text-[11px] text-blue-600 dark:text-blue-400">
                   GET /api/v1/users
                 </Badge>
               </div>
-              <CardDescription className="text-xs mt-0.5">
+              <CardDescription className="mt-0.5 text-xs">
                 Real-time user accounts stored in PostgreSQL database with pagination controls.
               </CardDescription>
             </div>
@@ -420,7 +419,7 @@ export function UsersDashboard() {
               {/* CREATE USER BUTTON (OPENS DIALOG) */}
               <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
                 <DialogTrigger render={
-                  <Button size="sm" className="cursor-pointer gap-2 font-medium h-8 text-xs shadow-xs">
+                  <Button size="sm" className="gap-2 shadow-xs h-8 font-medium text-xs cursor-pointer">
                     <HugeiconsIcon icon={UserAdd01Icon} strokeWidth={2} className="size-3.5" />
                     Create User
                   </Button>
@@ -428,7 +427,7 @@ export function UsersDashboard() {
                 <DialogContent className="sm:max-w-md">
                   <DialogHeader>
                     <div className="flex items-center gap-2">
-                      <span className="p-2 rounded-xl bg-emerald-500/10 text-emerald-600">
+                      <span className="bg-emerald-500/10 p-2 rounded-xl text-emerald-600">
                         <HugeiconsIcon icon={UserAdd01Icon} strokeWidth={2} className="size-5" />
                       </span>
                       <div>
@@ -442,7 +441,7 @@ export function UsersDashboard() {
 
                   <form onSubmit={handleSignup} className="space-y-4 pt-2">
                     <div className="space-y-1.5">
-                      <Label htmlFor="dialog-signup-name" className="text-xs font-medium">Full Name</Label>
+                      <Label htmlFor="dialog-signup-name" className="font-medium text-xs">Full Name</Label>
                       <Input
                         id="dialog-signup-name"
                         value={signupName}
@@ -454,8 +453,8 @@ export function UsersDashboard() {
                     </div>
 
                     <div className="space-y-1.5">
-                      <div className="flex items-center justify-between">
-                        <Label htmlFor="dialog-signup-email" className="text-xs font-medium">Email Address</Label>
+                      <div className="flex justify-between items-center">
+                        <Label htmlFor="dialog-signup-email" className="font-medium text-xs">Email Address</Label>
                         <button
                           type="button"
                           onClick={() => setSignupEmail(`alex_${Date.now().toString().slice(-4)}@example.com`)}
@@ -476,7 +475,7 @@ export function UsersDashboard() {
                     </div>
 
                     <div className="space-y-1.5">
-                      <Label htmlFor="dialog-signup-pass" className="text-xs font-medium">Password</Label>
+                      <Label htmlFor="dialog-signup-pass" className="font-medium text-xs">Password</Label>
                       <div className="relative">
                         <Input
                           id="dialog-signup-pass"
@@ -484,13 +483,13 @@ export function UsersDashboard() {
                           value={signupPassword}
                           onChange={(e) => setSignupPassword(e.target.value)}
                           placeholder="Min 6 characters"
-                          className="h-9 pr-9"
+                          className="pr-9 h-9"
                           required
                         />
                         <button
                           type="button"
                           onClick={() => setShowSignupPassword((prev) => !prev)}
-                          className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors p-1 rounded-md cursor-pointer focus:outline-none"
+                          className="top-1/2 right-2.5 absolute p-1 rounded-md focus:outline-none text-muted-foreground hover:text-foreground transition-colors -translate-y-1/2 cursor-pointer"
                           aria-label={showSignupPassword ? "Hide password" : "Show password"}
                         >
                           <HugeiconsIcon
@@ -511,7 +510,7 @@ export function UsersDashboard() {
                       >
                         Cancel
                       </Button>
-                      <Button type="submit" disabled={signupLoading} className="cursor-pointer gap-2">
+                      <Button type="submit" disabled={signupLoading} className="gap-2 cursor-pointer">
                         {signupLoading ? (
                           <>
                             <HugeiconsIcon icon={RefreshIcon} strokeWidth={2} className="size-4 animate-spin" />
@@ -560,7 +559,7 @@ export function UsersDashboard() {
                         size="icon"
                         onClick={handleLogout}
                         disabled={!token}
-                        className="size-8 cursor-pointer text-destructive hover:bg-destructive/10 hover:text-destructive border-border/70 disabled:opacity-40"
+                        className="hover:bg-destructive/10 disabled:opacity-40 border-border/70 size-8 text-destructive hover:text-destructive cursor-pointer"
                       >
                         <HugeiconsIcon icon={Logout01Icon} strokeWidth={2} className="size-3.5" />
                       </Button>
@@ -579,7 +578,7 @@ export function UsersDashboard() {
           <div className="overflow-x-auto">
             <Table>
               <TableHeader>
-                <TableRow className="hover:bg-transparent border-b border-border/60">
+                <TableRow className="hover:bg-transparent border-border/60 border-b">
                   <TableHead className="w-[280px]">User</TableHead>
                   <TableHead className="w-[260px]">User UUID</TableHead>
                   <TableHead className="w-[120px]">Role</TableHead>
@@ -590,8 +589,8 @@ export function UsersDashboard() {
               <TableBody>
                 {usersLoading ? (
                   <TableRow>
-                    <TableCell colSpan={5} className="h-32 text-center text-muted-foreground">
-                      <div className="flex items-center justify-center gap-2">
+                    <TableCell colSpan={5} className="h-32 text-muted-foreground text-center">
+                      <div className="flex justify-center items-center gap-2">
                         <HugeiconsIcon icon={RefreshIcon} strokeWidth={2} className="size-4 animate-spin" />
                         <span>Loading user directory...</span>
                       </div>
@@ -599,7 +598,7 @@ export function UsersDashboard() {
                   </TableRow>
                 ) : users.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={5} className="h-32 text-center text-muted-foreground">
+                    <TableCell colSpan={5} className="h-32 text-muted-foreground text-center">
                       No users found. Click "Create User" to sign up the first account.
                     </TableCell>
                   </TableRow>
@@ -611,9 +610,9 @@ export function UsersDashboard() {
                       <TableRow key={u.id} className={isCurrent ? "bg-primary/5" : ""}>
                         <TableCell>
                           <div className="flex items-center gap-3">
-                            <Avatar className="size-8 rounded-full border border-border/60 shrink-0">
+                            <Avatar className="border border-border/60 rounded-full size-8 shrink-0">
                               <AvatarImage src={getUserAvatar(u.id, u.email)} alt={u.name} />
-                              <AvatarFallback className="text-xs font-semibold bg-primary/10 text-primary">
+                              <AvatarFallback className="bg-primary/10 font-semibold text-primary text-xs">
                                 {initial}
                               </AvatarFallback>
                             </Avatar>
@@ -621,12 +620,12 @@ export function UsersDashboard() {
                               <div className="flex items-center gap-1.5 font-medium text-xs truncate">
                                 <span>{u.name}</span>
                                 {isCurrent && (
-                                  <Badge variant="default" className="text-[10px] py-0 px-1.5 h-4 bg-emerald-600">
+                                  <Badge variant="default" className="bg-emerald-600 px-1.5 py-0 h-4 text-[10px]">
                                     You
                                   </Badge>
                                 )}
                               </div>
-                              <div className="text-[11px] text-muted-foreground flex items-center gap-1 truncate">
+                              <div className="flex items-center gap-1 text-[11px] text-muted-foreground truncate">
                                 <HugeiconsIcon icon={Mail01Icon} strokeWidth={2} className="size-3 text-muted-foreground/70" />
                                 <span>{u.email}</span>
                               </div>
@@ -635,8 +634,8 @@ export function UsersDashboard() {
                         </TableCell>
 
                         <TableCell>
-                          <div className="flex items-center gap-1.5 font-mono text-xs text-muted-foreground">
-                            <span className="truncate max-w-[190px]" title={u.id}>{u.id}</span>
+                          <div className="flex items-center gap-1.5 font-mono text-muted-foreground text-xs">
+                            <span className="max-w-[190px] truncate" title={u.id}>{u.id}</span>
                             <Button
                               variant="ghost"
                               size="icon-sm"
@@ -650,12 +649,12 @@ export function UsersDashboard() {
                         </TableCell>
 
                         <TableCell>
-                          <Badge variant="outline" className="capitalize text-[11px] font-normal">
+                          <Badge variant="outline" className="font-normal text-[11px] capitalize">
                             {u.role || "customer"}
                           </Badge>
                         </TableCell>
 
-                        <TableCell className="text-xs text-muted-foreground">
+                        <TableCell className="text-muted-foreground text-xs">
                           {u.createdAt ? (
                             <div className="flex items-center gap-1">
                               <HugeiconsIcon icon={Calendar01Icon} strokeWidth={2} className="size-3 text-muted-foreground/70" />
@@ -667,11 +666,11 @@ export function UsersDashboard() {
                         </TableCell>
 
                         <TableCell className="text-right">
-                          <div className="flex items-center justify-end gap-1.5">
+                          <div className="flex justify-end items-center gap-1.5">
                             <Button
                               variant="ghost"
                               size="sm"
-                              className="h-7 text-xs cursor-pointer px-2 text-muted-foreground hover:text-foreground"
+                              className="px-2 h-7 text-muted-foreground hover:text-foreground text-xs cursor-pointer"
                               onClick={async () => {
                                 setSearchId(u.id);
                                 setSearchLoading(true);
@@ -694,7 +693,7 @@ export function UsersDashboard() {
                             <Button
                               variant="outline"
                               size="sm"
-                              className="h-7 text-xs cursor-pointer px-2.5 gap-1.5 bg-blue-500/10 hover:bg-blue-500/20 text-blue-600 dark:text-blue-400 border-blue-500/30 font-medium"
+                              className="gap-1.5 bg-blue-500/10 hover:bg-blue-500/20 px-2.5 border-blue-500/30 h-7 font-medium text-blue-600 dark:text-blue-400 text-xs cursor-pointer"
                               onClick={() => openLoginDialog(u.email)}
                               title={`Log in as ${u.email}`}
                             >
@@ -713,8 +712,8 @@ export function UsersDashboard() {
 
           {/* SHADCN PAGINATION BAR */}
           {totalPages > 1 && (
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 p-4 border-t border-border/40">
-              <p className="text-xs text-muted-foreground">
+            <div className="flex sm:flex-row flex-col justify-between items-center gap-3 p-4 border-border/40 border-t">
+              <p className="text-muted-foreground text-xs">
                 Page <span className="font-medium text-foreground">{page}</span> of{" "}
                 <span className="font-medium text-foreground">{totalPages}</span> • Total {totalUsers} users
               </p>
@@ -754,18 +753,18 @@ export function UsersDashboard() {
       </Card>
 
       {/* OPERATIONS CARDS: LOGIN & SESSION / INSPECT */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="gap-6 grid grid-cols-1 lg:grid-cols-3">
         {/* READ / AUTH: Login Operation */}
         <Card className="shadow-xs border-border/70 hover:border-primary/40 transition-colors">
           <CardHeader className="pb-3">
-            <div className="flex items-center justify-between">
+            <div className="flex justify-between items-center">
               <div className="flex items-center gap-2">
-                <span className="p-1.5 rounded-lg bg-blue-500/10 text-blue-600">
+                <span className="bg-blue-500/10 p-1.5 rounded-lg text-blue-600">
                   <HugeiconsIcon icon={Key01Icon} strokeWidth={2} className="size-4" />
                 </span>
-                <CardTitle className="text-base font-semibold">Authenticate (Login)</CardTitle>
+                <CardTitle className="font-semibold text-base">Authenticate (Login)</CardTitle>
               </div>
-              <Badge variant="secondary" className="font-mono text-[11px] bg-blue-500/10 text-blue-600 dark:text-blue-400">
+              <Badge variant="secondary" className="bg-blue-500/10 font-mono text-[11px] text-blue-600 dark:text-blue-400">
                 POST /api/v1/auth/login
               </Badge>
             </div>
@@ -796,13 +795,13 @@ export function UsersDashboard() {
                     value={loginPassword}
                     onChange={(e) => setLoginPassword(e.target.value)}
                     placeholder="Enter password"
-                    className="h-9 pr-9"
+                    className="pr-9 h-9"
                     required
                   />
                   <button
                     type="button"
                     onClick={() => setShowLoginPassword((prev) => !prev)}
-                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors p-1 rounded-md cursor-pointer focus:outline-none"
+                    className="top-1/2 right-2.5 absolute p-1 rounded-md focus:outline-none text-muted-foreground hover:text-foreground transition-colors -translate-y-1/2 cursor-pointer"
                     aria-label={showLoginPassword ? "Hide password" : "Show password"}
                   >
                     <HugeiconsIcon
@@ -813,7 +812,7 @@ export function UsersDashboard() {
                   </button>
                 </div>
               </div>
-              <Button type="submit" size="sm" disabled={loginLoading} className="w-full cursor-pointer mt-2">
+              <Button type="submit" size="sm" disabled={loginLoading} className="mt-2 w-full cursor-pointer">
                 {loginLoading ? "Authenticating..." : "Execute Login (POST)"}
               </Button>
             </CardContent>
@@ -823,12 +822,12 @@ export function UsersDashboard() {
         {/* READ: Get Me Profile */}
         <Card className="shadow-xs border-border/70">
           <CardHeader className="pb-3">
-            <div className="flex items-center justify-between">
+            <div className="flex justify-between items-center">
               <div className="flex items-center gap-2">
-                <span className="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-600">
+                <span className="bg-emerald-500/10 p-1.5 rounded-lg text-emerald-600">
                   <HugeiconsIcon icon={UserIcon} strokeWidth={2} className="size-4" />
                 </span>
-                <CardTitle className="text-base font-semibold">Active Session Profile</CardTitle>
+                <CardTitle className="font-semibold text-base">Active Session Profile</CardTitle>
               </div>
               <div className="flex items-center gap-2">
                 <Badge variant="secondary" className="font-mono text-[11px]">
@@ -852,43 +851,43 @@ export function UsersDashboard() {
           </CardHeader>
           <CardContent>
             {currentUser ? (
-              <div className="space-y-2.5 p-3 rounded-xl bg-muted/40 border border-border/50 text-xs">
-                <div className="flex items-center gap-3 pb-2.5 border-b border-border/40">
-                  <Avatar className="size-9 rounded-full border border-border/80 shrink-0 shadow-xs">
+              <div className="space-y-2.5 bg-muted/40 p-3 border border-border/50 rounded-xl text-xs">
+                <div className="flex items-center gap-3 pb-2.5 border-border/40 border-b">
+                  <Avatar className="shadow-xs border border-border/80 rounded-full size-9 shrink-0">
                     <AvatarImage src={getUserAvatar(currentUser.id, currentUser.email)} alt={currentUser.name} />
-                    <AvatarFallback className="font-semibold text-xs bg-primary/10 text-primary">
+                    <AvatarFallback className="bg-primary/10 font-semibold text-primary text-xs">
                       {(currentUser.name || currentUser.email).charAt(0).toUpperCase()}
                     </AvatarFallback>
                   </Avatar>
-                  <div className="min-w-0 flex-1">
-                    <p className="font-semibold text-xs text-foreground truncate">{currentUser.name}</p>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-semibold text-foreground text-xs truncate">{currentUser.name}</p>
                     <p className="text-[11px] text-muted-foreground truncate">{currentUser.email}</p>
                   </div>
-                  <Badge variant="outline" className="text-[10px] shrink-0 font-mono">{currentUser.role || "customer"}</Badge>
+                  <Badge variant="outline" className="font-mono text-[10px] shrink-0">{currentUser.role || "customer"}</Badge>
                 </div>
 
-                <div className="flex justify-between items-center pb-1.5 border-b border-border/40">
+                <div className="flex justify-between items-center pb-1.5 border-border/40 border-b">
                   <span className="text-muted-foreground">User ID:</span>
-                  <span className="font-mono font-medium truncate max-w-[170px]" title={currentUser.id}>{currentUser.id}</span>
+                  <span className="max-w-[170px] font-mono font-medium truncate" title={currentUser.id}>{currentUser.id}</span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-muted-foreground">Session Status:</span>
-                  <span className="text-emerald-600 font-medium flex items-center gap-1">
-                    <span className="size-1.5 rounded-full bg-emerald-500 inline-block" />
+                  <span className="flex items-center gap-1 font-medium text-emerald-600">
+                    <span className="inline-block bg-emerald-500 rounded-full size-1.5" />
                     Authenticated
                   </span>
                 </div>
               </div>
             ) : (
-              <div className="p-5 text-center rounded-xl bg-muted/20 border border-dashed border-border/60 text-muted-foreground text-xs">
+              <div className="bg-muted/20 p-5 border border-border/60 border-dashed rounded-xl text-muted-foreground text-xs text-center">
                 No active profile session. Log in or create a user to authenticate.
               </div>
             )}
 
             {token && (
-              <div className="mt-3 pt-2.5 border-t border-border/50">
+              <div className="mt-3 pt-2.5 border-border/50 border-t">
                 <Label className="text-[11px] text-muted-foreground">Active Bearer JWT</Label>
-                <div className="mt-1 p-2 rounded-lg bg-black/5 dark:bg-black/40 font-mono text-[10px] break-all text-muted-foreground select-all">
+                <div className="bg-black/5 dark:bg-black/40 mt-1 p-2 rounded-lg font-mono text-[10px] text-muted-foreground break-all select-all">
                   {token.slice(0, 35)}...{token.slice(-25)}
                 </div>
               </div>
@@ -899,12 +898,12 @@ export function UsersDashboard() {
         {/* READ: Get User By ID */}
         <Card className="shadow-xs border-border/70">
           <CardHeader className="pb-3">
-            <div className="flex items-center justify-between">
+            <div className="flex justify-between items-center">
               <div className="flex items-center gap-2">
-                <span className="p-1.5 rounded-lg bg-amber-500/10 text-amber-600">
+                <span className="bg-amber-500/10 p-1.5 rounded-lg text-amber-600">
                   <HugeiconsIcon icon={Search01Icon} strokeWidth={2} className="size-4" />
                 </span>
-                <CardTitle className="text-base font-semibold">Read User by ID</CardTitle>
+                <CardTitle className="font-semibold text-base">Read User by ID</CardTitle>
               </div>
               <Badge variant="secondary" className="font-mono text-[11px]">
                 GET /api/v1/users/:id
@@ -920,38 +919,38 @@ export function UsersDashboard() {
                 value={searchId}
                 onChange={(e) => setSearchId(e.target.value)}
                 placeholder="Enter User UUID..."
-                className="h-9 font-mono text-xs flex-1"
+                className="flex-1 h-9 font-mono text-xs"
                 required
               />
-              <Button type="submit" size="sm" disabled={searchLoading} className="cursor-pointer gap-1.5 shrink-0">
+              <Button type="submit" size="sm" disabled={searchLoading} className="gap-1.5 cursor-pointer shrink-0">
                 <HugeiconsIcon icon={Search01Icon} strokeWidth={2} className="size-3.5" />
                 {searchLoading ? "Fetching..." : "Fetch"}
               </Button>
             </form>
 
             {searchedUser && (
-              <div className="p-3 rounded-xl bg-emerald-500/5 border border-emerald-500/20 text-xs space-y-2">
-                <div className="flex items-center gap-2.5 pb-2 border-b border-emerald-500/10">
-                  <Avatar className="size-8 rounded-full border border-emerald-500/30 shrink-0">
+              <div className="space-y-2 bg-emerald-500/5 p-3 border border-emerald-500/20 rounded-xl text-xs">
+                <div className="flex items-center gap-2.5 pb-2 border-emerald-500/10 border-b">
+                  <Avatar className="border border-emerald-500/30 rounded-full size-8 shrink-0">
                     <AvatarImage src={getUserAvatar(searchedUser.id, searchedUser.email)} alt={searchedUser.name} />
-                    <AvatarFallback className="text-xs font-semibold bg-emerald-500/20 text-emerald-700">
+                    <AvatarFallback className="bg-emerald-500/20 font-semibold text-emerald-700 text-xs">
                       {(searchedUser.name || searchedUser.email).charAt(0).toUpperCase()}
                     </AvatarFallback>
                   </Avatar>
-                  <div className="min-w-0 flex-1">
-                    <p className="font-semibold text-xs text-foreground truncate">{searchedUser.name}</p>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-semibold text-foreground text-xs truncate">{searchedUser.name}</p>
                     <p className="text-[11px] text-muted-foreground truncate">{searchedUser.email}</p>
                   </div>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">ID:</span>
-                  <span className="font-mono font-medium truncate max-w-[170px]">{searchedUser.id}</span>
+                  <span className="max-w-[170px] font-mono font-medium truncate">{searchedUser.id}</span>
                 </div>
               </div>
             )}
 
             {searchError && (
-              <div className="p-2.5 rounded-xl bg-destructive/10 border border-destructive/20 text-destructive text-xs">
+              <div className="bg-destructive/10 p-2.5 border border-destructive/20 rounded-xl text-destructive text-xs">
                 {searchError}
               </div>
             )}

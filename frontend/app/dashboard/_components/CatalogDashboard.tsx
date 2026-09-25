@@ -103,7 +103,6 @@ export function CatalogDashboard() {
       const prod = await servicesApi.getProductById(id);
       setSelectedProduct(prod);
       setReserveProductId(prod.id);
-      toast.success(`Loaded product: ${prod.title}`);
     } catch (err: any) {
       toast.error(err.message || "Failed to fetch product details");
     } finally {
@@ -141,23 +140,23 @@ export function CatalogDashboard() {
   return (
     <div className="space-y-6">
       {/* Service Header Info */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-5 rounded-2xl bg-gradient-to-r from-emerald-500/10 via-primary/5 to-transparent border border-emerald-500/20 backdrop-blur-xs">
+      <div className="flex md:flex-row flex-col justify-between md:items-center gap-4 bg-gradient-to-r from-emerald-500/10 via-primary/5 to-transparent backdrop-blur-xs p-5 border border-emerald-500/20 rounded-2xl">
         <div>
           <div className="flex items-center gap-2">
-            <span className="p-2 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+            <span className="bg-emerald-500/10 p-2 rounded-xl text-emerald-600 dark:text-emerald-400">
               <HugeiconsIcon icon={PackageIcon} strokeWidth={2} className="size-5" />
             </span>
-            <h2 className="text-xl font-bold tracking-tight">Catalog Microservice Operations</h2>
-            <Badge variant="outline" className="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30">
+            <h2 className="font-bold text-xl tracking-tight">Catalog Microservice Operations</h2>
+            <Badge variant="outline" className="bg-emerald-500/10 border-emerald-500/30 text-emerald-600 dark:text-emerald-400">
               Port 3002
             </Badge>
           </div>
-          <p className="text-sm text-muted-foreground mt-1">
+          <p className="mt-1 text-muted-foreground text-sm">
             Redis Cache-Aside Layer, PostgreSQL Inventory, Multi-attribute Filtering & Atomic Stock Decrement Transactions.
           </p>
         </div>
 
-        <div className="flex items-center gap-2 flex-wrap">
+        <div className="flex flex-wrap items-center gap-2">
           <Badge variant="secondary" className="font-mono text-xs">
             {totalCount} Total Products
           </Badge>
@@ -166,7 +165,7 @@ export function CatalogDashboard() {
             variant="default"
             onClick={handleSeedCatalog}
             disabled={seedLoading}
-            className="gap-1.5 bg-emerald-600 hover:bg-emerald-500 text-white cursor-pointer shadow-xs"
+            className="gap-1.5 bg-emerald-600 hover:bg-emerald-500 shadow-xs text-white cursor-pointer"
           >
             <HugeiconsIcon icon={PackageIcon} strokeWidth={2} className={`size-3.5 ${seedLoading ? "animate-spin" : ""}`} />
             {seedLoading ? "Seeding DB..." : "Seed Catalog (15 Items)"}
@@ -178,15 +177,15 @@ export function CatalogDashboard() {
       </div>
 
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="gap-6 grid grid-cols-1 lg:grid-cols-3">
         {/* READ: Products Table & Filters (2 Columns) */}
-        <div className="lg:col-span-2 space-y-4">
+        <div className="space-y-4 lg:col-span-2">
           <Card className="shadow-xs border-border/70">
             <CardHeader className="pb-3">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="flex sm:flex-row flex-col justify-between sm:items-center gap-3">
                 <div>
                   <div className="flex items-center gap-2">
-                    <CardTitle className="text-base font-semibold">1. List Products (Query & Cache-Aside)</CardTitle>
+                    <CardTitle className="font-semibold text-base">1. List Products (Query & Cache-Aside)</CardTitle>
                   </div>
                   <CardDescription className="text-xs">
                     GET /api/v1/products with Redis cache acceleration.
@@ -201,7 +200,7 @@ export function CatalogDashboard() {
                       setSearchCategory(e.target.value);
                       setPage(1);
                     }}
-                    className="h-8 text-xs rounded-lg border border-border bg-background px-2.5 py-1 text-foreground focus:outline-hidden"
+                    className="bg-background px-2.5 py-1 border border-border rounded-lg focus:outline-hidden h-8 text-foreground text-xs"
                   >
                     <option value="">All Categories</option>
                     <option value="Skin Care">Skin Care</option>
@@ -213,7 +212,7 @@ export function CatalogDashboard() {
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value)}
-                    className="h-8 text-xs rounded-lg border border-border bg-background px-2.5 py-1 text-foreground focus:outline-hidden"
+                    className="bg-background px-2.5 py-1 border border-border rounded-lg focus:outline-hidden h-8 text-foreground text-xs"
                   >
                     <option value="default">Default Sort</option>
                     <option value="price-asc">Price: Low to High</option>
@@ -234,19 +233,19 @@ export function CatalogDashboard() {
                       <TableHead className="text-xs">Category</TableHead>
                       <TableHead className="text-xs">Price</TableHead>
                       <TableHead className="text-xs">Stock</TableHead>
-                      <TableHead className="text-right text-xs">Action</TableHead>
+                      <TableHead className="text-xs text-right">Action</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {loading ? (
                       <TableRow>
-                        <TableCell colSpan={6} className="text-center py-8 text-muted-foreground text-xs">
+                        <TableCell colSpan={6} className="py-8 text-muted-foreground text-xs text-center">
                           Loading products from Catalog Service...
                         </TableCell>
                       </TableRow>
                     ) : products.length === 0 ? (
                       <TableRow>
-                        <TableCell colSpan={6} className="text-center py-8 text-muted-foreground text-xs">
+                        <TableCell colSpan={6} className="py-8 text-muted-foreground text-xs text-center">
                           No products found matching filters.
                         </TableCell>
                       </TableRow>
@@ -263,7 +262,7 @@ export function CatalogDashboard() {
                             onClick={() => handleFetchProductById(p.id)}
                           >
                             <TableCell className="py-2">
-                              <div className="relative size-10 rounded-lg overflow-hidden border border-border/60 bg-muted/30">
+                              <div className="relative bg-muted/30 border border-border/60 rounded-lg size-10 overflow-hidden">
                                 {p.imageUrl ? (
                                   <Image
                                     src={p.imageUrl}
@@ -273,22 +272,22 @@ export function CatalogDashboard() {
                                     sizes="40px"
                                   />
                                 ) : (
-                                  <div className="w-full h-full flex items-center justify-center text-muted-foreground text-[10px]">
+                                  <div className="flex justify-center items-center w-full h-full text-[10px] text-muted-foreground">
                                     IMG
                                   </div>
                                 )}
                               </div>
                             </TableCell>
                             <TableCell className="py-2">
-                              <div className="font-medium text-xs leading-snug line-clamp-1">{p.title}</div>
+                              <div className="font-medium text-xs line-clamp-1 leading-snug">{p.title}</div>
                               <div className="font-mono text-[10px] text-muted-foreground">{p.id}</div>
                             </TableCell>
                             <TableCell className="py-2">
-                              <Badge variant="outline" className="text-[10px] py-0">
+                              <Badge variant="outline" className="py-0 text-[10px]">
                                 {p.category}
                               </Badge>
                             </TableCell>
-                            <TableCell className="py-2 font-mono text-xs font-semibold">
+                            <TableCell className="py-2 font-mono font-semibold text-xs">
                               ${p.price.toFixed(2)}
                             </TableCell>
                             <TableCell className="py-2">
@@ -305,7 +304,7 @@ export function CatalogDashboard() {
                               <Button
                                 size="sm"
                                 variant="ghost"
-                                className="h-7 text-xs px-2 cursor-pointer"
+                                className="px-2 h-7 text-xs cursor-pointer"
                                 onClick={(e) => {
                                   e.stopPropagation();
                                   handleFetchProductById(p.id);
@@ -323,7 +322,7 @@ export function CatalogDashboard() {
               </div>
 
               {/* Pagination */}
-              <div className="flex items-center justify-between p-3 border-t border-border/50 text-xs text-muted-foreground">
+              <div className="flex justify-between items-center p-3 border-border/50 border-t text-muted-foreground text-xs">
                 <span>Page {page} of {totalPages} ({totalCount} total)</span>
                 <div className="flex gap-1.5">
                   <Button
@@ -351,13 +350,13 @@ export function CatalogDashboard() {
         </div>
 
         {/* DETAILS & UPDATE: Stock Reservation & Product Detail (1 Column, Sticky Aside) */}
-        <aside className="space-y-4 lg:sticky lg:top-[72px] self-start max-h-[calc(100vh-88px)] overflow-y-auto pr-0.5">
+        <aside className="lg:top-[72px] lg:sticky self-start space-y-4 pr-0.5 max-h-[calc(100vh-88px)] overflow-y-auto">
           {/* UPDATE: Reserve Stock Tool */}
           <Card className="shadow-xs border-border/70 border-emerald-500/30">
             <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-base font-semibold">2. Update Stock (Reserve)</CardTitle>
-                <Badge variant="secondary" className="font-mono text-[10px] bg-emerald-500/10 text-emerald-600">
+              <div className="flex justify-between items-center">
+                <CardTitle className="font-semibold text-base">2. Update Stock (Reserve)</CardTitle>
+                <Badge variant="secondary" className="bg-emerald-500/10 font-mono text-[10px] text-emerald-600">
                   POST /reserve
                 </Badge>
               </div>
@@ -373,7 +372,7 @@ export function CatalogDashboard() {
                     id="res-prod-id"
                     value={reserveProductId}
                     onChange={(e) => setReserveProductId(e.target.value)}
-                    className="w-full h-9 text-xs rounded-lg border border-border bg-background px-2.5 py-1 text-foreground focus:outline-hidden"
+                    className="bg-background px-2.5 py-1 border border-border rounded-lg focus:outline-hidden w-full h-9 text-foreground text-xs"
                   >
                     {products.map((p) => (
                       <option key={p.id} value={p.id}>
@@ -383,7 +382,7 @@ export function CatalogDashboard() {
                   </select>
                 </div>
 
-                <div className="grid grid-cols-2 gap-2">
+                <div className="gap-2 grid grid-cols-2">
                   <div className="space-y-1">
                     <Label htmlFor="res-qty" className="text-xs">Quantity</Label>
                     <Input
@@ -393,7 +392,7 @@ export function CatalogDashboard() {
                       max={100}
                       value={reserveQuantity}
                       onChange={(e) => setReserveQuantity(parseInt(e.target.value, 10) || 1)}
-                      className="h-8 text-xs font-mono"
+                      className="h-8 font-mono text-xs"
                       required
                     />
                   </div>
@@ -403,14 +402,14 @@ export function CatalogDashboard() {
                       id="res-order"
                       value={reserveOrderId}
                       onChange={(e) => setReserveOrderId(e.target.value)}
-                      className="h-8 text-xs font-mono"
+                      className="h-8 font-mono text-xs"
                       required
                     />
                   </div>
                 </div>
 
                 {lastReservation && (
-                  <div className="p-2.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-[11px] space-y-1">
+                  <div className="space-y-1 bg-emerald-500/10 p-2.5 border border-emerald-500/20 rounded-lg text-[11px]">
                     <div className="flex items-center gap-1 font-semibold text-emerald-600">
                       <HugeiconsIcon icon={CheckmarkCircle01Icon} strokeWidth={2} className="size-3.5" />
                       Stock Reserved Successfully
@@ -419,7 +418,7 @@ export function CatalogDashboard() {
                   </div>
                 )}
               </CardContent>
-              <CardFooter className="pt-0 flex justify-end">
+              <CardFooter className="flex justify-end pt-0">
                 <Button type="submit" size="sm" disabled={reserveLoading} className="w-full cursor-pointer">
                   {reserveLoading ? "Reserving..." : "Execute Stock Decrement"}
                 </Button>
@@ -430,8 +429,8 @@ export function CatalogDashboard() {
           {/* READ: Product Detail Inspector */}
           <Card className="shadow-xs border-border/70">
             <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-base font-semibold">3. Read Product Details</CardTitle>
+              <div className="flex justify-between items-center">
+                <CardTitle className="font-semibold text-base">3. Read Product Details</CardTitle>
                 <Badge variant="secondary" className="font-mono text-[10px]">
                   GET /:id
                 </Badge>
@@ -442,27 +441,27 @@ export function CatalogDashboard() {
             </CardHeader>
             <CardContent>
               {detailLoading ? (
-                <div className="text-center py-6 text-xs text-muted-foreground">Loading product details...</div>
+                <div className="py-6 text-muted-foreground text-xs text-center">Loading product details...</div>
               ) : selectedProduct ? (
                 <div className="space-y-3 text-xs">
                   <div className="flex items-center gap-3">
-                    <div className="relative size-14 rounded-lg overflow-hidden border border-border bg-muted/40 shrink-0">
+                    <div className="relative bg-muted/40 border border-border rounded-lg size-14 overflow-hidden shrink-0">
                       {selectedProduct.imageUrl && (
                         <Image src={selectedProduct.imageUrl} alt={selectedProduct.title} fill className="object-cover" />
                       )}
                     </div>
                     <div>
                       <div className="font-semibold">{selectedProduct.title}</div>
-                      <div className="text-muted-foreground font-mono text-[11px]">{selectedProduct.id}</div>
-                      <div className="text-primary font-bold mt-0.5">${selectedProduct.price.toFixed(2)}</div>
+                      <div className="font-mono text-[11px] text-muted-foreground">{selectedProduct.id}</div>
+                      <div className="mt-0.5 font-bold text-primary">${selectedProduct.price.toFixed(2)}</div>
                     </div>
                   </div>
 
-                  <p className="text-muted-foreground text-[11px] line-clamp-3">
+                  <p className="text-[11px] text-muted-foreground line-clamp-3">
                     {selectedProduct.description || "No description available."}
                   </p>
 
-                  <div className="pt-2 border-t border-border/40 grid grid-cols-2 gap-2 text-[11px]">
+                  <div className="gap-2 grid grid-cols-2 pt-2 border-border/40 border-t text-[11px]">
                     <div>
                       <span className="text-muted-foreground">Rating:</span> {selectedProduct.rating} ★ ({selectedProduct.reviewCount})
                     </div>
@@ -476,7 +475,7 @@ export function CatalogDashboard() {
                       asChild
                       size="sm"
                       variant="outline"
-                      className="w-full text-xs gap-1.5 border-primary/40 text-primary hover:bg-primary/10 cursor-pointer"
+                      className="gap-1.5 hover:bg-primary/10 border-primary/40 w-full text-primary text-xs cursor-pointer"
                     >
                       <Link href={`/${selectedProduct.id}`}>
                         <span>View Product Page (/{selectedProduct.id})</span>
@@ -486,7 +485,7 @@ export function CatalogDashboard() {
                   </div>
                 </div>
               ) : (
-                <div className="text-center py-6 text-xs text-muted-foreground">
+                <div className="py-6 text-muted-foreground text-xs text-center">
                   Select a product from the table to view its live record.
                 </div>
               )}

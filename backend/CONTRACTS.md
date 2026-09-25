@@ -8,7 +8,7 @@
 
 | Component | Container / Process Port | Host Port | Protocol | Purpose / URL |
 |---|---|---|---|---|
-| **Frontend (Next.js)** | `3000` | `3000` | HTTP | Customer Web Storefront (`http://localhost:3000`) |
+| **Frontend (Next.js)** | `3000` | `3000` | HTTP | Customer Web Beauty Shop (`http://localhost:3000`) |
 | **User Service** | `3001` | `3001` | HTTP | Auth & User Management API (`/health`, `/metrics`) |
 | **Catalog Service** | `3002` | `3002` | HTTP | Product Catalog & Inventory API (`/health`, `/metrics`) |
 | **Order Service** | `3003` | `3003` | HTTP | Order Processing & Checkout API (`/health`, `/metrics`) |
