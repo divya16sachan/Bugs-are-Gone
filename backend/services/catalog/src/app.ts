@@ -8,6 +8,7 @@ import { catalogRoutes } from "./routes/index.js";
 import { config } from "./config.js";
 import { prisma } from "./lib/prisma.js";
 import { getRedisClient } from "./services/redis.service.js";
+import { catalogService } from "./services/catalog.service.js";
 
 export async function buildApp(): Promise<FastifyInstance> {
   const logger = createLogger({
@@ -65,6 +66,18 @@ export async function buildApp(): Promise<FastifyInstance> {
 
   // Domain API Routes
   await app.register(catalogRoutes);
+
+  // Auto-seed if catalog database is empty on start
+  try {
+    const count = await prisma.product.count();
+    if (count === 0) {
+      logger.info("[Catalog] Empty catalog database detected, performing auto-seed...");
+      await catalogService.seedProducts();
+      logger.info("[Catalog] Auto-seed complete.");
+    }
+  } catch (err: any) {
+    logger.warn({ err: err.message }, "[Catalog] Failed to verify/seed catalog on startup");
+  }
 
   return app;
 }

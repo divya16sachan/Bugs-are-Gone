@@ -61,8 +61,10 @@ scrape_configs:
         labels:
           service: "payment-service"
 
-  - job_name: "kube-state-metrics"
-    scrape_interval: 5s
-    static_configs:
-      - targets: ["host.docker.internal:8088"]
+  # Optional: Enable when running Kubernetes cluster with kube-state-metrics port-forwarded:
+  # kubectl port-forward -n kube-system svc/kube-state-metrics 8088:8080
+  # - job_name: "kube-state-metrics"
+  #   scrape_interval: 5s
+  #   static_configs:
+  #     - targets: ["host.docker.internal:8088"]
 

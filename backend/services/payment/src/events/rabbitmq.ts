@@ -63,94 +63,14 @@ export async function startPaymentConsumers(): Promise<void> {
       try {
         const rawContent = msg.content.toString();
         const event = JSON.parse(rawContent);
-        const { orderId, userId, totalAmount } = event.data;
+        const { orderId, totalAmount } = event.data;
 
-        // Measure lag from order creation to processing
-        if (event.timestamp) {
-          const lagSeconds = (Date.now() - new Date(event.timestamp).getTime()) / 1000;
-          paymentMetrics.paymentQueueConsumerLagSeconds.observe(Math.max(0, lagSeconds));
-        }
+        console.log(`[Payment Consumer] Logged new Order ${orderId} ($${totalAmount}). Order status is PENDING_PAYMENT.`);
 
-        console.log(`[Payment Consumer] Processing payment for Order ${orderId} ($${totalAmount})...`);
-
-        // Simulate 1.5s - 3.5s payment gateway network roundtrip
-        const processingDelay = 1500 + Math.random() * 2000;
-        await sleep(processingDelay);
-
-        // Check artificial failure rate (default 10% or 0.1)
-        const isFailure = Math.random() < config.artificialFailureRate;
-
-        if (isFailure) {
-          console.warn(`[Payment Consumer] Simulating payment failure for Order ${orderId}`);
-
-          await prisma.payment.upsert({
-            where: { orderId },
-            create: {
-              orderId,
-              userId,
-              amount: totalAmount,
-              status: "FAILED",
-              transactionReference: null,
-            },
-            update: {
-              status: "FAILED",
-            },
-          });
-
-          paymentMetrics.paymentTransactionsTotal.inc({ status: "failed" });
-
-          await publishEvent("payment.failed", {
-            eventId: `evt_${Date.now()}_${Math.random().toString(36).substring(7)}`,
-            eventType: "PaymentFailed",
-            timestamp: new Date().toISOString(),
-            data: {
-              orderId,
-              userId,
-              amount: totalAmount,
-              reason: "SIMULATED_TRANSACTION_FAILURE",
-            },
-          });
-        } else {
-          const txRef = `tx_${Date.now()}_${Math.random().toString(36).substring(7)}`;
-
-          await prisma.payment.upsert({
-            where: { orderId },
-            create: {
-              orderId,
-              userId,
-              amount: totalAmount,
-              status: "SUCCESS",
-              transactionReference: txRef,
-            },
-            update: {
-              status: "SUCCESS",
-              transactionReference: txRef,
-            },
-          });
-
-          paymentMetrics.paymentTransactionsTotal.inc({ status: "success" });
-
-          await publishEvent("payment.processed", {
-            eventId: `evt_${Date.now()}_${Math.random().toString(36).substring(7)}`,
-            eventType: "PaymentProcessed",
-            timestamp: new Date().toISOString(),
-            data: {
-              paymentId: txRef,
-              orderId,
-              userId,
-              amount: totalAmount,
-              status: "SUCCESS",
-              transactionReference: txRef,
-            },
-          });
-
-          console.log(`[Payment Consumer] Payment SUCCESS for Order ${orderId}`);
-        }
-
+        // Acknowledge receipt of order.created event without auto-charging
         ch.ack(msg);
       } catch (err: any) {
         console.error("[Payment Consumer Error]:", err);
-        // Nack without requeue if unrecoverable
         ch.nack(msg, false, false);
       }
     });

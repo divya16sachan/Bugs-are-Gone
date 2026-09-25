@@ -70,7 +70,7 @@ export async function getProductsHandler(req: FastifyRequest, reply: FastifyRepl
     ? parseInt(query.limit, 10)
     : query.pageSize
     ? parseInt(query.pageSize, 10)
-    : 12;
+    : 20;
 
   const filters = {
     categories: categories.length > 0 ? categories : undefined,
@@ -142,5 +142,18 @@ export async function reserveStockHandler(req: FastifyRequest, reply: FastifyRep
     }
 
     throw err;
+  }
+}
+
+export async function seedProductsHandler(req: FastifyRequest, reply: FastifyReply) {
+  try {
+    const result = await catalogService.seedProducts();
+    return reply.status(200).send(result);
+  } catch (err: any) {
+    return reply.status(500).send({
+      error: "InternalServerError",
+      message: err.message || "Failed to seed catalog database",
+      statusCode: 500,
+    });
   }
 }

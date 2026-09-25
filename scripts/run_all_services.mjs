@@ -44,7 +44,7 @@ function startService(svc) {
   console.log(`[Manager] Starting ${svc.name} on port ${svc.port}...`);
   const proc = spawn(
     process.execPath,
-    ["--max-old-space-size=512", tsxCli, path.join(rootDir, svc.entry)],
+    ["--max-old-space-size=512", tsxCli, "watch", path.join(rootDir, svc.entry)],
     {
       cwd: rootDir,
       env: {

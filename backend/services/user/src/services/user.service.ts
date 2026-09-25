@@ -89,6 +89,40 @@ export class UserService {
     };
   }
 
+  async listUsers(page: number = 1, limit: number = 10) {
+    const safePage = Math.max(1, page);
+    const safeLimit = Math.max(1, Math.min(100, limit));
+    const skip = (safePage - 1) * safeLimit;
+
+    const [users, total] = await Promise.all([
+      prisma.user.findMany({
+        skip,
+        take: safeLimit,
+        orderBy: { createdAt: "desc" },
+        select: {
+          id: true,
+          email: true,
+          name: true,
+          createdAt: true,
+        },
+      }),
+      prisma.user.count(),
+    ]);
+
+    return {
+      users: users.map((u) => ({
+        ...u,
+        role: "customer" as const,
+      })),
+      pagination: {
+        page: safePage,
+        limit: safeLimit,
+        total,
+        totalPages: Math.ceil(total / safeLimit) || 1,
+      },
+    };
+  }
+
   generateToken(userId: string, email: string): string {
     const payload: JwtPayload = {
       sub: userId,

@@ -24,6 +24,7 @@ export function setAccessToken(token: string | null) {
     } else {
       localStorage.removeItem("accessToken");
     }
+    window.dispatchEvent(new CustomEvent("auth:change", { detail: { token } }));
   }
 }
 export function getAccessToken() {
@@ -46,11 +47,13 @@ export class ApiError extends Error {
 
 async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
   const token = getAccessToken();
+  const hasBody = options.body !== undefined && options.body !== null;
+
   const res = await fetch(`${BASE_URL}${path}`, {
     ...options,
     credentials: "include",
     headers: {
-      "Content-Type": "application/json",
+      ...(hasBody ? { "Content-Type": "application/json" } : {}),
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...options.headers,
     },
@@ -73,12 +76,13 @@ export const apiClient = {
   post: <T>(path: string, data?: unknown) =>
     request<T>(path, {
       method: "POST",
-      body: data ? JSON.stringify(data) : undefined,
+      body: data !== undefined ? JSON.stringify(data) : undefined,
     }),
   patch: <T>(path: string, data?: unknown) =>
     request<T>(path, {
       method: "PATCH",
-      body: data ? JSON.stringify(data) : undefined,
+      body: data !== undefined ? JSON.stringify(data) : undefined,
     }),
   delete: <T>(path: string) => request<T>(path, { method: "DELETE" }),
 };
+

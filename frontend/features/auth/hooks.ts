@@ -1,49 +1,54 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { authApi } from "./api";
 import { authKeys } from "./query-keys";
-import { getAccessToken, setAccessToken } from "@/lib/api-client";
+import { setAccessToken } from "@/lib/api-client";
+import { useAuthStore } from "./auth-store";
 import type { AuthResponse, AuthUser } from "./schemas";
 
-// The only API surface the components touch. Redirects/toasts are handled by the
-// forms (per-page concerns); these hooks own the shared side effects.
 function onAuthed(
   qc: ReturnType<typeof useQueryClient>,
   data: AuthResponse
 ) {
-  setAccessToken(data.accessToken);
+  const token = data.accessToken || (data as any).token;
+  useAuthStore.getState().setAuth(data.user, token);
   qc.setQueryData(authKeys.session(), data.user);
-  qc.invalidateQueries({ queryKey: authKeys.session() });
+  qc.invalidateQueries({ queryKey: authKeys.all });
 }
 
 export function useSession() {
-  const token = typeof window !== "undefined" ? getAccessToken() : null;
-  return useQuery<AuthUser | null>({
+  const storeUser = useAuthStore((state) => state.user);
+  const storeIsLoading = useAuthStore((state) => state.isLoading);
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+
+  const query = useQuery<AuthUser | null>({
     queryKey: authKeys.session(),
     queryFn: async () => {
-      const currentToken = getAccessToken();
-      if (!currentToken) return null;
-      try {
-        return await authApi.checkAuth();
-      } catch (err: any) {
-        // Only reset token if backend explicitly returns 401 Unauthorized
-        if (err?.status === 401 || err?.statusCode === 401) {
-          setAccessToken(null);
-        }
-        return null;
-      }
+      const user = await useAuthStore.getState().fetchSession();
+      return user;
     },
-    enabled: typeof window !== "undefined" && !!token,
-    staleTime: 5 * 60 * 1000,
+    initialData: storeUser || undefined,
+    staleTime: 60 * 1000,
     retry: false,
   });
+
+  const effectiveUser = query.data ?? storeUser ?? null;
+  const isLoading = storeIsLoading && !effectiveUser;
+
+  return {
+    ...query,
+    data: effectiveUser,
+    user: effectiveUser,
+    isAuthenticated: isAuthenticated || !!effectiveUser,
+    isLoading,
+  };
 }
 
 export function useLogout() {
   const qc = useQueryClient();
   return () => {
-    setAccessToken(null);
+    useAuthStore.getState().clearAuth();
     qc.setQueryData(authKeys.session(), null);
-    qc.invalidateQueries({ queryKey: authKeys.session() });
+    qc.invalidateQueries({ queryKey: authKeys.all });
   };
 }
 
@@ -66,3 +71,4 @@ export function useRegister() {
 export function useForgotPassword() {
   return useMutation({ mutationFn: authApi.forgotPassword });
 }
+

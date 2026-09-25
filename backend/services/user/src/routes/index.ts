@@ -4,9 +4,13 @@ import {
   loginHandler,
   getProfileMeHandler,
   getProfileByIdHandler,
+  listUsersHandler,
 } from "../controllers/index.js";
 
 export const userRoutes: FastifyPluginAsync = async (fastify) => {
+  // GET /api/v1/users (list all users with pagination)
+  fastify.get("/api/v1/users", listUsersHandler);
+
   // POST /api/v1/auth/signup
   fastify.post(
     "/api/v1/auth/signup",

@@ -58,11 +58,18 @@ export class CatalogService {
       (filters.sortBy && filters.sortBy !== "default") ||
       page > 1;
 
-    // Cache-aside: Cache unfiltered first page
-    const cacheKey = "catalog:products:page1";
+    // Cache-aside: Cache unfiltered queries per page and limit
+    const cacheKey = `catalog:products:p${page}:l${limit}`;
     if (!hasCustomFilters) {
       const cached = await getCached<any>(cacheKey);
-      if (cached) return cached;
+      if (
+        cached &&
+        Array.isArray(cached.products) &&
+        cached.products.length > 0 &&
+        cached.limit === limit
+      ) {
+        return cached;
+      }
     }
 
     const where: any = {};
@@ -230,6 +237,305 @@ export class CatalogService {
       throw err;
     }
   }
+
+  async seedProducts() {
+    for (const product of DEFAULT_PRODUCTS) {
+      await prisma.product.upsert({
+        where: { id: product.id },
+        update: product,
+        create: product,
+      });
+    }
+
+    // Invalidate all Redis catalog caches
+    await invalidateCache("catalog:*");
+    await invalidateCache("catalog:products:page1");
+    await invalidateCache("product:*");
+    for (const product of DEFAULT_PRODUCTS) {
+      await invalidateCache(`product:${product.id}`);
+    }
+
+    return {
+      success: true,
+      message: `Successfully seeded ${DEFAULT_PRODUCTS.length} products into the catalog database.`,
+      count: DEFAULT_PRODUCTS.length,
+      products: DEFAULT_PRODUCTS,
+    };
+  }
 }
 
+export const DEFAULT_PRODUCTS = [
+  {
+    id: "prod-1",
+    title: "SilkSculpt Serum",
+    category: "Skin Care",
+    skinTypes: ["Combination", "Dry", "Normal"],
+    rating: 4.9,
+    reviewCount: 312,
+    price: 35.0,
+    originalPrice: 70.0,
+    discountPercent: 50,
+    imageUrl:
+      "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=600&q=80",
+    stock: 50,
+    isBestSeller: true,
+    isNewArrival: false,
+    isOnSale: true,
+    description: "Intensive botanical peptide serum for radiant, smooth skin texture.",
+  },
+  {
+    id: "prod-2",
+    title: "SilkSkin Serum",
+    category: "Skin Care",
+    skinTypes: ["Sensitive", "Dry", "Normal"],
+    rating: 4.8,
+    reviewCount: 245,
+    price: 48.0,
+    originalPrice: 60.0,
+    discountPercent: 20,
+    imageUrl:
+      "https://images.unsplash.com/photo-1707539160277-e39464517645?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    stock: 50,
+    isBestSeller: true,
+    isNewArrival: false,
+    isOnSale: true,
+    description: "Deep hydration antioxidant booster infused with organic botanical extracts.",
+  },
+  {
+    id: "prod-3",
+    title: "Argan Glow",
+    category: "Hair Care",
+    skinTypes: ["Normal", "Dry"],
+    rating: 5.0,
+    reviewCount: 189,
+    price: 63.0,
+    originalPrice: 90.0,
+    discountPercent: 30,
+    imageUrl:
+      "https://images.unsplash.com/photo-1601049541289-9b1b7bbbfe19?auto=format&fit=crop&w=600&q=80",
+    stock: 50,
+    isBestSeller: true,
+    isNewArrival: false,
+    isOnSale: true,
+    description: "Pure cold-pressed Moroccan argan elixir for weightless shine and nourishment.",
+  },
+  {
+    id: "prod-4",
+    title: "Nephrolepis exaltata",
+    category: "Body Care",
+    skinTypes: ["Sensitive", "Normal", "Dry"],
+    rating: 5.0,
+    reviewCount: 120,
+    price: 45.0,
+    originalPrice: 50.0,
+    discountPercent: 10,
+    imageUrl:
+      "https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=600&q=80",
+    stock: 50,
+    isBestSeller: true,
+    isNewArrival: true,
+    isOnSale: true,
+    description: "Botanical fern extract smoothing emulsion for ultra-soft body rejuvenation.",
+  },
+  {
+    id: "prod-5",
+    title: "Smooth Foundation",
+    category: "Makeup",
+    skinTypes: ["Combination", "Oily", "Normal"],
+    rating: 5.0,
+    reviewCount: 410,
+    price: 20.0,
+    originalPrice: 40.0,
+    discountPercent: 50,
+    imageUrl:
+      "https://images.unsplash.com/photo-1631729371254-42c2892f0e6e?auto=format&fit=crop&w=600&q=80",
+    stock: 50,
+    isBestSeller: true,
+    isNewArrival: false,
+    isOnSale: true,
+    description: "Velvety seamless matte coverage with 24-hour breathable wear.",
+  },
+  {
+    id: "prod-6",
+    title: "Smooth Body Cream",
+    category: "Body Care",
+    skinTypes: ["Dry", "Sensitive", "Normal"],
+    rating: 5.0,
+    reviewCount: 388,
+    price: 30.0,
+    originalPrice: 60.0,
+    discountPercent: 50,
+    imageUrl:
+      "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?auto=format&fit=crop&w=600&q=80",
+    stock: 50,
+    isBestSeller: true,
+    isNewArrival: false,
+    isOnSale: true,
+    description: "Rich whipped shea and floral butter cream to deeply nourish parched skin.",
+  },
+  {
+    id: "prod-7",
+    title: "AquaAura Wellness",
+    category: "Body Care",
+    skinTypes: ["Combination", "Dry", "Sensitive"],
+    rating: 4.8,
+    reviewCount: 167,
+    price: 30.0,
+    originalPrice: 60.0,
+    discountPercent: 50,
+    imageUrl:
+      "https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?auto=format&fit=crop&w=600&q=80",
+    stock: 50,
+    isBestSeller: true,
+    isNewArrival: false,
+    isOnSale: true,
+    description: "Holistic mineral moisturizing cream infused with marine botanicals.",
+  },
+  {
+    id: "prod-8",
+    title: "Velvet Rose",
+    category: "Makeup",
+    skinTypes: ["Normal", "Sensitive"],
+    rating: 4.9,
+    reviewCount: 290,
+    price: 10.0,
+    originalPrice: 20.0,
+    discountPercent: 50,
+    imageUrl:
+      "https://images.unsplash.com/photo-1586495777744-4413f21062fa?auto=format&fit=crop&w=600&q=80",
+    stock: 50,
+    isBestSeller: true,
+    isNewArrival: true,
+    isOnSale: true,
+    description: "Couture satin petal lipstick enriched with organic rose hip oil.",
+  },
+  {
+    id: "prod-9",
+    title: "Herbal Haven",
+    category: "Body Care",
+    skinTypes: ["Oily", "Combination", "Normal"],
+    rating: 5.0,
+    reviewCount: 315,
+    price: 10.0,
+    originalPrice: 20.0,
+    discountPercent: 50,
+    imageUrl:
+      "https://images.unsplash.com/photo-1635867264346-ed6a8d912ecf?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    stock: 50,
+    isBestSeller: true,
+    isNewArrival: false,
+    isOnSale: true,
+    description: "Artisanal botanical cleansing bar with calming chamomile and olive oil.",
+  },
+  {
+    id: "prod-10",
+    title: "Essence Body Gel",
+    category: "Body Care",
+    skinTypes: ["Normal", "Sensitive", "Dry"],
+    rating: 4.8,
+    reviewCount: 142,
+    price: 30.0,
+    originalPrice: 60.0,
+    discountPercent: 50,
+    imageUrl:
+      "https://images.unsplash.com/photo-1617897903246-719242758050?auto=format&fit=crop&w=600&q=80",
+    stock: 50,
+    isBestSeller: true,
+    isNewArrival: false,
+    isOnSale: true,
+    description: "Aromatherapy soothing shower and bath gel with calming lavender essence.",
+  },
+  {
+    id: "prod-11",
+    title: "HydraLuxe Serum",
+    category: "Skin Care",
+    skinTypes: ["Dry", "Combination", "Sensitive"],
+    rating: 4.9,
+    reviewCount: 228,
+    price: 20.0,
+    originalPrice: 40.0,
+    discountPercent: 50,
+    imageUrl:
+      "https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?auto=format&fit=crop&w=600&q=80",
+    stock: 50,
+    isBestSeller: true,
+    isNewArrival: true,
+    isOnSale: true,
+    description: "Multi-molecular hyaluronic acid serum with deep moisture retention.",
+  },
+  {
+    id: "prod-12",
+    title: "OceanMist Moisturizer",
+    category: "Skin Care",
+    skinTypes: ["Normal", "Combination", "Oily"],
+    rating: 4.8,
+    reviewCount: 195,
+    price: 20.0,
+    originalPrice: 40.0,
+    discountPercent: 50,
+    imageUrl:
+      "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=600&q=80",
+    stock: 50,
+    isBestSeller: true,
+    isNewArrival: false,
+    isOnSale: true,
+    description: "Lightweight marine collagen cloud cream for instant radiance.",
+  },
+  {
+    id: "prod-13",
+    title: "Amber Botanica Parfum",
+    category: "Fragrances",
+    skinTypes: ["Normal"],
+    rating: 4.9,
+    reviewCount: 88,
+    price: 85.0,
+    originalPrice: 110.0,
+    discountPercent: 22,
+    imageUrl:
+      "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=600&q=80",
+    stock: 50,
+    isBestSeller: false,
+    isNewArrival: true,
+    isOnSale: true,
+    description: "Warm amber and bergamot artisan eau de parfum with earthy undertones.",
+  },
+  {
+    id: "prod-14",
+    title: "Botanical Nail Elixir",
+    category: "Nail Care",
+    skinTypes: ["Normal", "Dry"],
+    rating: 4.7,
+    reviewCount: 64,
+    price: 18.0,
+    originalPrice: 25.0,
+    discountPercent: 28,
+    imageUrl:
+      "https://images.unsplash.com/photo-1632345031435-8727f6897d53?auto=format&fit=crop&w=600&q=80",
+    stock: 0,
+    isBestSeller: false,
+    isNewArrival: false,
+    isOnSale: true,
+    description: "Nutritive jojoba cuticle oil and keratin strengthening treatment.",
+  },
+  {
+    id: "prod-15",
+    title: "Glow Complexion Blush",
+    category: "Makeup",
+    skinTypes: ["Normal", "Combination"],
+    rating: 4.8,
+    reviewCount: 140,
+    price: 24.0,
+    originalPrice: 32.0,
+    discountPercent: 25,
+    imageUrl:
+      "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=600&q=80",
+    stock: 50,
+    isBestSeller: false,
+    isNewArrival: true,
+    isOnSale: true,
+    description: "Silky mineral powder blush for a naturally flushed, luminous finish.",
+  },
+];
+
 export const catalogService = new CatalogService();
+

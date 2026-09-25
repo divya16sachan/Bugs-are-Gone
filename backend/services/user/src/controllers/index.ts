@@ -92,3 +92,12 @@ export async function getProfileByIdHandler(req: FastifyRequest, reply: FastifyR
 
   return reply.status(200).send(user);
 }
+
+export async function listUsersHandler(req: FastifyRequest, reply: FastifyReply) {
+  const query = req.query as { page?: string; limit?: string };
+  const page = parseInt(query.page || "1", 10) || 1;
+  const limit = parseInt(query.limit || "10", 10) || 10;
+
+  const result = await userService.listUsers(page, limit);
+  return reply.status(200).send(result);
+}

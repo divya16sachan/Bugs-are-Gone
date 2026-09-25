@@ -121,7 +121,7 @@ export function parseFiltersFromSearchParams(
     availability,
     sortBy,
     page,
-    pageSize: 12,
+    pageSize: 20,
   };
 }
 

@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, ViewTransition } from "react";
+import { useState, useEffect, ViewTransition } from "react";
 import Image from "next/image";
 import { Product } from "../../_components/types";
 import { Button } from "@/components/ui/button";
+import { useWishlistStore } from "@/lib/wishlist-store";
 import {
   ArrowLeft01Icon,
   ArrowRight01Icon,
@@ -15,6 +16,15 @@ interface ProductGalleryProps {
 }
 
 export default function ProductGallery({ product }: ProductGalleryProps) {
+  const { toggleItem, isInWishlist } = useWishlistStore();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const isWishlisted = mounted ? isInWishlist(product.id) : false;
+
   const productImages = [
     product.imageUrl,
     "https://images.unsplash.com/photo-1556228720-195a672e8a03",
@@ -63,7 +73,7 @@ export default function ProductGallery({ product }: ProductGalleryProps) {
               onClick={previousImage}
               tooltip="Previous image"
               aria-label="Previous image"
-              className="absolute left-4 top-1/2 z-10 size-11 -translate-y-1/2 rounded-full bg-white/90 text-stone-800 shadow-md transition hover:scale-105 hover:bg-white"
+              className="absolute left-4 top-1/2 z-10 size-11 -translate-y-1/2 rounded-full bg-white/90 text-stone-800 shadow-md transition hover:scale-105 hover:bg-white cursor-pointer"
             >
               <ArrowLeft01Icon size={22} />
             </Button>
@@ -75,7 +85,7 @@ export default function ProductGallery({ product }: ProductGalleryProps) {
               onClick={nextImage}
               tooltip="Next image"
               aria-label="Next image"
-              className="absolute right-4 top-1/2 z-10 size-11 -translate-y-1/2 rounded-full bg-white/90 text-stone-800 shadow-md transition hover:scale-105 hover:bg-white"
+              className="absolute right-4 top-1/2 z-10 size-11 -translate-y-1/2 rounded-full bg-white/90 text-stone-800 shadow-md transition hover:scale-105 hover:bg-white cursor-pointer"
             >
               <ArrowRight01Icon size={22} />
             </Button>
@@ -86,11 +96,16 @@ export default function ProductGallery({ product }: ProductGalleryProps) {
           type="button"
           variant="ghost"
           size="icon"
-          tooltip="Add to wishlist"
-          aria-label="Add to wishlist"
-          className="absolute right-4 top-4 z-10 size-11 rounded-full bg-white/90 text-stone-800 shadow-md transition hover:scale-105 hover:bg-white"
+          onClick={() => toggleItem(product)}
+          tooltip={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
+          aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
+          className={`absolute right-4 top-4 z-10 size-11 rounded-full shadow-md transition hover:scale-105 cursor-pointer ${
+            isWishlisted
+              ? "bg-rose-50 text-rose-600 hover:bg-rose-100"
+              : "bg-white/90 text-stone-800 hover:bg-white"
+          }`}
         >
-          <FavouriteIcon size={22} />
+          <FavouriteIcon size={22} className={isWishlisted ? "fill-current" : ""} />
         </Button>
       </div>
 

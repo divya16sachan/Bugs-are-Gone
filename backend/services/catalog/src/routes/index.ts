@@ -1,8 +1,12 @@
 import { FastifyPluginAsync } from "fastify";
-import { getProductsHandler, getProductByIdHandler, reserveStockHandler } from "../controllers/index.js";
+import { getProductsHandler, getProductByIdHandler, reserveStockHandler, seedProductsHandler } from "../controllers/index.js";
 
 export const catalogRoutes: FastifyPluginAsync = async (fastify) => {
+  // POST /api/v1/products/seed (Seed / Reset products catalog)
+  fastify.post("/api/v1/products/seed", seedProductsHandler);
+
   // GET /api/v1/products
+
   fastify.get(
     "/api/v1/products",
     {

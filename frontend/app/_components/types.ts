@@ -36,6 +36,7 @@ export interface Product {
   discountPercent?: number;
   imageUrl: string;
   inStock: boolean;
+  stock?: number;
   isBestSeller: boolean;
   isNewArrival: boolean;
   isOnSale: boolean;

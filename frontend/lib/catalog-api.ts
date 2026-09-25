@@ -67,7 +67,7 @@ export function applyFiltersAndPagination(
 
   const totalCount = result.length;
   const page = Math.max(1, filters.page);
-  const pageSize = filters.pageSize || 12;
+  const pageSize = filters.pageSize || 20;
   const totalPages = Math.max(1, Math.ceil(totalCount / pageSize));
   const startIndex = (page - 1) * pageSize;
   const pagedProducts = result.slice(startIndex, startIndex + pageSize);
@@ -85,7 +85,7 @@ export function applyFiltersAndPagination(
 export async function fetchProducts(filters: ProductFilters): Promise<ProductsResponse> {
   try {
     const params = createSearchParamsFromFilters(filters);
-    params.set("limit", (filters.pageSize || 12).toString());
+    params.set("limit", (filters.pageSize || 20).toString());
     const qs = params.toString();
     const url = `/api/v1/products${qs ? `?${qs}` : ""}`;
 
@@ -100,6 +100,7 @@ export async function fetchProducts(filters: ProductFilters): Promise<ProductsRe
     if (res && Array.isArray(res.products)) {
       const mappedProducts: Product[] = res.products.map((p) => ({
         ...p,
+        stock: p.stock !== undefined ? p.stock : (p.inStock ? 25 : 0),
         inStock: p.stock !== undefined ? p.stock > 0 : (p.inStock ?? true),
       }));
 
@@ -107,7 +108,7 @@ export async function fetchProducts(filters: ProductFilters): Promise<ProductsRe
         products: mappedProducts,
         totalCount: res.totalCount,
         page: res.page,
-        pageSize: res.limit || filters.pageSize || 12,
+        pageSize: res.limit || filters.pageSize || 20,
         totalPages: res.totalPages,
         isMock: false,
       };
@@ -126,6 +127,7 @@ export async function fetchProductById(id: string): Promise<Product | null> {
     if (raw && raw.id) {
       return {
         ...raw,
+        stock: raw.stock !== undefined ? raw.stock : (raw.inStock ? 25 : 0),
         inStock: raw.stock !== undefined ? raw.stock > 0 : (raw.inStock ?? true),
       };
     }
