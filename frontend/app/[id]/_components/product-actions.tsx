@@ -35,8 +35,6 @@ export default function ProductActions({ product }: ProductActionsProps) {
   const availableStock = product.stock !== undefined ? product.stock : (product.inStock !== false ? 25 : 0);
   const remainingStock = Math.max(0, availableStock - currentInCart);
 
-  const liked = isInWishlist(product.id);
-
   const decreaseQuantity = () => {
     setQuantity((current) => Math.max(1, current - 1));
   };
@@ -148,7 +146,7 @@ export default function ProductActions({ product }: ProductActionsProps) {
           type="button"
           variant="outline"
           size="icon"
-          onClick={handleToggleWishlist}
+          onClick={toggleWishlist}
           tooltip={liked ? "Remove from wishlist" : "Add to wishlist"}
           aria-label={liked ? "Remove from wishlist" : "Add to wishlist"}
           className={`size-11 rounded-full transition active:scale-95 cursor-pointer ${

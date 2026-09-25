@@ -43,7 +43,6 @@ export function ProductCard({
 
   return (
     <div
-      onClick={handleCardClick}
       className={cn(
         "group relative flex flex-col rounded-2xl bg-card border border-border/70 overflow-hidden hover:shadow-md hover:border-border transition-all duration-300",
         className
