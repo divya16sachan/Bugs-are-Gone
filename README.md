@@ -4,7 +4,7 @@ A distributed microservices architecture designed to demonstrate **observability
 
 ---
 
-## 🚀 Quickstart: How to Run
+##  Quickstart: How to Run
 
 ### 1. Prerequisites
 - **Node.js**: v20+ (LTS)
