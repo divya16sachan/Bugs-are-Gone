@@ -2,6 +2,7 @@
 
 A distributed microservices architecture designed to demonstrate **observability (RED metrics & Prometheus), self-healing (circuit breakers, retries, DLQ), and auto-scaling (Kubernetes HPA & KEDA)**.
 
+
 ---
 
 ##  Quickstart: How to Run
